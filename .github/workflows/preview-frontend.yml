@@ -4,12 +4,28 @@
 name: Deploy Preview Channels
 "on": pull_request
 jobs:
-  build_and_preview:
+  deploy:
     if: "${{ github.event.pull_request.head.repo.full_name == github.repository }}"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - run: npm ci && npm run build
+      - name: Check out code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.32.2
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.12.0
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install
+      - name: Build
+        run: pnpm build
+      - run: cd apps/storefront
       - uses: FirebaseExtended/action-hosting-deploy@0f248036885ae672f78587669fa2923f0ef6cac2
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
