@@ -211,6 +211,26 @@ importers:
       tsconfig: link:../tsconfig
       typescript: 4.8.4
 
+  packages/providers:
+    specifiers:
+      '@types/jest': ^26.0.22
+      '@types/node': ^18.11.7
+      eslint: ^7.32.0
+      eslint-config-custom: workspace:*
+      jest: ^26.6.3
+      jest-presets: workspace:*
+      tsconfig: workspace:*
+      typescript: ^4.8.3
+    devDependencies:
+      '@types/jest': 26.0.24
+      '@types/node': 18.11.7
+      eslint: 7.32.0
+      eslint-config-custom: link:../eslint-config-custom
+      jest: 26.6.3
+      jest-presets: link:../jest-presets
+      tsconfig: link:../tsconfig
+      typescript: 4.8.4
+
   packages/tsconfig:
     specifiers: {}
 
@@ -2222,7 +2242,7 @@ packages:
   /@types/connect/3.4.35:
     resolution: {integrity: sha512-cdeYyv4KWoEgpBISTxWvqYsVy444DOqehiF3fM3ne10AmJ62RSyNkUnxMJXHQWRQQX2eR94m5y1IZyDwBjV9FQ==}
     dependencies:
-      '@types/node': 15.14.9
+      '@types/node': 18.11.7
     dev: true
 
   /@types/cookie/0.4.1:
@@ -2261,7 +2281,7 @@ packages:
   /@types/express-serve-static-core/4.17.31:
     resolution: {integrity: sha512-DxMhY+NAsTwMMFHBTtJFNp5qiHKJ7TeqOo23zVEM9alT1Ml27Q3xcTH0xwxn7Q0BbMcVEJOs/7aQtUWupUQN3Q==}
     dependencies:
-      '@types/node': 15.14.9
+      '@types/node': 18.11.7
       '@types/qs': 6.9.7
       '@types/range-parser': 1.2.4
     dev: true
@@ -2416,7 +2436,7 @@ packages:
     resolution: {integrity: sha512-z5xyF6uh8CbjAu9760KDKsH2FcDxZ2tFCsA4HIMWE6IkiYMXfVoa+4f9KX+FN0ZLsaMw1WNG2ETLA6N+/YA+cg==}
     dependencies:
       '@types/mime': 3.0.1
-      '@types/node': 15.14.9
+      '@types/node': 18.11.7
     dev: true
 
   /@types/stack-utils/2.0.1:
@@ -2427,7 +2447,7 @@ packages:
     resolution: {integrity: sha512-mu/N4uvfDN2zVQQ5AYJI/g4qxn2bHB6521t1UuH09ShNWjebTqN0ZFuYK9uYjcgmI0dTQEs+Owi1EO6U0OkOZQ==}
     dependencies:
       '@types/cookiejar': 2.1.2
-      '@types/node': 15.14.9
+      '@types/node': 18.11.7
     dev: true
 
   /@types/supertest/2.0.12:
