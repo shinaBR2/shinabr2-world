@@ -27,5 +27,8 @@
     "jest-presets": "workspace:*",
     "tsconfig": "workspace:*",
     "typescript": "^4.8.3"
+  },
+  "dependencies": {
+    "firebase": "^9.13.0"
   }
 }
