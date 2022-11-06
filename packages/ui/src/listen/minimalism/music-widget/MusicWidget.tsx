@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import { useRef, useState } from "react";
 import Controls from "./Controls";
 import Seeker from "./Seeker";
-import { playAudio } from "./utils/actions";
+import { playAudio, seek } from "./utils/actions";
 
 interface AudioItem {
   src: string;
@@ -50,6 +50,15 @@ const MusicWidget = (props: Props) => {
     setCurrentTime(ref.current.currentTime);
   };
 
+  const onSeek = (position: number) => {
+    if (!ref.current) {
+      return;
+    }
+
+    setCurrentTime(ref.current.currentTime);
+    seek(ref.current, position);
+  };
+
   const onEnded = () => {
     setPlay(false);
   };
@@ -89,7 +98,7 @@ const MusicWidget = (props: Props) => {
         <Seeker
           max={duration}
           position={currentTime}
-          setPosition={setCurrentTime}
+          setPosition={onSeek}
           formatDuration={formatDuration}
         />
         <Controls isPlay={isPlay} handlePlay={handlePlay} />
