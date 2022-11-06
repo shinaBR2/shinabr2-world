@@ -142,6 +142,7 @@ importers:
 
   apps/listen:
     specifiers:
+      '@originjs/vite-plugin-commonjs': ^1.0.3
       '@types/node': ^18.11.9
       '@types/react': ^18.0.25
       '@types/react-dom': ^18.0.8
@@ -161,6 +162,7 @@ importers:
       react-dom: 18.2.0_react@18.2.0
       ui: link:../../packages/ui
     devDependencies:
+      '@originjs/vite-plugin-commonjs': 1.0.3
       '@types/node': 18.11.9
       '@types/react': 18.0.25
       '@types/react-dom': 18.0.8
@@ -222,6 +224,7 @@ importers:
     specifiers:
       '@emotion/react': ^11.10.5
       '@emotion/styled': ^11.10.5
+      '@mui/icons-material': ^5.10.9
       '@mui/material': ^5.10.12
       '@types/jest': ^26.0.22
       '@types/react': ^17.0.13
@@ -238,6 +241,7 @@ importers:
     dependencies:
       '@emotion/react': 11.10.5_dsvndo4wjx7umk5x4kyqypffly
       '@emotion/styled': 11.10.5_bnywd5vkjtn7fkt2mlvggunpia
+      '@mui/icons-material': 5.10.9_7iha3kopkjmt5eqkerdqbw2jqy
       '@mui/material': 5.10.12_76qfvw3girayx34mq3xsrojrvu
       react-dom: 18.2.0_react@18.2.0
     devDependencies:
@@ -2555,6 +2559,23 @@ packages:
     resolution: {integrity: sha512-cR8lOS606G++iVHR8I6ySgMAEiPoA3DxO/nLeqiv7w7d1707kvKoV4/7SWjh4ui+kHb052xlf/G196q2EKx31w==}
     dev: false
 
+  /@mui/icons-material/5.10.9_7iha3kopkjmt5eqkerdqbw2jqy:
+    resolution: {integrity: sha512-sqClXdEM39WKQJOQ0ZCPTptaZgqwibhj2EFV9N0v7BU1PO8y4OcX/a2wIQHn4fNuDjIZktJIBrmU23h7aqlGgg==}
+    engines: {node: '>=12.0.0'}
+    peerDependencies:
+      '@mui/material': ^5.0.0
+      '@types/react': ^17.0.0 || ^18.0.0
+      react: ^17.0.0 || ^18.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.20.0
+      '@mui/material': 5.10.12_76qfvw3girayx34mq3xsrojrvu
+      '@types/react': 17.0.52
+      react: 18.2.0
+    dev: false
+
   /@mui/material/5.10.12_76qfvw3girayx34mq3xsrojrvu:
     resolution: {integrity: sha512-rG9ZTkG9qUwujyAY1I+uQAa9pkGdsWY3KN+wvS/6H6ZbYIA06QRwmig6ySC6LbeB3WL/I/1ngwJqWX7nfINSbA==}
     engines: {node: '>=12.0.0'}
@@ -2729,6 +2750,12 @@ packages:
     engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
     dependencies:
       json-parse-even-better-errors: 2.3.1
+    dev: true
+
+  /@originjs/vite-plugin-commonjs/1.0.3:
+    resolution: {integrity: sha512-KuEXeGPptM2lyxdIEJ4R11+5ztipHoE7hy8ClZt3PYaOVQ/pyngd2alaSrPnwyFeOW1UagRBaQ752aA1dTMdOQ==}
+    dependencies:
+      esbuild: 0.14.51
     dev: true
 
   /@popperjs/core/2.11.6:
