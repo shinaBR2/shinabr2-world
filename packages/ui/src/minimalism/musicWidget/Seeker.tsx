@@ -68,7 +68,7 @@ const Seeker = (props: Props) => {
   };
 
   return (
-    <>
+    <Box>
       <Slider
         aria-label="time-indicator"
         size="small"
@@ -83,7 +83,7 @@ const Seeker = (props: Props) => {
         <TinyText>{formatDuration(position)}</TinyText>
         <TinyText>-{formatDuration(max - position)}</TinyText>
       </Box>
-    </>
+    </Box>
   );
 };
 
