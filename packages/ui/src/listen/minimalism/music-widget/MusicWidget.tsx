@@ -36,7 +36,7 @@ const MusicWidget = (props: Props) => {
       return;
     }
 
-    setDuration(ref.current.duration);
+    setDuration(Math.ceil(ref.current.duration));
     if (isPlay) {
       ref.current.play();
     }
@@ -67,7 +67,7 @@ const MusicWidget = (props: Props) => {
   // https://mui.com/material-ui/react-slider/#music-player
   const formatDuration = (value: number) => {
     const minute = Math.floor(value / 60);
-    const secondLeft = value - minute * 60;
+    const secondLeft = Math.floor(value - minute * 60);
     return `${minute}:${secondLeft < 10 ? `0${secondLeft}` : secondLeft}`;
   };
 

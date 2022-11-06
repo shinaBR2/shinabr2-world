@@ -1,5 +1,8 @@
 import React from "react";
-import { MinimalismMusicWidget } from "ui";
+import { ListenUI, SUI } from "ui";
+
+const { SBackdrop } = SUI;
+const { MusicWidget } = ListenUI.Minimalism;
 
 const Home = () => {
   const songList = [
@@ -19,7 +22,9 @@ const Home = () => {
 
   return (
     <main>
-      <MinimalismMusicWidget audioList={songList} index={0} />
+      <SBackdrop open={true}>
+        <MusicWidget audioList={songList} index={0} />
+      </SBackdrop>
     </main>
   );
 };
