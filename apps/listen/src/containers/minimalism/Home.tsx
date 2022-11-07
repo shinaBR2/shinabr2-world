@@ -7,16 +7,11 @@ const { MusicWidget } = ListenUI.Minimalism;
 const Home = () => {
   const songList = [
     {
-      src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-      name: "Song 1",
-      artistName: "T. Schürger",
-      image: "https://picsum.photos/300",
-    },
-    {
-      src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
-      name: "Song 1",
-      artistName: "T. Schürger",
-      image: "https://picsum.photos/300",
+      src: "https://res.cloudinary.com/shinabr2/video/upload/v1667828415/Public/Music/Japanese/Attack-on-Titan-Opening-1-Feuerroter-Pfeil-und-Bogen-Full-128-Linked-Horizon_1.mp3",
+      name: "Guren No Yumiya",
+      artistName: "Linked Horizon",
+      image:
+        "https://res.cloudinary.com/shinabr2/image/upload/v1667828561/Public/Images/artworks-000141088556-xy2nav-t500x500.jpg",
     },
   ];
 
