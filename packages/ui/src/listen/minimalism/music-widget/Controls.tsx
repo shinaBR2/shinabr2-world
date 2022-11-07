@@ -19,17 +19,15 @@ const getButtonStyles = () => {
 interface Props {
   isPlay: boolean;
   handlePlay: () => void;
+  handlePrev: () => void;
+  handleNext: () => void;
 }
 
 // https://mui.com/material-ui/react-slider/#music-player
 const Controls = (props: Props) => {
   const theme = useTheme();
-  const { isPlay, handlePlay } = props;
+  const { isPlay, handlePlay, handlePrev, handleNext } = props;
   const iconColor = theme.palette.mode === "dark" ? "#fff" : "#000";
-
-  const onClick = () => {
-    handlePlay();
-  };
 
   const renderIcon = () => {
     if (isPlay) {
@@ -41,13 +39,13 @@ const Controls = (props: Props) => {
 
   return (
     <Box sx={getWrapperStyles()}>
-      <IconButton aria-label="previous song">
+      <IconButton aria-label="previous song" onClick={handlePrev}>
         <FastRewindRounded fontSize="large" htmlColor={iconColor} />
       </IconButton>
       <IconButton aria-label={isPlay ? "pause" : "play"} onClick={handlePlay}>
         {renderIcon()}
       </IconButton>
-      <IconButton aria-label="next song">
+      <IconButton aria-label="next song" onClick={handleNext}>
         <FastForwardRounded fontSize="large" htmlColor={iconColor} />
       </IconButton>
     </Box>

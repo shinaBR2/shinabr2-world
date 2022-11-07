@@ -19,10 +19,11 @@ interface AudioItem {
 interface Props {
   audioList: AudioItem[];
   index: number;
+  setIndex: (index: number) => void;
 }
 
 const MusicWidget = (props: Props) => {
-  const { audioList, index } = props;
+  const { audioList, index, setIndex } = props;
   const ref = useRef<HTMLAudioElement>(null);
   const [isPlay, setPlay] = useState(false);
   const [duration, setDuration] = useState(0);
@@ -73,6 +74,22 @@ const MusicWidget = (props: Props) => {
     playAudio(ref.current);
   };
 
+  const handlePrev = () => {
+    if (index <= 0) {
+      return;
+    }
+
+    setIndex(index - 1);
+  };
+
+  const handleNext = () => {
+    if (index === audioList.length - 1) {
+      return;
+    }
+
+    setIndex(index + 1);
+  };
+
   // https://mui.com/material-ui/react-slider/#music-player
   const formatDuration = (value: number) => {
     const minute = Math.floor(value / 60);
@@ -101,7 +118,12 @@ const MusicWidget = (props: Props) => {
         />
       </CardContent>
       <CardActions style={{ display: "block" }}>
-        <Controls isPlay={isPlay} handlePlay={handlePlay} />
+        <Controls
+          isPlay={isPlay}
+          handlePlay={handlePlay}
+          handlePrev={handlePrev}
+          handleNext={handleNext}
+        />
       </CardActions>
       <audio
         ref={ref}
