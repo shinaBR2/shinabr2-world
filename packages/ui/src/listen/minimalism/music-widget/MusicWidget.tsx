@@ -93,14 +93,14 @@ const MusicWidget = (props: Props) => {
         <Typography gutterBottom variant="h5" component="p">
           {name}
         </Typography>
-      </CardContent>
-      <CardActions style={{ display: "block" }}>
         <Seeker
           max={duration}
           position={currentTime}
           setPosition={onSeek}
           formatDuration={formatDuration}
         />
+      </CardContent>
+      <CardActions style={{ display: "block" }}>
         <Controls isPlay={isPlay} handlePlay={handlePlay} />
       </CardActions>
       <audio
