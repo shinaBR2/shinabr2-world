@@ -31,10 +31,6 @@ const loopAudio = (player: HTMLAudioElement) => {
 
 const seek = (player: HTMLAudioElement, position: number) => {
   player.currentTime = position;
-
-  if (player.paused) {
-    player.play();
-  }
 };
 
 export { playAudio, muteAudio, loopAudio, seek };
