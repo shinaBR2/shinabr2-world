@@ -12,6 +12,10 @@ importers:
 
   apps/admin:
     specifiers:
+      '@emotion/react': ^11.10.5
+      '@emotion/styled': ^11.10.5
+      '@mui/icons-material': ^5.10.9
+      '@mui/material': ^5.10.12
       '@types/react': ^17.0.0
       '@types/react-dom': ^17.0.0
       '@vitejs/plugin-react': ^2.1.0
@@ -24,6 +28,10 @@ importers:
       ui: workspace:*
       vite: ^3.1.0
     dependencies:
+      '@emotion/react': 11.10.5_dsvndo4wjx7umk5x4kyqypffly
+      '@emotion/styled': 11.10.5_bnywd5vkjtn7fkt2mlvggunpia
+      '@mui/icons-material': 5.10.9_7iha3kopkjmt5eqkerdqbw2jqy
+      '@mui/material': 5.10.12_76qfvw3girayx34mq3xsrojrvu
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       ui: link:../../packages/ui
