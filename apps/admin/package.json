@@ -23,6 +23,7 @@
     "apexcharts": "^3.36.3",
     "change-case": "^4.1.2",
     "date-fns": "^2.29.3",
+    "firebase": "^9.13.0",
     "lodash": "^4.17.21",
     "numeral": "^2.0.6",
     "prop-types": "^15.8.1",
