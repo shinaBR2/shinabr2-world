@@ -147,6 +147,7 @@ importers:
       '@types/react': ^18.0.25
       '@types/react-dom': ^18.0.8
       '@vitejs/plugin-react': ^2.1.0
+      core: workspace:*
       eslint: ^7.32.0
       eslint-config-custom: workspace:*
       firebase: ^9.13.0
@@ -158,6 +159,7 @@ importers:
       ui: workspace:*
       vite: ^3.1.0
     dependencies:
+      core: link:../../packages/core
       firebase: 9.13.0
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
