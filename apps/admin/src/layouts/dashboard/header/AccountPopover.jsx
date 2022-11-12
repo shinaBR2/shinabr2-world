@@ -36,7 +36,11 @@ const MENU_OPTIONS = [
 
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
-  const { signOut } = useAuthContext();
+  const { user, signOut } = useAuthContext();
+
+  console.log(user);
+  const { providerData } = user;
+  const { displayName, email, photoURL } = providerData[0] || {};
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -65,7 +69,7 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <Avatar src={account.photoURL} alt="photoURL" />
+        <Avatar src={photoURL} alt="photoURL" />
       </IconButton>
 
       <Popover
@@ -89,10 +93,10 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {displayName}
           </Typography>
           <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
-            {account.email}
+            {email}
           </Typography>
         </Box>
 
