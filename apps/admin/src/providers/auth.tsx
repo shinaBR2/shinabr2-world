@@ -5,6 +5,7 @@ import firebaseApp from "../firebase";
 interface ContextProps {
   user: User | null | undefined;
   isLoading: boolean;
+  isSignedIn: boolean;
 }
 
 interface Props {
@@ -16,6 +17,7 @@ const auth = getAuth(firebaseApp);
 const AuthContext = React.createContext<ContextProps>({
   user: undefined,
   isLoading: true,
+  isSignedIn: false,
 });
 
 const useAuthContext = () => useContext(AuthContext);
@@ -43,6 +45,7 @@ const AuthProvider: FC<Props> = ({ children }) => {
     () => ({
       user,
       isLoading,
+      isSignedIn: !isLoading && !!user,
     }),
     [user, isLoading]
   );
