@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Outlet, Navigate } from "react-router-dom";
+import { Outlet, Navigate, useLocation, useNavigate } from "react-router-dom";
 // @mui
 import { styled } from "@mui/material/styles";
 //
@@ -36,11 +36,13 @@ const Main = styled("div")(({ theme }) => ({
 export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
   const { isSignedIn } = useAuthContext();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   console.log(`isSignedin: ${isSignedIn}`);
 
   if (!isSignedIn) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/login" replace state={{ from: location }} />;
   }
 
   return (
