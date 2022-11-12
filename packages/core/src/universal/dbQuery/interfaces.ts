@@ -1,7 +1,7 @@
-import { FirestoreDataConverter } from "firebase/firestore";
+import { Firestore, FirestoreDataConverter } from "firebase/firestore";
 
 export interface CollectionInputs<T> {
-  db: any;
+  db: Firestore;
   path: string;
   pathSegments: string[];
   converter: FirestoreDataConverter<T>;
