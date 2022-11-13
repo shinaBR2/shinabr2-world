@@ -48,7 +48,7 @@ export default function Nav({ openNav, onCloseNav }) {
   const { user } = useAuthContext();
 
   const { providerData } = user;
-  const { displayName, email, photoURL } = providerData[0] || {};
+  const { displayName, photoURL } = providerData[0] || {};
 
   const isDesktop = useResponsive("up", "lg");
 

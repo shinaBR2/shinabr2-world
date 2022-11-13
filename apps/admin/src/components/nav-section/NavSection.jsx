@@ -1,9 +1,19 @@
-import PropTypes from 'prop-types';
-import { NavLink as RouterLink } from 'react-router-dom';
+import PropTypes from "prop-types";
+import { NavLink as RouterLink } from "react-router-dom";
 // @mui
-import { Box, List, ListItemText } from '@mui/material';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  List,
+  ListItemText,
+  Typography,
+} from "@mui/material";
 //
-import { StyledNavItem, StyledNavItemIcon } from './styles';
+import { StyledNavItem, StyledNavItemIcon } from "./styles";
+
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 // ----------------------------------------------------------------------
 
@@ -30,17 +40,62 @@ NavItem.propTypes = {
 };
 
 function NavItem({ item }) {
-  const { title, path, icon, info } = item;
+  const { title, path, icon, info, children = [] } = item;
+
+  if (children && children.length) {
+    return (
+      <Accordion style={{ backgroundColor: "transparent" }}>
+        <AccordionSummary
+          expandIcon={
+            <StyledNavItemIcon>{<ExpandMoreIcon />}</StyledNavItemIcon>
+          }
+          sx={{
+            padding: 0,
+            "&.active": {
+              color: "text.primary",
+              bgcolor: "action.selected",
+              fontWeight: "fontWeightBold",
+            },
+          }}
+        >
+          {/* <StyledNavItem> */}
+          <StyledNavItemIcon>{icon && icon}</StyledNavItemIcon>
+
+          <ListItemText disableTypography primary={title} />
+          {/* </StyledNavItem> */}
+        </AccordionSummary>
+        <AccordionDetails>
+          {children.map((child) => (
+            <StyledNavItem
+              component={RouterLink}
+              to={child.path}
+              sx={{
+                "&.active": {
+                  color: "text.primary",
+                  bgcolor: "action.selected",
+                  fontWeight: "fontWeightBold",
+                },
+              }}
+            >
+              <StyledNavItemIcon>{child.icon && child.icon}</StyledNavItemIcon>
+
+              <ListItemText disableTypography primary={child.title} />
+            </StyledNavItem>
+          ))}
+        </AccordionDetails>
+      </Accordion>
+    );
+  }
 
   return (
     <StyledNavItem
       component={RouterLink}
       to={path}
       sx={{
-        '&.active': {
-          color: 'text.primary',
-          bgcolor: 'action.selected',
-          fontWeight: 'fontWeightBold',
+        "&.active": {
+          color: "text.primary",
+          bgcolor: "action.selected",
+          fontWeight: "fontWeightBold",
         },
       }}
     >
