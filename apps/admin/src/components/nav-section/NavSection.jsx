@@ -67,6 +67,7 @@ function NavItem({ item }) {
         <AccordionDetails>
           {children.map((child) => (
             <StyledNavItem
+              key={child.path}
               component={RouterLink}
               to={child.path}
               sx={{
