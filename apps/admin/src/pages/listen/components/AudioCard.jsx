@@ -23,7 +23,7 @@ const StyledCardMedia = styled("div")({
   paddingTop: "calc(100% * 3 / 4)",
 });
 
-const StyledTitle = styled(Link)({
+const StyledTitle = styled(Typography)({
   height: 44,
   overflow: "hidden",
   WebkitLineClamp: 2,
