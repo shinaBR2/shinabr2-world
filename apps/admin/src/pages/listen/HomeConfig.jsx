@@ -10,7 +10,11 @@ import {
 } from "../../sections/@dashboard/blog";
 // mock
 import POSTS from "../../_mock/blog";
+import { ListenCore } from "core";
+import db from "../../providers/firestore";
+import AudioCard from "./components/AudioCard";
 
+const { useGetHomeAudioList } = ListenCore;
 // ----------------------------------------------------------------------
 
 const SORT_OPTIONS = [
@@ -22,10 +26,12 @@ const SORT_OPTIONS = [
 // ----------------------------------------------------------------------
 
 export default function ListenHomeConfig() {
+  const { values: audioList, loading } = useGetHomeAudioList(db);
+
   return (
     <>
       <Helmet>
-        <title> Dashboard: Blog | Minimal UI </title>
+        <title> Listen: Home page configuration </title>
       </Helmet>
 
       <Container>
@@ -57,9 +63,10 @@ export default function ListenHomeConfig() {
         </Stack>
 
         <Grid container spacing={3}>
-          {POSTS.map((post, index) => (
-            <BlogPostCard key={post.id} post={post} index={index} />
-          ))}
+          {audioList &&
+            audioList.map((audio, index) => (
+              <AudioCard key={audio.id} audio={audio} index={index} />
+            ))}
         </Grid>
       </Container>
     </>
