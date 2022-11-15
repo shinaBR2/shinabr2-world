@@ -1,11 +1,7 @@
-import { logger, onRequest } from "./singleton";
-// import { getApp } from "firebase/app";
-// import { getFunctions, connectFunctionsEmulator } from "firebase/functions";
+import { users } from "./api";
 
-// const functions = getFunctions(getApp());
-// connectFunctionsEmulator(functions, "localhost", 5001);
+const api = {
+  users,
+};
 
-export const helloWorld = onRequest((request, response) => {
-  logger.info("Hello logs!", { structuredData: true });
-  response.send("Hello from Firebase!");
-});
+export { api };
