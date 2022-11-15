@@ -37,14 +37,25 @@ const useAuthContext = () => useContext(AuthContext);
 
 const AuthProvider: FC<Props> = ({ children }) => {
   const [user, setUser] = useState<User | null>();
+  const [isAdmin, setIsAdmin] = useState(false);
   const isLoading = user === undefined;
 
-  onAuthStateChanged(auth, (user) => {
+  onAuthStateChanged(auth, async (user) => {
     if (user) {
       // User is signed in, see docs for a list of available properties
       // https://firebase.google.com/docs/reference/js/firebase.User
       const uid = user.uid;
       console.log(`Signed in`);
+
+      if (auth.currentUser) {
+        const tokenResult = await auth.currentUser.getIdTokenResult();
+
+        console.log(`tokenResult: ${tokenResult.claims.admin}`);
+
+        if (!!tokenResult.claims.admin) {
+          setIsAdmin(true);
+        }
+      }
 
       setUser(user);
     } else {
@@ -55,7 +66,7 @@ const AuthProvider: FC<Props> = ({ children }) => {
   });
 
   const signIn = async () => {
-    return await signInWithRedirect(auth, provider);
+    await signInWithRedirect(auth, provider);
   };
 
   const signOut = async () => {
@@ -66,11 +77,11 @@ const AuthProvider: FC<Props> = ({ children }) => {
     () => ({
       user,
       isLoading,
-      isSignedIn: !isLoading && !!user,
+      isSignedIn: !isLoading && !!user && isAdmin,
       signIn,
       signOut,
     }),
-    [user, isLoading]
+    [user, isLoading, isAdmin]
   );
 
   return (
