@@ -3,8 +3,9 @@ import { initializeApp } from "firebase-admin/app";
 
 initializeApp();
 
+const functionsBuilder = functions.region("asia-south1");
 const logger = functions.logger;
-const https = functions.https;
+const https = functionsBuilder.https;
 const onRequest = https.onRequest;
 
 export { logger, onRequest };
