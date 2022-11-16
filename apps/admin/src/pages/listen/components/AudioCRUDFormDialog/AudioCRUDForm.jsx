@@ -1,0 +1,114 @@
+import { Controller, useForm } from "react-hook-form";
+
+const getDefaultValues = (data) => {
+  if (!data) {
+    return {
+      src: "",
+      name: "",
+      artistName: "",
+      thumbnailUrl: "",
+      order: 0,
+    };
+  }
+
+  return data;
+};
+
+const AudioCRUDForm = () => {
+  const { data, onConfirm } = props;
+  const useFormInputs = {
+    defaultValues: getDefaultValues(data),
+  };
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm(useFormInputs);
+  const onSubmit = (data) => {
+    console.log(data);
+    onConfirm(data);
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Controller
+        name="src"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            autoFocus
+            margin="dense"
+            id="src"
+            label="Source"
+            type="text"
+            fullWidth
+            variant="outlined"
+            error={errors.src}
+            helperText={errors.src && "Src is required"}
+            {...field}
+          />
+        )}
+      />
+      <Controller
+        name="name"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Name"
+            type="text"
+            fullWidth
+            variant="outlined"
+            error={errors.name}
+            helperText={errors.name && "Name is required"}
+            {...field}
+          />
+        )}
+      />
+      <Controller
+        name="artistName"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            autoFocus
+            margin="dense"
+            id="artistName"
+            label="Artist name"
+            type="text"
+            fullWidth
+            variant="outlined"
+            error={errors.artistName}
+            helperText={errors.artistName && "Artist name is required"}
+            {...field}
+          />
+        )}
+      />
+      <Controller
+        name="thumbnailUrl"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            autoFocus
+            margin="dense"
+            id="thumbnailUrl"
+            label="Thumbnail"
+            type="text"
+            fullWidth
+            variant="outlined"
+            error={errors.thumbnailUrl}
+            helperText={errors.thumbnailUrl && "Artist name is required"}
+            {...field}
+          />
+        )}
+      />
+
+      <Button color="primary" type="submit">
+        Save
+      </Button>
+    </form>
+  );
+};
+
+export default AudioCRUDForm;
