@@ -1,4 +1,4 @@
-import { Button, TextField } from "@mui/material";
+import { Box, Button, Grid, TextField } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 
 const getDefaultValues = (data) => {
@@ -105,9 +105,13 @@ const AudioCRUDForm = (props) => {
         )}
       />
 
-      <Button color="primary" type="submit">
-        Save
-      </Button>
+      <Box mt={2}>
+        <Grid container justifyContent="flex-end">
+          <Button color="primary" type="submit">
+            Save
+          </Button>
+        </Grid>
+      </Box>
     </form>
   );
 };
