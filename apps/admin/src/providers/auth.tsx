@@ -45,7 +45,7 @@ const AuthProvider: FC<Props> = ({ children }) => {
       // User is signed in, see docs for a list of available properties
       // https://firebase.google.com/docs/reference/js/firebase.User
       const uid = user.uid;
-      console.log(`Signed in`);
+      console.log(`Signed in: ${uid}`);
 
       if (auth.currentUser) {
         const tokenResult = await auth.currentUser.getIdTokenResult();

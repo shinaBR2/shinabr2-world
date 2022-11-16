@@ -1,4 +1,9 @@
-import { addDoc, collection, setDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  serverTimestamp,
+  setDoc,
+} from "firebase/firestore";
 import { useCollectionDataOnce } from "react-firebase-hooks/firestore";
 import { AddDocInputs, CollectionInputs } from "./interfaces";
 
@@ -19,7 +24,14 @@ const useAddDoc = () => {
   return async (inputs: AddDocInputs) => {
     const { db, path, pathSegments, data } = inputs;
 
-    const docRef = await addDoc(collection(db, path, ...pathSegments), data);
+    const writeData = {
+      ...data,
+      createdAt: serverTimestamp(),
+    };
+    const docRef = await addDoc(
+      collection(db, path, ...pathSegments),
+      writeData
+    );
 
     return docRef.id;
   };

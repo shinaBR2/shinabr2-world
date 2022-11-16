@@ -1,3 +1,5 @@
+import { FieldValue } from "firebase/firestore";
+
 interface BaseAudioItem {
   src: string;
   name: string;
@@ -6,10 +8,22 @@ interface BaseAudioItem {
 }
 
 export interface AudioItem extends BaseAudioItem {
-  id: string;
+  // id: string;
+  // uploaderId: string;
+  editorId?: string;
+  // createdAt: FieldValue;
+  updatedAt?: FieldValue;
 }
 
-// Backend interface starts with B
-export interface CRUDAudioItemInputs extends BaseAudioItem {
-  //
+export interface AudioItemInputs extends BaseAudioItem {
+  uploaderId: string;
+  editorId?: string;
+}
+
+export interface CreateAudioItemInputs extends BaseAudioItem {
+  uploaderId: string;
+}
+
+export interface UpdateAudioItemInputs extends BaseAudioItem {
+  editorId: string;
 }

@@ -12,8 +12,9 @@ import AudioCard from "./components/AudioCard";
 import FullPageLoader from "../../components/@full-page-loader";
 import { useState } from "react";
 import AudioCRUDFormDialog from "./components/AudioCRUDFormDialog";
+import { useAuthContext } from "../../providers/auth";
 
-const { useGetHomeAudioList } = ListenCore;
+const { useGetHomeAudioList, useUploadHomeAudio } = ListenCore;
 // ----------------------------------------------------------------------
 
 const SORT_OPTIONS = [
@@ -25,18 +26,30 @@ const SORT_OPTIONS = [
 // ----------------------------------------------------------------------
 
 export default function ListenHomeConfig() {
+  const { user } = useAuthContext();
   const { values: audioList, loading } = useGetHomeAudioList(db);
   const [showForm, setShowForm] = useState(false);
   const [isCreate, setIsCreate] = useState(true);
+  const createFunc = useUploadHomeAudio(db);
+  const { uid } = user;
 
   const onClickCreate = () => {
     setIsCreate(true);
     setShowForm(true);
   };
 
-  const onCRUD = (data) => {
+  const onCRUD = async (data) => {
     // TODO
-    const { src, name, artistName, thumbnailUrl } = data;
+    const { src, name, artistName, image } = data;
+    const createData = {
+      src,
+      name,
+      artistName,
+      image,
+      uploaderId: uid,
+    };
+
+    await createFunc(createData);
   };
 
   if (loading) {
