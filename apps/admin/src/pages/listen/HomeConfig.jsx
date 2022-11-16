@@ -13,6 +13,7 @@ import POSTS from "../../_mock/blog";
 import { ListenCore } from "core";
 import db from "../../providers/firestore";
 import AudioCard from "./components/AudioCard";
+import FullPageLoader from "../../components/@full-page-loader";
 
 const { useGetHomeAudioList } = ListenCore;
 // ----------------------------------------------------------------------
@@ -27,6 +28,10 @@ const SORT_OPTIONS = [
 
 export default function ListenHomeConfig() {
   const { values: audioList, loading } = useGetHomeAudioList(db);
+
+  if (loading) {
+    return <FullPageLoader open={loading} />;
+  }
 
   return (
     <>
@@ -48,7 +53,7 @@ export default function ListenHomeConfig() {
             variant="contained"
             startIcon={<Iconify icon="eva:plus-fill" />}
           >
-            New Post
+            New Audio
           </Button>
         </Stack>
 
