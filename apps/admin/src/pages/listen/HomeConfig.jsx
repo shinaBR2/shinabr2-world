@@ -34,8 +34,9 @@ export default function ListenHomeConfig() {
     setShowForm(true);
   };
 
-  const onCRUD = () => {
+  const onCRUD = (data) => {
     // TODO
+    const { src, name, artistName, thumbnailUrl } = data;
   };
 
   if (loading) {

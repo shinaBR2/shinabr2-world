@@ -7,8 +7,8 @@ const getDefaultValues = (data) => {
       src: "",
       name: "",
       artistName: "",
-      thumbnailUrl: "",
-      order: 0,
+      image: "",
+      // order: 0,
     };
   }
 
@@ -87,19 +87,19 @@ const AudioCRUDForm = (props) => {
         )}
       />
       <Controller
-        name="thumbnailUrl"
+        name="image"
         control={control}
         render={({ field }) => (
           <TextField
             autoFocus
             margin="dense"
-            id="thumbnailUrl"
+            id="image"
             label="Thumbnail"
             type="text"
             fullWidth
             variant="outlined"
-            error={errors.thumbnailUrl}
-            helperText={errors.thumbnailUrl && "Artist name is required"}
+            error={errors.image}
+            helperText={errors.image && "Artist name is required"}
             {...field}
           />
         )}
