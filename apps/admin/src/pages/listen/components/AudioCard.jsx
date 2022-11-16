@@ -15,6 +15,7 @@ import { fShortenNumber } from "../../../utils/formatNumber";
 //
 import SvgColor from "../../../components/svg-color";
 import Iconify from "../../../components/iconify";
+import { Timestamp } from "firebase/firestore";
 
 // ----------------------------------------------------------------------
 
@@ -50,6 +51,13 @@ const StyledCover = styled("img")({
 
 const AudioCard = ({ audio, index }) => {
   const { name, artistName, image, createdAt } = audio;
+
+  const createdDate = createdAt
+    ? new Timestamp(createdAt.seconds, createdAt.nanoseconds).toDate()
+    : null;
+
+  console.log(`createdDate: `);
+  console.log(createdDate);
 
   const latestPostLarge = index === 0;
   const latestPost = index === 1 || index === 2;
@@ -123,13 +131,15 @@ const AudioCard = ({ audio, index }) => {
             }),
           }}
         >
-          <Typography
-            gutterBottom
-            variant="caption"
-            sx={{ color: "text.disabled", display: "block" }}
-          >
-            {fDate(createdAt)}
-          </Typography>
+          {!!createdDate && (
+            <Typography
+              gutterBottom
+              variant="caption"
+              sx={{ color: "text.disabled", display: "block" }}
+            >
+              {fDate(createdDate)}
+            </Typography>
+          )}
 
           <StyledTitle
             color="inherit"

@@ -1,3 +1,5 @@
+import pw from "a-promise-wrapper";
+
 import { Helmet } from "react-helmet-async";
 // @mui
 import { Grid, Button, Container, Stack, Typography } from "@mui/material";
@@ -10,9 +12,11 @@ import { ListenCore } from "core";
 import db from "../../providers/firestore";
 import AudioCard from "./components/AudioCard";
 import FullPageLoader from "../../components/@full-page-loader";
-import { useState } from "react";
+import React, { useState } from "react";
 import AudioCRUDFormDialog from "./components/AudioCRUDFormDialog";
 import { useAuthContext } from "../../providers/auth";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 const { useGetHomeAudioList, useUploadHomeAudio } = ListenCore;
 // ----------------------------------------------------------------------
@@ -25,11 +29,17 @@ const SORT_OPTIONS = [
 
 // ----------------------------------------------------------------------
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 export default function ListenHomeConfig() {
   const { user } = useAuthContext();
   const { values: audioList, loading } = useGetHomeAudioList(db);
   const [showForm, setShowForm] = useState(false);
   const [isCreate, setIsCreate] = useState(true);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [showError, setShowError] = useState(false);
   const createFunc = useUploadHomeAudio(db);
   const { uid } = user;
 
@@ -49,7 +59,14 @@ export default function ListenHomeConfig() {
       uploaderId: uid,
     };
 
-    await createFunc(createData);
+    const { error } = await pw(createFunc(createData));
+
+    if (error) {
+      return setShowError(true);
+    }
+
+    setShowSuccess(true);
+    setShowForm(false);
   };
 
   if (loading) {
@@ -105,6 +122,37 @@ export default function ListenHomeConfig() {
             onConfirm={onCRUD}
             isCreate={isCreate}
           />
+        )}
+
+        {showSuccess && (
+          <Snackbar
+            open={showSuccess}
+            autoHideDuration={6000}
+            onClose={handleClose}
+          >
+            <Alert
+              onClose={handleClose}
+              severity="success"
+              sx={{ width: "100%" }}
+            >
+              Success!
+            </Alert>
+          </Snackbar>
+        )}
+        {showError && (
+          <Snackbar
+            open={showError}
+            autoHideDuration={6000}
+            onClose={handleClose}
+          >
+            <Alert
+              onClose={handleClose}
+              severity="error"
+              sx={{ width: "100%" }}
+            >
+              Success!
+            </Alert>
+          </Snackbar>
         )}
       </Container>
     </>
