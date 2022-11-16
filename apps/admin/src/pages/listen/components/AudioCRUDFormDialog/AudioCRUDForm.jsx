@@ -1,3 +1,4 @@
+import { Button, TextField } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 
 const getDefaultValues = (data) => {
@@ -14,7 +15,7 @@ const getDefaultValues = (data) => {
   return data;
 };
 
-const AudioCRUDForm = () => {
+const AudioCRUDForm = (props) => {
   const { data, onConfirm } = props;
   const useFormInputs = {
     defaultValues: getDefaultValues(data),
