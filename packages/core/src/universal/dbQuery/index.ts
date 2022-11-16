@@ -1,6 +1,6 @@
-import { collection } from "firebase/firestore";
+import { addDoc, collection, setDoc } from "firebase/firestore";
 import { useCollectionDataOnce } from "react-firebase-hooks/firestore";
-import { CollectionInputs } from "./interfaces";
+import { AddDocInputs, CollectionInputs } from "./interfaces";
 
 const useGetCollectionOnce = <T>(inputs: CollectionInputs<T>) => {
   const { db, path, pathSegments, converter } = inputs;
@@ -15,4 +15,14 @@ const useGetCollectionOnce = <T>(inputs: CollectionInputs<T>) => {
   };
 };
 
-export { useGetCollectionOnce };
+const useAddDoc = () => {
+  return async (inputs: AddDocInputs) => {
+    const { db, path, pathSegments, data } = inputs;
+
+    const docRef = await addDoc(collection(db, path, ...pathSegments), data);
+
+    return docRef.id;
+  };
+};
+
+export { useGetCollectionOnce, useAddDoc };
