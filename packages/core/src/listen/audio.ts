@@ -4,11 +4,18 @@ import {
   QueryDocumentSnapshot,
   SnapshotOptions,
 } from "firebase/firestore";
-import { useGetCollectionOnce } from "../universal/dbQuery";
+import { useAddDoc, useGetCollectionOnce } from "../universal/dbQuery";
 import { AudioItem } from "./interfaces";
 
 const converter: FirestoreDataConverter<AudioItem> = {
-  toFirestore: (data: AudioItem) => data,
+  toFirestore: (data: AudioItem) => {
+    const { image, ...rest } = data;
+
+    return {
+      ...rest,
+      thumbnailUrl: image,
+    };
+  },
   fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions) {
     const data = snapshot.data(options);
 
@@ -38,4 +45,21 @@ const useGetHomeAudioList = (db: Firestore) => {
   };
 };
 
-export { useGetHomeAudioList };
+const useUploadHomeAudio = (db: Firestore) => {
+  const addFunc = useAddDoc();
+
+  return async (inputs: AudioItem) => {
+    const addInputs = {
+      db,
+      path: "homeConfigs",
+      pathSegments: ["listen", "audioList"],
+      data: converter.toFirestore(inputs),
+    };
+
+    const id = await addFunc(addInputs);
+
+    return id;
+  };
+};
+
+export { useGetHomeAudioList, useUploadHomeAudio };
