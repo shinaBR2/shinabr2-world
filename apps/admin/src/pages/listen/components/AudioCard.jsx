@@ -56,9 +56,6 @@ const AudioCard = ({ audio, index }) => {
     ? new Timestamp(createdAt.seconds, createdAt.nanoseconds).toDate()
     : null;
 
-  console.log(`createdDate: `);
-  console.log(createdDate);
-
   const latestPostLarge = index === 0;
   const latestPost = index === 1 || index === 2;
 

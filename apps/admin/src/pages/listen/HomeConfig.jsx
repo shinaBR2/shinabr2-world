@@ -43,6 +43,9 @@ export default function ListenHomeConfig() {
   const createFunc = useUploadHomeAudio(db);
   const { uid } = user;
 
+  const handleCloseSuccess = () => setShowSuccess(false);
+  const handleCloseError = () => setShowError(false);
+
   const onClickCreate = () => {
     setIsCreate(true);
     setShowForm(true);
@@ -128,10 +131,10 @@ export default function ListenHomeConfig() {
           <Snackbar
             open={showSuccess}
             autoHideDuration={6000}
-            onClose={handleClose}
+            onClose={handleCloseSuccess}
           >
             <Alert
-              onClose={handleClose}
+              onClose={handleCloseSuccess}
               severity="success"
               sx={{ width: "100%" }}
             >
@@ -143,10 +146,10 @@ export default function ListenHomeConfig() {
           <Snackbar
             open={showError}
             autoHideDuration={6000}
-            onClose={handleClose}
+            onClose={handleCloseError}
           >
             <Alert
-              onClose={handleClose}
+              onClose={handleCloseError}
               severity="error"
               sx={{ width: "100%" }}
             >

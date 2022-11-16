@@ -26,7 +26,6 @@ const AudioCRUDForm = (props) => {
     formState: { errors },
   } = useForm(useFormInputs);
   const onSubmit = (data) => {
-    console.log(data);
     onConfirm(data);
   };
 
