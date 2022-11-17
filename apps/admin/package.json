@@ -15,6 +15,7 @@
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@faker-js/faker": "^7.6.0",
+    "@hookform/resolvers": "^2.9.10",
     "@iconify/react": "^4.0.0",
     "@mui/icons-material": "^5.10.9",
     "@mui/lab": "5.0.0-alpha.107",
@@ -36,7 +37,8 @@
     "react-hook-form": "^7.39.3",
     "react-router-dom": "^6.4.3",
     "simplebar-react": "^2.4.3",
-    "ui": "workspace:*"
+    "ui": "workspace:*",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@types/react": "^18.0.25",

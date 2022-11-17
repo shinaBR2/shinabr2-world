@@ -1,9 +1,4 @@
-import {
-  addDoc,
-  collection,
-  serverTimestamp,
-  setDoc,
-} from "firebase/firestore";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useCollectionDataOnce } from "react-firebase-hooks/firestore";
 import { AddDocInputs, CollectionInputs } from "./interfaces";
 

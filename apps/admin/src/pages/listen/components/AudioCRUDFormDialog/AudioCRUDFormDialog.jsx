@@ -32,12 +32,6 @@ const AudioCRUDFormDialog = (props) => {
       <DialogContent>
         <AudioCRUDForm data={isCreate ? null : data} onConfirm={onConfirm} />
       </DialogContent>
-      {/* <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button color="primary" onClick={handleClose}>
-          Save
-        </Button>
-      </DialogActions> */}
     </Dialog>
   );
 };

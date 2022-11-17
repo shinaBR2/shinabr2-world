@@ -1,5 +1,16 @@
+import * as yup from "yup";
 import { Box, Button, Grid, TextField } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+const createSchema = yup
+  .object({
+    src: yup.string().required(),
+    name: yup.string().required(),
+    artistName: yup.string().required(),
+    image: yup.string().required(),
+  })
+  .required();
 
 const getDefaultValues = (data) => {
   if (!data) {
@@ -8,7 +19,6 @@ const getDefaultValues = (data) => {
       name: "",
       artistName: "",
       image: "",
-      // order: 0,
     };
   }
 
@@ -19,6 +29,7 @@ const AudioCRUDForm = (props) => {
   const { data, onConfirm } = props;
   const useFormInputs = {
     defaultValues: getDefaultValues(data),
+    resolver: !data ? yupResolver(createSchema) : undefined,
   };
   const {
     control,
@@ -93,12 +104,12 @@ const AudioCRUDForm = (props) => {
             autoFocus
             margin="dense"
             id="image"
-            label="Thumbnail"
+            label="Thumbnail image"
             type="text"
             fullWidth
             variant="outlined"
             error={errors.image}
-            helperText={errors.image && "Artist name is required"}
+            helperText={errors.image && "Image is required"}
             {...field}
           />
         )}
