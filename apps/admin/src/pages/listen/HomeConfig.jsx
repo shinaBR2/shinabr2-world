@@ -19,7 +19,7 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 
 const {
-  useGetHomeAudioList,
+  useListenHomeAudioList,
   useUploadHomeAudio,
   useUpdateHomeAudioItem,
   useDeleteHomeAudioItem,
@@ -40,7 +40,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 export default function ListenHomeConfig() {
   const { user } = useAuthContext();
-  const { values: audioList, loading } = useGetHomeAudioList(db);
+  const { values: audioList, loading } = useListenHomeAudioList(db);
   const [showForm, setShowForm] = useState(false);
   const [isCreate, setIsCreate] = useState(true);
   const [showSuccess, setShowSuccess] = useState(false);

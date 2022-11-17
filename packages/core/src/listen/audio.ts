@@ -9,6 +9,7 @@ import {
 import {
   useAddDoc,
   useDeleteDoc,
+  useGetCollectionOn,
   useGetCollectionOnce,
   useUpdateDoc,
 } from "../universal/dbQuery";
@@ -52,6 +53,22 @@ const converter: FirestoreDataConverter<AudioItem> = {
       updatedAt: data.updatedAt,
     };
   },
+};
+
+const useListenHomeAudioList = (db: Firestore) => {
+  const inputs = {
+    db,
+    path: "homeConfigs",
+    pathSegments: ["listen", "audioList"],
+    converter,
+  };
+  const { values, loading, error } = useGetCollectionOn(inputs);
+
+  return {
+    values,
+    loading,
+    error,
+  };
 };
 
 const useGetHomeAudioList = (db: Firestore) => {
@@ -118,6 +135,7 @@ const useDeleteHomeAudioItem = (db: Firestore) => {
 };
 
 export {
+  useListenHomeAudioList,
   useGetHomeAudioList,
   useUploadHomeAudio,
   useUpdateHomeAudioItem,

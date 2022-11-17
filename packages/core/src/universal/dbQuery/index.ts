@@ -6,12 +6,28 @@ import {
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
-import { useCollectionDataOnce } from "react-firebase-hooks/firestore";
+import {
+  useCollectionData,
+  useCollectionDataOnce,
+} from "react-firebase-hooks/firestore";
 import {
   AddDocInputs,
   BaseFirestoreInputs,
   CollectionInputs,
 } from "./interfaces";
+
+const useGetCollectionOn = <T>(inputs: CollectionInputs<T>) => {
+  const { db, path, pathSegments, converter } = inputs;
+  const query = collection(db, path, ...pathSegments);
+  const ref = query.withConverter(converter);
+  const [values, loading, error] = useCollectionData(ref);
+
+  return {
+    values,
+    loading,
+    error,
+  };
+};
 
 const useGetCollectionOnce = <T>(inputs: CollectionInputs<T>) => {
   const { db, path, pathSegments, converter } = inputs;
@@ -63,4 +79,10 @@ const useDeleteDoc = () => {
   };
 };
 
-export { useGetCollectionOnce, useAddDoc, useUpdateDoc, useDeleteDoc };
+export {
+  useGetCollectionOn,
+  useGetCollectionOnce,
+  useAddDoc,
+  useUpdateDoc,
+  useDeleteDoc,
+};
