@@ -8,6 +8,7 @@ import {
   Avatar,
   Typography,
   CardContent,
+  IconButton,
 } from "@mui/material";
 // utils
 import { fDate } from "../../../utils/formatTime";
@@ -16,6 +17,7 @@ import { fShortenNumber } from "../../../utils/formatNumber";
 import SvgColor from "../../../components/svg-color";
 import Iconify from "../../../components/iconify";
 import { Timestamp } from "firebase/firestore";
+import EditIcon from "@mui/icons-material/Edit";
 
 // ----------------------------------------------------------------------
 
@@ -41,6 +43,15 @@ const StyledAvatar = styled(Avatar)(({ theme }) => ({
   bottom: theme.spacing(-2),
 }));
 
+const StyledEditButton = styled(IconButton)(({ theme }) => ({
+  zIndex: 9,
+  width: 32,
+  height: 32,
+  position: "absolute",
+  right: theme.spacing(3),
+  top: theme.spacing(2),
+}));
+
 const StyledCover = styled("img")({
   top: 0,
   width: "100%",
@@ -49,7 +60,7 @@ const StyledCover = styled("img")({
   position: "absolute",
 });
 
-const AudioCard = ({ audio, index }) => {
+const AudioCard = ({ audio, index, onEdit }) => {
   const { name, artistName, image, createdAt } = audio;
 
   const createdDate = createdAt
@@ -58,6 +69,10 @@ const AudioCard = ({ audio, index }) => {
 
   const latestPostLarge = index === 0;
   const latestPost = index === 1 || index === 2;
+
+  const handleClick = () => {
+    onEdit(audio);
+  };
 
   return (
     <Grid
@@ -114,6 +129,10 @@ const AudioCard = ({ audio, index }) => {
               }),
             }}
           />
+
+          <StyledEditButton aria-label="edit" onClick={handleClick}>
+            <EditIcon />
+          </StyledEditButton>
 
           <StyledCover alt={name} src={image} />
         </StyledCardMedia>

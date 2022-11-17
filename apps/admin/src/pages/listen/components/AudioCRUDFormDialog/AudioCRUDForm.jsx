@@ -40,6 +40,8 @@ const AudioCRUDForm = (props) => {
     onConfirm(data);
   };
 
+  const submitLabel = !!data ? "Update" : "Create";
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Controller
@@ -118,7 +120,7 @@ const AudioCRUDForm = (props) => {
       <Box mt={2}>
         <Grid container justifyContent="flex-end">
           <Button color="primary" type="submit">
-            Save
+            {submitLabel}
           </Button>
         </Grid>
       </Box>

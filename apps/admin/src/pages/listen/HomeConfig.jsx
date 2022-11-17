@@ -40,6 +40,7 @@ export default function ListenHomeConfig() {
   const [isCreate, setIsCreate] = useState(true);
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [activeEditItem, setActiveEditItem] = useState();
   const createFunc = useUploadHomeAudio(db);
   const { uid } = user;
 
@@ -48,6 +49,13 @@ export default function ListenHomeConfig() {
 
   const onClickCreate = () => {
     setIsCreate(true);
+    setShowForm(true);
+  };
+
+  const onClickEdit = (audioItem) => {
+    // TODO
+    setActiveEditItem(audioItem);
+    setIsCreate(false);
     setShowForm(true);
   };
 
@@ -114,7 +122,12 @@ export default function ListenHomeConfig() {
         <Grid container spacing={3}>
           {audioList &&
             audioList.map((audio, index) => (
-              <AudioCard key={audio.id} audio={audio} index={index} />
+              <AudioCard
+                onEdit={onClickEdit}
+                key={audio.id}
+                audio={audio}
+                index={index}
+              />
             ))}
         </Grid>
 
@@ -124,6 +137,7 @@ export default function ListenHomeConfig() {
             onClose={() => setShowForm(false)}
             onConfirm={onCRUD}
             isCreate={isCreate}
+            data={activeEditItem}
           />
         )}
 
