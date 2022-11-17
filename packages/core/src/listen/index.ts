@@ -1,3 +1,13 @@
-import { useGetHomeAudioList, useUploadHomeAudio } from "./audio";
+import {
+  useGetHomeAudioList,
+  useUploadHomeAudio,
+  useUpdateHomeAudioItem,
+  useDeleteHomeAudioItem,
+} from "./audio";
 
-export { useGetHomeAudioList, useUploadHomeAudio };
+export {
+  useGetHomeAudioList,
+  useUploadHomeAudio,
+  useUpdateHomeAudioItem,
+  useDeleteHomeAudioItem,
+};

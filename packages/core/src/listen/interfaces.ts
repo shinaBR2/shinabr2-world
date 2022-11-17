@@ -25,5 +25,6 @@ export interface CreateAudioItemInputs extends BaseAudioItem {
 }
 
 export interface UpdateAudioItemInputs extends BaseAudioItem {
+  id: string;
   editorId: string;
 }

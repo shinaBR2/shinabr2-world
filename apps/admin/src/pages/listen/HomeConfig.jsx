@@ -18,7 +18,12 @@ import { useAuthContext } from "../../providers/auth";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 
-const { useGetHomeAudioList, useUploadHomeAudio } = ListenCore;
+const {
+  useGetHomeAudioList,
+  useUploadHomeAudio,
+  useUpdateHomeAudioItem,
+  useDeleteHomeAudioItem,
+} = ListenCore;
 // ----------------------------------------------------------------------
 
 const SORT_OPTIONS = [
@@ -42,6 +47,8 @@ export default function ListenHomeConfig() {
   const [showError, setShowError] = useState(false);
   const [activeEditItem, setActiveEditItem] = useState();
   const createFunc = useUploadHomeAudio(db);
+  const updateFunc = useUpdateHomeAudioItem(db);
+  const deleteFunc = useDeleteHomeAudioItem(db);
   const { uid } = user;
 
   const handleCloseSuccess = () => setShowSuccess(false);
@@ -59,9 +66,8 @@ export default function ListenHomeConfig() {
     setShowForm(true);
   };
 
-  const onCRUD = async (data) => {
-    // TODO
-    const { src, name, artistName, image } = data;
+  const onCRUD = (isCreate) => async (data) => {
+    const { id, src, name, artistName, image } = data;
     const createData = {
       src,
       name,
@@ -69,8 +75,35 @@ export default function ListenHomeConfig() {
       image,
       uploaderId: uid,
     };
+    const updateData = {
+      id,
+      src,
+      name,
+      artistName,
+      image,
+      editorId: uid,
+    };
+    const inputs = isCreate ? createData : updateData;
+    const func = isCreate ? createFunc : updateFunc;
 
-    const { error } = await pw(createFunc(createData));
+    const { error } = await pw(func(inputs));
+
+    if (error) {
+      return setShowError(true);
+    }
+
+    setShowSuccess(true);
+    setShowForm(false);
+  };
+
+  const onDelete = async () => {
+    const { id } = activeEditItem;
+
+    if (!id) {
+      return;
+    }
+
+    const { error } = await pw(deleteFunc(id));
 
     if (error) {
       return setShowError(true);
@@ -136,6 +169,7 @@ export default function ListenHomeConfig() {
             open={showForm}
             onClose={() => setShowForm(false)}
             onConfirm={onCRUD}
+            onDelete={onDelete}
             isCreate={isCreate}
             data={activeEditItem}
           />

@@ -6,7 +6,12 @@ import {
   SnapshotOptions,
   WithFieldValue,
 } from "firebase/firestore";
-import { useAddDoc, useGetCollectionOnce } from "../universal/dbQuery";
+import {
+  useAddDoc,
+  useDeleteDoc,
+  useGetCollectionOnce,
+  useUpdateDoc,
+} from "../universal/dbQuery";
 import {
   AudioItem,
   AudioItemInputs,
@@ -82,4 +87,39 @@ const useUploadHomeAudio = (db: Firestore) => {
   };
 };
 
-export { useGetHomeAudioList, useUploadHomeAudio };
+const useUpdateHomeAudioItem = (db: Firestore) => {
+  const udpateFunc = useUpdateDoc();
+
+  return async (inputs: UpdateAudioItemInputs) => {
+    const { id, ...rest } = inputs;
+    const updateInputs = {
+      db,
+      path: "homeConfigs",
+      pathSegments: ["listen", "audioList", id],
+      data: converter.toFirestore(rest),
+    };
+
+    await udpateFunc(updateInputs);
+  };
+};
+
+const useDeleteHomeAudioItem = (db: Firestore) => {
+  const deleteFunc = useDeleteDoc();
+
+  return async (id: string) => {
+    const deleteInputs = {
+      db,
+      path: "homeConfigs",
+      pathSegments: ["listen", "audioList", id],
+    };
+
+    await deleteFunc(deleteInputs);
+  };
+};
+
+export {
+  useGetHomeAudioList,
+  useUploadHomeAudio,
+  useUpdateHomeAudioItem,
+  useDeleteHomeAudioItem,
+};

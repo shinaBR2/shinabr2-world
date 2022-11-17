@@ -7,7 +7,7 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 
 const AudioCRUDFormDialog = (props) => {
-  const { open, onClose, onConfirm, isCreate, data } = props;
+  const { open, onClose, onConfirm, onDelete, isCreate, data } = props;
   const title = isCreate ? "Upload audio" : "Edit audio";
 
   return (
@@ -30,7 +30,11 @@ const AudioCRUDFormDialog = (props) => {
         ) : null}
       </DialogTitle>
       <DialogContent>
-        <AudioCRUDForm data={isCreate ? null : data} onConfirm={onConfirm} />
+        <AudioCRUDForm
+          data={isCreate ? null : data}
+          onConfirm={onConfirm(isCreate)}
+          onDelete={onDelete}
+        />
       </DialogContent>
     </Dialog>
   );

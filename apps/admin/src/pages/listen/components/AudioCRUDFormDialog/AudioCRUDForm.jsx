@@ -26,7 +26,7 @@ const getDefaultValues = (data) => {
 };
 
 const AudioCRUDForm = (props) => {
-  const { data, onConfirm } = props;
+  const { data, onConfirm, onDelete } = props;
   const useFormInputs = {
     defaultValues: getDefaultValues(data),
     resolver: !data ? yupResolver(createSchema) : undefined,
@@ -118,7 +118,12 @@ const AudioCRUDForm = (props) => {
       />
 
       <Box mt={2}>
-        <Grid container justifyContent="flex-end">
+        <Grid container justifyContent="space-between">
+          {data && (
+            <Button color="error" onClick={onDelete}>
+              Delete
+            </Button>
+          )}
           <Button color="primary" type="submit">
             {submitLabel}
           </Button>

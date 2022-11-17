@@ -1,6 +1,17 @@
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
 import { useCollectionDataOnce } from "react-firebase-hooks/firestore";
-import { AddDocInputs, CollectionInputs } from "./interfaces";
+import {
+  AddDocInputs,
+  BaseFirestoreInputs,
+  CollectionInputs,
+} from "./interfaces";
 
 const useGetCollectionOnce = <T>(inputs: CollectionInputs<T>) => {
   const { db, path, pathSegments, converter } = inputs;
@@ -32,4 +43,24 @@ const useAddDoc = () => {
   };
 };
 
-export { useGetCollectionOnce, useAddDoc };
+const useUpdateDoc = () => {
+  return async (inputs: AddDocInputs) => {
+    const { db, path, pathSegments, data } = inputs;
+
+    const writeData = {
+      ...data,
+      createdAt: serverTimestamp(),
+    };
+    await updateDoc(doc(db, path, ...pathSegments), writeData);
+  };
+};
+
+const useDeleteDoc = () => {
+  return async (inputs: BaseFirestoreInputs) => {
+    const { db, path, pathSegments } = inputs;
+
+    await deleteDoc(doc(db, path, ...pathSegments));
+  };
+};
+
+export { useGetCollectionOnce, useAddDoc, useUpdateDoc, useDeleteDoc };
