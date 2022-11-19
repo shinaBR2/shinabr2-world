@@ -3,6 +3,11 @@ import PauseRounded from "@mui/icons-material/PauseRounded";
 import PlayArrowRounded from "@mui/icons-material/PlayArrowRounded";
 import FastForwardRounded from "@mui/icons-material/FastForwardRounded";
 import FastRewindRounded from "@mui/icons-material/FastRewindRounded";
+import RepeatIcon from "@mui/icons-material/Repeat";
+import RepeatOnIcon from "@mui/icons-material/RepeatOn";
+import RepeatOneIcon from "@mui/icons-material/RepeatOne";
+import ShuffleIcon from "@mui/icons-material/Shuffle";
+import ShuffleOnIcon from "@mui/icons-material/ShuffleOn";
 
 const getWrapperStyles = () => {
   return {
@@ -16,8 +21,18 @@ const getButtonStyles = () => {
   return { fontSize: "3rem" };
 };
 
+enum LoopMode {
+  None = "none",
+  All = "all",
+  One = "one",
+}
+
 interface Props {
   isPlay: boolean;
+  shuffle?: boolean;
+  loopMode?: LoopMode;
+  onShuffle?: () => void;
+  onChangeLoopMode?: () => void;
   handlePlay: () => void;
   handlePrev: () => void;
   handleNext: () => void;
@@ -26,7 +41,16 @@ interface Props {
 // https://mui.com/material-ui/react-slider/#music-player
 const Controls = (props: Props) => {
   const theme = useTheme();
-  const { isPlay, handlePlay, handlePrev, handleNext } = props;
+  const {
+    isPlay,
+    shuffle,
+    onShuffle,
+    loopMode,
+    onChangeLoopMode,
+    handlePlay,
+    handlePrev,
+    handleNext,
+  } = props;
   const iconColor = theme.palette.mode === "dark" ? "#fff" : "#000";
 
   const renderIcon = () => {
@@ -37,8 +61,29 @@ const Controls = (props: Props) => {
     return <PlayArrowRounded sx={getButtonStyles()} htmlColor={iconColor} />;
   };
 
+  const renderLoopMode = () => {
+    if (loopMode === LoopMode.All) {
+      return <RepeatOnIcon fontSize="large" htmlColor={iconColor} />;
+    } else if (loopMode === LoopMode.One) {
+      return <RepeatOneIcon fontSize="large" htmlColor={iconColor} />;
+    } else {
+      return <RepeatIcon fontSize="large" htmlColor={iconColor} />;
+    }
+  };
+
+  const renderShuffle = () => {
+    if (shuffle) {
+      return <ShuffleOnIcon fontSize="large" htmlColor={iconColor} />;
+    }
+
+    return <ShuffleIcon fontSize="large" htmlColor={iconColor} />;
+  };
+
   return (
     <Box sx={getWrapperStyles()}>
+      <IconButton aria-label="loop mode" onClick={onChangeLoopMode}>
+        {renderLoopMode()}
+      </IconButton>
       <IconButton aria-label="previous song" onClick={handlePrev}>
         <FastRewindRounded fontSize="large" htmlColor={iconColor} />
       </IconButton>
@@ -47,6 +92,9 @@ const Controls = (props: Props) => {
       </IconButton>
       <IconButton aria-label="next song" onClick={handleNext}>
         <FastForwardRounded fontSize="large" htmlColor={iconColor} />
+      </IconButton>
+      <IconButton aria-label="loop mode" onClick={onShuffle}>
+        {renderShuffle()}
       </IconButton>
     </Box>
   );

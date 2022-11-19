@@ -4,10 +4,11 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Controls from "./Controls";
 import Seeker from "./Seeker";
 import { playAudio, seek } from "./utils/actions";
+import { shuffleList } from "./utils/helpers";
 
 interface AudioItem {
   src: string;
@@ -16,19 +17,38 @@ interface AudioItem {
   image: string;
 }
 
+enum LoopMode {
+  None = "none",
+  All = "all",
+  One = "one",
+}
+
 interface Props {
   audioList: AudioItem[];
   index: number;
   setIndex: (index: number) => void;
+  shuffle?: boolean;
+  loopMode?: LoopMode;
+  onChangeLoopMode?: () => void;
+  onShuffle?: () => void;
 }
 
 const MusicWidget = (props: Props) => {
-  const { audioList, index, setIndex } = props;
+  const {
+    audioList,
+    index,
+    setIndex,
+    shuffle = false,
+    loopMode = LoopMode.All,
+    onShuffle,
+    onChangeLoopMode,
+  } = props;
   const ref = useRef<HTMLAudioElement>(null);
   const [isPlay, setPlay] = useState(false);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
 
+  console.log("MusicWidget.render");
   const audioItem = audioList[index];
   const { src, name, artistName, image } = audioItem;
 
@@ -61,7 +81,46 @@ const MusicWidget = (props: Props) => {
   };
 
   const onEnded = () => {
-    setPlay(false);
+    if (loopMode === LoopMode.One) {
+      if (!ref.current) {
+        return;
+      }
+
+      setPlay(true);
+      playAudio(ref.current);
+
+      return;
+    } else if (loopMode === LoopMode.All) {
+      const isLast = index === audioList.length - 1;
+      if (isLast) {
+        setIndex(0);
+      } else {
+        setIndex(index + 1);
+      }
+
+      if (!ref.current) {
+        return;
+      }
+
+      setPlay(true);
+      playAudio(ref.current);
+
+      return;
+    } else {
+      const isLast = index === audioList.length - 1;
+      if (isLast) {
+        return setPlay(false);
+      }
+
+      if (!ref.current) {
+        return;
+      }
+
+      setPlay(true);
+      playAudio(ref.current);
+
+      return;
+    }
   };
 
   const handlePlay = () => {
@@ -123,6 +182,10 @@ const MusicWidget = (props: Props) => {
           handlePlay={handlePlay}
           handlePrev={handlePrev}
           handleNext={handleNext}
+          shuffle={shuffle}
+          onShuffle={onShuffle}
+          loopMode={loopMode}
+          onChangeLoopMode={onChangeLoopMode}
         />
       </CardActions>
       <audio
