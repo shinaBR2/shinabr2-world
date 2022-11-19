@@ -1,28 +1,34 @@
 import { useEffect, useRef, useState } from "react";
 import { playAudio, seek } from "./utils/actions";
 
-interface AudioItem {
+export interface SAudioPlayerAudioItem {
   src: string;
   name: string;
   artistName: string;
   image: string;
 }
 
-enum LoopMode {
+export enum SAudioPlayerLoopMode {
   None = "none",
   All = "all",
   One = "one",
 }
 
-interface SAudioPlayerInputs {
-  audioList: AudioItem[];
+interface SAudioPlayerConfigs {
+  shuffle?: boolean;
+  loopMode?: SAudioPlayerLoopMode;
+}
+
+export interface SAudioPlayerInputs {
+  audioList: SAudioPlayerAudioItem[];
   index?: number;
-  configs: any;
+  configs: SAudioPlayerConfigs;
 }
 
 const useSAudioPlayer = (inputs: SAudioPlayerInputs) => {
   const { audioList, index = 0, configs } = inputs;
-  const { shuffle = false, loopMode: loop = LoopMode.All } = configs;
+  const { shuffle = false, loopMode: loop = SAudioPlayerLoopMode.All } =
+    configs;
 
   const ref = useRef<HTMLAudioElement>(null);
 
@@ -104,7 +110,7 @@ const useSAudioPlayer = (inputs: SAudioPlayerInputs) => {
   };
 
   const onEnded = () => {
-    if (loopMode === LoopMode.One) {
+    if (loopMode === SAudioPlayerLoopMode.One) {
       if (!ref.current) {
         return;
       }
@@ -113,7 +119,7 @@ const useSAudioPlayer = (inputs: SAudioPlayerInputs) => {
       playAudio(ref.current);
 
       return;
-    } else if (loopMode === LoopMode.All) {
+    } else if (loopMode === SAudioPlayerLoopMode.All) {
       if (isLast) {
         setCurrentIndex(0);
       } else {
@@ -156,7 +162,7 @@ const useSAudioPlayer = (inputs: SAudioPlayerInputs) => {
 
   const onPrev = () => {
     if (isFirst) {
-      if (loopMode === LoopMode.All) {
+      if (loopMode === SAudioPlayerLoopMode.All) {
         return setCurrentIndex(lastIndex);
       }
 
@@ -168,7 +174,7 @@ const useSAudioPlayer = (inputs: SAudioPlayerInputs) => {
 
   const onNext = () => {
     if (isLast) {
-      if (loopMode === LoopMode.All) {
+      if (loopMode === SAudioPlayerLoopMode.All) {
         return setCurrentIndex(firstIndex);
       }
 
@@ -205,7 +211,7 @@ const useSAudioPlayer = (inputs: SAudioPlayerInputs) => {
       newIndex = index + 1;
     }
 
-    setLoopMode(loopModes[newIndex] as LoopMode);
+    setLoopMode(loopModes[newIndex] as SAudioPlayerLoopMode);
   };
 
   const getAudioProps = () => {

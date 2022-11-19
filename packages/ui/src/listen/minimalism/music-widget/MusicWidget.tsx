@@ -9,24 +9,11 @@ import { SHooks } from "core";
 
 const { useSAudioPlayer } = SHooks;
 
-interface AudioItem {
-  src: string;
-  name: string;
-  artistName: string;
-  image: string;
-}
-
-enum LoopMode {
-  None = "none",
-  All = "all",
-  One = "one",
-}
-
 interface Props {
-  audioList: AudioItem[];
+  audioList: SHooks.SAudioPlayerAudioItem[];
   index?: number;
   shuffle?: boolean;
-  loopMode?: LoopMode;
+  loopMode?: SHooks.SAudioPlayerLoopMode;
 }
 
 const MusicWidget = (props: Props) => {
@@ -34,7 +21,7 @@ const MusicWidget = (props: Props) => {
     audioList,
     index = 0,
     shuffle = false,
-    loopMode: loop = LoopMode.All,
+    loopMode: loop = SHooks.SAudioPlayerLoopMode.All,
   } = props;
   const { getAudioProps, getSeekerProps, getControlsProps, playerState } =
     useSAudioPlayer({
