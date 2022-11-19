@@ -1,4 +1,6 @@
 /**
  * This should include all core
  */
-export {};
+import * as hooks from "./hooks";
+
+export { hooks };
