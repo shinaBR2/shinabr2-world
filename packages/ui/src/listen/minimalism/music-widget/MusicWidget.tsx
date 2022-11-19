@@ -50,7 +50,7 @@ const MusicWidget = (props: Props) => {
     getControlsProps();
 
   if (!audioItem) {
-    return;
+    return null;
   }
 
   const { name, artistName, image } = audioItem;
