@@ -25,31 +25,90 @@ enum LoopMode {
 
 interface Props {
   audioList: AudioItem[];
-  index: number;
-  setIndex: (index: number) => void;
+  index?: number;
   shuffle?: boolean;
   loopMode?: LoopMode;
-  onChangeLoopMode?: () => void;
-  onShuffle?: () => void;
 }
 
 const MusicWidget = (props: Props) => {
   const {
     audioList,
-    index,
-    setIndex,
+    index = 0,
     shuffle = false,
-    loopMode = LoopMode.All,
-    onShuffle,
-    onChangeLoopMode,
+    loopMode: loop = LoopMode.All,
   } = props;
+
   const ref = useRef<HTMLAudioElement>(null);
+
+  const [indexes, setIndexes] = useState<number[]>();
+  const [currentIndex, setCurrentIndex] = useState<number>(index);
+
+  const [isShuffled, setIsShuffled] = useState(shuffle);
+  const [loopMode, setLoopMode] = useState(loop);
+
   const [isPlay, setPlay] = useState(false);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
 
-  console.log("MusicWidget.render");
-  const audioItem = audioList[index];
+  const total = audioList.length;
+  const loopModes = ["all", "one", "none"];
+
+  useEffect(() => {
+    if (total) {
+      const indexes = Array.from({ length: total }).map((_v, i) => i);
+      console.log("indexes");
+      console.log(indexes);
+
+      setIndexes(indexes);
+    }
+  }, [total]);
+
+  useEffect(() => {
+    setCurrentIndex(index);
+  }, [index]);
+
+  useEffect(() => {
+    /* if (shuffle && indexes) {
+      const newIndexes = [...indexes.sort(Math.random)];
+
+      setIndexes(newIndexes);
+    } */
+
+    setIsShuffled(shuffle);
+  }, [shuffle]);
+
+  useEffect(() => {
+    setLoopMode(loop);
+  }, [loop]);
+
+  /* useEffect(() => {
+    if (isShuffled && indexes && indexes.length) {
+      const newIndexes = [...indexes.sort(Math.random)];
+
+      setIndexes(newIndexes);
+    }
+  }, [indexes, isShuffled]); */
+
+  // let indexes = Array.from({ length: total }).map((_v, i) => i);
+  // if (isShuffled) {
+  //   console.log("Recalculate indexes");
+  //   indexes = [...indexes.sort(() => (Math.random() > 0.5 ? 1 : -1))];
+  //   console.log("new indexes");
+  //   console.log(indexes);
+  // }
+
+  const firstIndex = 0;
+  const lastIndex = indexes ? indexes?.length - 1 : 0;
+  const isFirst = currentIndex === firstIndex;
+  const isLast = currentIndex === lastIndex;
+
+  const i = indexes ? indexes[currentIndex] : 0;
+  const audioItem = audioList && indexes ? audioList[i] : null;
+
+  if (!audioItem) {
+    return null;
+  }
+
   const { src, name, artistName, image } = audioItem;
 
   const onLoaded = () => {
@@ -91,11 +150,10 @@ const MusicWidget = (props: Props) => {
 
       return;
     } else if (loopMode === LoopMode.All) {
-      const isLast = index === audioList.length - 1;
       if (isLast) {
-        setIndex(0);
+        setCurrentIndex(0);
       } else {
-        setIndex(index + 1);
+        setCurrentIndex(currentIndex + 1);
       }
 
       if (!ref.current) {
@@ -107,7 +165,6 @@ const MusicWidget = (props: Props) => {
 
       return;
     } else {
-      const isLast = index === audioList.length - 1;
       if (isLast) {
         return setPlay(false);
       }
@@ -134,19 +191,57 @@ const MusicWidget = (props: Props) => {
   };
 
   const handlePrev = () => {
-    if (index <= 0) {
+    if (isFirst) {
+      if (loopMode === LoopMode.All) {
+        return setCurrentIndex(lastIndex);
+      }
+
       return;
     }
 
-    setIndex(index - 1);
+    setCurrentIndex(currentIndex - 1);
   };
 
   const handleNext = () => {
-    if (index === audioList.length - 1) {
+    if (isLast) {
+      if (loopMode === LoopMode.All) {
+        return setCurrentIndex(firstIndex);
+      }
+
       return;
     }
 
-    setIndex(index + 1);
+    setCurrentIndex(currentIndex + 1);
+  };
+
+  const onShuffle = () => {
+    if (!indexes) {
+      return;
+    }
+
+    if (!isShuffled) {
+      const sortFunc = () => (Math.random() > 0.5 ? 1 : -1);
+      const newIndexes = [...indexes.sort(sortFunc)];
+      const newCurrentIndex = newIndexes.findIndex((i) => i === currentIndex);
+
+      setIndexes(newIndexes);
+      setCurrentIndex(newCurrentIndex);
+    }
+
+    setIsShuffled(!isShuffled);
+  };
+
+  const onChangeLoopMode = () => {
+    const index = loopModes.indexOf(loopMode);
+
+    let newIndex;
+    if (index === 2) {
+      newIndex = 0;
+    } else {
+      newIndex = index + 1;
+    }
+
+    setLoopMode(loopModes[newIndex] as LoopMode);
   };
 
   // https://mui.com/material-ui/react-slider/#music-player
@@ -155,6 +250,13 @@ const MusicWidget = (props: Props) => {
     const secondLeft = Math.floor(value - minute * 60);
     return `${minute}:${secondLeft < 10 ? `0${secondLeft}` : secondLeft}`;
   };
+
+  console.log("MusicWidget.rendered: current audio");
+  // console.log(indexes);
+  // console.log(currentIndex);
+  // console.log(isShuffled);
+  // console.log(loopMode);
+  console.log(name);
 
   return (
     <Card sx={{ maxWidth: 345 }}>
@@ -182,7 +284,7 @@ const MusicWidget = (props: Props) => {
           handlePlay={handlePlay}
           handlePrev={handlePrev}
           handleNext={handleNext}
-          shuffle={shuffle}
+          shuffle={isShuffled}
           onShuffle={onShuffle}
           loopMode={loopMode}
           onChangeLoopMode={onChangeLoopMode}

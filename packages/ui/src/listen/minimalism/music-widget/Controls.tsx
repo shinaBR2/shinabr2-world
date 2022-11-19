@@ -87,7 +87,11 @@ const Controls = (props: Props) => {
       <IconButton aria-label="previous song" onClick={handlePrev}>
         <FastRewindRounded fontSize="large" htmlColor={iconColor} />
       </IconButton>
-      <IconButton aria-label={isPlay ? "pause" : "play"} onClick={handlePlay}>
+      <IconButton
+        size="large"
+        aria-label={isPlay ? "pause" : "play"}
+        onClick={handlePlay}
+      >
         {renderIcon()}
       </IconButton>
       <IconButton aria-label="next song" onClick={handleNext}>
