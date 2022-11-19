@@ -1,4 +1,3 @@
-import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -8,7 +7,6 @@ import { useEffect, useRef, useState } from "react";
 import Controls from "./Controls";
 import Seeker from "./Seeker";
 import { playAudio, seek } from "./utils/actions";
-import { shuffleList } from "./utils/helpers";
 
 interface AudioItem {
   src: string;
@@ -56,8 +54,6 @@ const MusicWidget = (props: Props) => {
   useEffect(() => {
     if (total) {
       const indexes = Array.from({ length: total }).map((_v, i) => i);
-      console.log("indexes");
-      console.log(indexes);
 
       setIndexes(indexes);
     }
@@ -68,34 +64,12 @@ const MusicWidget = (props: Props) => {
   }, [index]);
 
   useEffect(() => {
-    /* if (shuffle && indexes) {
-      const newIndexes = [...indexes.sort(Math.random)];
-
-      setIndexes(newIndexes);
-    } */
-
     setIsShuffled(shuffle);
   }, [shuffle]);
 
   useEffect(() => {
     setLoopMode(loop);
   }, [loop]);
-
-  /* useEffect(() => {
-    if (isShuffled && indexes && indexes.length) {
-      const newIndexes = [...indexes.sort(Math.random)];
-
-      setIndexes(newIndexes);
-    }
-  }, [indexes, isShuffled]); */
-
-  // let indexes = Array.from({ length: total }).map((_v, i) => i);
-  // if (isShuffled) {
-  //   console.log("Recalculate indexes");
-  //   indexes = [...indexes.sort(() => (Math.random() > 0.5 ? 1 : -1))];
-  //   console.log("new indexes");
-  //   console.log(indexes);
-  // }
 
   const firstIndex = 0;
   const lastIndex = indexes ? indexes?.length - 1 : 0;
