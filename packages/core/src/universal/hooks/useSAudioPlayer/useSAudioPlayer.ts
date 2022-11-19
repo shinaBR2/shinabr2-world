@@ -14,13 +14,13 @@ enum LoopMode {
   One = "one",
 }
 
-interface SAudiPlayerInputs {
+interface SAudioPlayerInputs {
   audioList: AudioItem[];
   index?: number;
   configs: any;
 }
 
-const useSAudioPlayer = (inputs: SAudiPlayerInputs) => {
+const useSAudioPlayer = (inputs: SAudioPlayerInputs) => {
   const { audioList, index = 0, configs } = inputs;
   const { shuffle = false, loopMode: loop = LoopMode.All } = configs;
 
