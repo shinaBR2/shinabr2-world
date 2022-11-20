@@ -1,7 +1,7 @@
 /**
  * This should include all core
  */
-import * as hooks from "./hooks";
+import hooks from "./hooks";
 import {
   SAudioPlayerInputs,
   SAudioPlayerAudioItem,
@@ -9,4 +9,4 @@ import {
 } from "./hooks";
 
 export type { SAudioPlayerInputs, SAudioPlayerAudioItem, SAudioPlayerLoopMode };
-export { hooks };
+export default hooks;

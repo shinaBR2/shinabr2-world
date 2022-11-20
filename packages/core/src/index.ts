@@ -1,4 +1,11 @@
-import { hooks as SHooks } from "./universal";
+import hooks from "./universal";
+import {
+  SAudioPlayerAudioItem,
+  SAudioPlayerInputs,
+  SAudioPlayerLoopMode,
+} from "./universal";
 
 export * as ListenCore from "./listen";
-export { SHooks };
+
+export type { SAudioPlayerAudioItem, SAudioPlayerInputs, SAudioPlayerLoopMode };
+export default hooks;

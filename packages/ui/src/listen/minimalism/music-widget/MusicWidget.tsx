@@ -5,15 +5,28 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import Controls from "./Controls";
 import Seeker from "./Seeker";
-import { SHooks } from "core";
+//@ts-ignore
+import hooks from "core";
+//@ts-ignore
+import { SAudioPlayerAudioItem, SAudioPlayerLoopMode } from "core";
 
-const { useSAudioPlayer } = SHooks;
+const { useSAudioPlayer } = hooks;
+
+// FUCK typescript
+// interface SAudioPlayerAudioItem {
+//   src: string;
+//   name: string;
+//   artistName: string;
+//   image: string;
+// }
+
+// interface LoopMode = SAudioPlayerLoopMode;
 
 interface Props {
-  audioList: SHooks.SAudioPlayerAudioItem[];
+  audioList: SAudioPlayerAudioItem[];
   index?: number;
   shuffle?: boolean;
-  loopMode?: SHooks.SAudioPlayerLoopMode;
+  loopMode?: SAudioPlayerLoopMode;
 }
 
 const MusicWidget = (props: Props) => {
@@ -21,7 +34,7 @@ const MusicWidget = (props: Props) => {
     audioList,
     index = 0,
     shuffle = false,
-    loopMode: loop = SHooks.SAudioPlayerLoopMode.All,
+    loopMode: loop = "all",
   } = props;
   const { getAudioProps, getSeekerProps, getControlsProps, playerState } =
     useSAudioPlayer({

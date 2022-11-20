@@ -8,7 +8,8 @@ import RepeatOnIcon from "@mui/icons-material/RepeatOn";
 import RepeatOneIcon from "@mui/icons-material/RepeatOne";
 import ShuffleIcon from "@mui/icons-material/Shuffle";
 import ShuffleOnIcon from "@mui/icons-material/ShuffleOn";
-import { SHooks } from "core";
+//@ts-ignore
+import { SAudioPlayerLoopMode } from "core";
 
 const getWrapperStyles = () => {
   return {
@@ -25,7 +26,7 @@ const getButtonStyles = () => {
 interface Props {
   isPlay: boolean;
   shuffle?: boolean;
-  loopMode?: SHooks.SAudioPlayerLoopMode;
+  loopMode?: SAudioPlayerLoopMode;
   onShuffle?: () => void;
   onChangeLoopMode?: () => void;
   handlePlay: () => void;
@@ -57,9 +58,9 @@ const Controls = (props: Props) => {
   };
 
   const renderLoopMode = () => {
-    if (loopMode === SHooks.SAudioPlayerLoopMode.All) {
+    if (loopMode === SAudioPlayerLoopMode.All) {
       return <RepeatOnIcon fontSize="large" htmlColor={iconColor} />;
-    } else if (loopMode === SHooks.SAudioPlayerLoopMode.One) {
+    } else if (loopMode === SAudioPlayerLoopMode.One) {
       return <RepeatOneIcon fontSize="large" htmlColor={iconColor} />;
     } else {
       return <RepeatIcon fontSize="large" htmlColor={iconColor} />;

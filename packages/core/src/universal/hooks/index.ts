@@ -5,4 +5,6 @@ import useSAudioPlayer, {
 } from "./useSAudioPlayer";
 
 export type { SAudioPlayerInputs, SAudioPlayerAudioItem, SAudioPlayerLoopMode };
-export { useSAudioPlayer };
+
+const hooks = { useSAudioPlayer };
+export default hooks;
