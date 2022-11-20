@@ -30,20 +30,10 @@ interface Props {
 }
 
 const MusicWidget = (props: Props) => {
-  const {
-    audioList,
-    index = 0,
-    shuffle = false,
-    loopMode: loop = "all",
-  } = props;
+  const { audioList } = props;
   const { getAudioProps, getSeekerProps, getControlsProps, playerState } =
     useSAudioPlayer({
       audioList,
-      index,
-      configs: {
-        shuffle,
-        loopMode: loop,
-      },
     });
   const { isPlay, isShuffled, loopMode, audioItem } = playerState;
   const { onPlay, onPrev, onNext, onShuffle, onChangeLoopMode } =
