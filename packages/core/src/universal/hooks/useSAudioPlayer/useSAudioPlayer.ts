@@ -22,11 +22,11 @@ interface SAudioPlayerConfigs {
 export interface SAudioPlayerInputs {
   audioList: SAudioPlayerAudioItem[];
   index?: number;
-  configs: SAudioPlayerConfigs;
+  configs?: SAudioPlayerConfigs;
 }
 
 const useSAudioPlayer = (inputs: SAudioPlayerInputs) => {
-  const { audioList, index = 0, configs } = inputs;
+  const { audioList, index = 0, configs = {} } = inputs;
   const { shuffle = false, loopMode: loop = SAudioPlayerLoopMode.All } =
     configs;
 
