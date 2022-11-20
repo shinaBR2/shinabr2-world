@@ -9,7 +9,14 @@ import RepeatOneIcon from "@mui/icons-material/RepeatOne";
 import ShuffleIcon from "@mui/icons-material/Shuffle";
 import ShuffleOnIcon from "@mui/icons-material/ShuffleOn";
 //@ts-ignore
-import { SAudioPlayerLoopMode } from "core";
+// import { SAudioPlayerLoopMode } from "core";
+
+// ts sucks
+enum SAudioPlayerLoopMode {
+  None = "none",
+  All = "all",
+  One = "one",
+}
 
 const getWrapperStyles = () => {
   return {
