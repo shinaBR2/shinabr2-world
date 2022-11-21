@@ -16,23 +16,12 @@
     "dev": "tsup src/index.tsx --format esm,cjs --watch --dts --external react",
     "lint": "TIMING=1 eslint \"src/**/*.ts*\"",
     "test": "jest",
-    "storybook": "start-storybook --ci -p 6006",
-    "build-storybook": "build-storybook --quiet -o dist"
   },
   "jest": {
     "preset": "jest-presets/jest/node"
   },
   "devDependencies": {
     "@babel/core": "^7.20.2",
-    "@storybook/addon-actions": "^6.5.13",
-    "@storybook/addon-essentials": "^6.5.13",
-    "@storybook/addon-interactions": "^6.5.13",
-    "@storybook/addon-links": "^6.5.13",
-    "@storybook/builder-webpack4": "^6.5.13",
-    "@storybook/cli": "^6.5.13",
-    "@storybook/manager-webpack4": "^6.5.13",
-    "@storybook/react": "^6.5.13",
-    "@storybook/testing-library": "^0.0.13",
     "@types/jest": "^26.0.22",
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.8",
