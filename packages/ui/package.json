@@ -15,7 +15,7 @@
     "clean": "rm -rf dist",
     "dev": "tsup src/index.tsx --format esm,cjs --watch --dts --external react",
     "lint": "TIMING=1 eslint \"src/**/*.ts*\"",
-    "test": "jest",
+    "test": "jest"
   },
   "jest": {
     "preset": "jest-presets/jest/node"
