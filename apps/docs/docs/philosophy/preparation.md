@@ -1,3 +1,9 @@
+---
+sidebar_position: 1
+---
+
+# Preparation
+
 Building a website is hard, I have delayed my personal website for a very long time, and now I think I need to force myself to start working on it.
 
 ## Overall consideration
