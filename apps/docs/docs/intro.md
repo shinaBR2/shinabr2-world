@@ -2,46 +2,46 @@
 sidebar_position: 1
 ---
 
-# Tutorial Intro
+Welcome to the shinabr2-world wiki!
 
-Let's discover **Docusaurus in less than 5 minutes**.
+This page is the root of all references.
 
-## Getting Started
+# Preparation
 
-Get started by **creating a new site**.
+Steps by steps:
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+- [Preparation](https://github.com/shinaBR2/shinabr2-world/wiki/Preparation)
+- [Define roadmap](https://github.com/shinaBR2/shinabr2-world/wiki/Roadmap)
+- [Infrastructure and architecture](https://github.com/shinaBR2/shinabr2-world/wiki/Setup-infrastructure-notes)
 
-### What you'll need
+# Daily tasks
 
-- [Node.js](https://nodejs.org/en/download/) version 16.14 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
+Breaking down into a small piece of work is MUST for all features and tech debts.
 
-## Generate a new site
+Depends on the next thing I will work on (feature or tech debt):
 
-Generate a new Docusaurus site using the **classic template**.
+- [Feature flow](https://github.com/shinaBR2/shinabr2-world/wiki/New-feature-workflow)
+- Tech debt: it's a low priority, but needs to consider anyway.
 
-The classic template will automatically be added to your project after you run the command:
+Here are some questions to think about for tech debt, basically the situation determination.
 
-```bash
-npm init docusaurus@latest my-website classic
-```
+- What happens if I don't do that?
+- Is it regarding the data? If so, it's important.
+- Does it block the user behavior? If so, it's important.
+- Does it annoying to do daily tasks? If so, it needs to be fixed as soon as possible.
+- Do I want to fix it just because I want to satisfy my feeling about clean code? If so, create an issue and do later.
 
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
+# Before go-live checklist
 
-The command also installs all necessary dependencies you need to run Docusaurus.
+Security checklist
 
-## Start your site
+- [Security checklist](https://firebase.google.com/support/guides/security-checklist?authuser=0)
+- [Launch checklist](https://firebase.google.com/support/guides/launch-checklist?authuser=0)
+- [Restric API key](https://cloud.google.com/docs/authentication/api-keys#api_key_restrictions)
 
-Run the development server:
+# Technical notes
 
-```bash
-cd my-website
-npm run start
-```
+List of articles:
 
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
-
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
-
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+- [Turborepo setup with pnpm issue](https://github.com/shinaBR2/shinabr2-world/wiki/Error-setup-with-turborepo) ✔️
+- [Environment variables](https://github.com/shinaBR2/shinabr2-world/wiki/Environment-variables) ✔️
