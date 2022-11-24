@@ -27,7 +27,7 @@ Every project should contain some critical parts:
 
 - API for the frontend: it should determine how to get the data regardless of the backend, network, and infrastructure. I will put this into one single monorepo workspace.
 - Frontend UI: in the reactjs world, there are two types of a component: stateful and stateless. As long as the API still be the same, everything should just work. My all stateless components should be isolated and I can put them in another monorepo workspace and this is the core UI for everything. The stateful, Context will be put in other different workspaces. I am going to build many different sites, each site will go into this monorepo workspace.
-- Admin pages: regardless of what the project is, we always need admin tools to manage everything. I will go with just simple create-react-app or whatever I want to learn for example [remix](https://remix.run/), [astro](https://astro.build/), [gatsby](gatsbyjs.com) (this is my favorite).
+- Admin pages: regardless of what the project is, we always need admin tools to manage everything. I will go with just simple create-react-app or whatever I want to learn for example [remix](https://remix.run/), [astro](https://astro.build/), [gatsby](https://gatsbyjs.com) (this is my favorite).
 
 ## Process
 
