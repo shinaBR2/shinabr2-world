@@ -22,14 +22,14 @@ const { useSAudioPlayer } = hooks;
 
 // interface LoopMode = SAudioPlayerLoopMode;
 
-interface Props {
+interface MusicWidgetProps {
   audioList: SAudioPlayerAudioItem[];
   index?: number;
   shuffle?: boolean;
   loopMode?: SAudioPlayerLoopMode;
 }
 
-const MusicWidget = (props: Props) => {
+const MusicWidget = (props: MusicWidgetProps) => {
   const { audioList } = props;
   const { getAudioProps, getSeekerProps, getControlsProps, playerState } =
     useSAudioPlayer({
