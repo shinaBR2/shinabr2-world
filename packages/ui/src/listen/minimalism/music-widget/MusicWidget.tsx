@@ -9,6 +9,8 @@ import Seeker from "./Seeker";
 import hooks from "core";
 //@ts-ignore
 import { SAudioPlayerAudioItem, SAudioPlayerLoopMode } from "core";
+import { Box, CardHeader, Grid, IconButton } from "@mui/material";
+import PlaylistButton from "./PlaylistButton";
 
 const { useSAudioPlayer } = hooks;
 
@@ -49,9 +51,18 @@ const MusicWidget = (props: MusicWidgetProps) => {
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia component="img" alt={name} height="300" image={image} />
       <CardContent>
-        <Typography gutterBottom variant="body2" component="p">
-          Now playing
-        </Typography>
+        <Box
+          component={Grid}
+          container
+          justifyContent="space-between"
+          alignItems="center"
+          mb={1}
+        >
+          <Typography gutterBottom variant="body2" component="p">
+            Now playing
+          </Typography>
+          <PlaylistButton />
+        </Box>
         <Typography gutterBottom variant="h4" component="strong">
           {artistName}
         </Typography>
