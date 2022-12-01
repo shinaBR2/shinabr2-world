@@ -120,7 +120,7 @@ export default function ListenHomeConfig() {
   return (
     <>
       <Helmet>
-        <title> Listen: Home page configuration </title>
+        <title> Listen: Home page audio list </title>
       </Helmet>
 
       <Container>
