@@ -131,7 +131,7 @@ export default function ListenHomeConfig() {
           mb={5}
         >
           <Typography variant="h4" gutterBottom>
-            Blog
+            Audio list
           </Typography>
           <Button
             variant="contained"
