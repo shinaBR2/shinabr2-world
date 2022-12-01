@@ -20,6 +20,10 @@ import MuiAlert from "@mui/material/Alert";
 import FeelingCRUDFormDialog from "./components/FeelingCRUDFormDialog";
 
 const ListenHomeConfigFeelingList = () => {
+  const { user } = useAuthContext();
+
+  const { uid } = user;
+
   const [showForm, setShowForm] = useState(false);
   const [isCreate, setIsCreate] = useState(true);
   const [showSuccess, setShowSuccess] = useState(false);
