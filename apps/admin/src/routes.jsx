@@ -7,7 +7,8 @@ import LoginPage from "./pages/LoginPage";
 import Page404 from "./pages/Page404";
 import ProductsPage from "./pages/ProductsPage";
 import DashboardAppPage from "./pages/DashboardAppPage";
-import ListenHomeConfig from "./pages/listen/HomeConfig";
+import ListenHomeConfigAudioList from "./pages/listen/HomeConfigAudioList";
+import ListenHomeConfigFeelingList from "./pages/listen/HomeConfigFeelingList";
 
 // ----------------------------------------------------------------------
 
@@ -21,9 +22,18 @@ export default function Router() {
         { path: "app", element: <DashboardAppPage /> },
         {
           path: "listen",
-          element: <ListenHomeConfig />,
+          // element: <ListenHomeConfigAudioList />,
           children: [
-            { path: "home-page", element: <ListenHomeConfig />, index: true },
+            {
+              path: "homepage-audio-list",
+              element: <ListenHomeConfigAudioList />,
+              index: true,
+            },
+            {
+              path: "homepage-feeling-list",
+              element: <ListenHomeConfigFeelingList />,
+              index: true,
+            },
           ],
         },
         { path: "user", element: <UserPage /> },

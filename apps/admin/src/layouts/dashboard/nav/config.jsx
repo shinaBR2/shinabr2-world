@@ -20,13 +20,18 @@ const navConfig = [
     icon: icon("ic_analytics"),
   },
   {
-    title: "Listen",
+    title: "Listen Homepage",
     path: "/dashboard/listen",
     icon: <LibraryMusicTwoToneIcon />,
     children: [
       {
-        title: "Homepage config",
-        path: "/dashboard/listen/home-page",
+        title: "Audio list",
+        path: "/dashboard/listen/homepage-audio-list",
+        icon: <HomeTwoToneIcon />,
+      },
+      {
+        title: "Feeling list",
+        path: "/dashboard/listen/homepage-feeling-list",
         icon: <HomeTwoToneIcon />,
       },
     ],
