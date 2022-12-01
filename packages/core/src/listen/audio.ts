@@ -1,10 +1,8 @@
 import {
-  DocumentData,
   Firestore,
   FirestoreDataConverter,
   QueryDocumentSnapshot,
   SnapshotOptions,
-  WithFieldValue,
 } from "firebase/firestore";
 import {
   useAddDoc,
@@ -15,7 +13,6 @@ import {
 } from "../universal/dbQuery";
 import {
   AudioItem,
-  AudioItemInputs,
   CreateAudioItemInputs,
   UpdateAudioItemInputs,
 } from "./interfaces";
