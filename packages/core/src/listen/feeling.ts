@@ -3,6 +3,7 @@ import {
   FirestoreDataConverter,
   QueryDocumentSnapshot,
   SnapshotOptions,
+  WithFieldValue,
 } from "firebase/firestore";
 import {
   useAddDoc,
@@ -11,26 +12,12 @@ import {
   useGetCollectionOnce,
   useUpdateDoc,
 } from "../universal/dbQuery";
-import {
-  AudioItem,
-  CreateAudioItemInputs,
-  CreateFeelingInputs,
-  Feeling,
-  UpdateAudioItemInputs,
-  UpdateFeelingInputs,
-} from "./interfaces";
+import { Feeling } from "./interfaces";
 
-/**
- * Some notes because of TS sucks
- * - `AudioItem` will be the result's type of `fromFirestore` function,
- * which used for frontend to display
- * - All field in the type of `data` of `toFirestore` MUST exist in `AudioItem`
- *
- * Problem:
- * - `AudioItem` contains `id` which can not be existed in `CreateAudioItemInputs`
- */
+const basePath = ["listen", "feelingList"];
+
 const converter: FirestoreDataConverter<Feeling> = {
-  toFirestore: (data: CreateFeelingInputs) => {
+  toFirestore: (data: WithFieldValue<Feeling>) => {
     const { name, value } = data;
 
     return {
@@ -57,7 +44,7 @@ const useListenHomeFeelingList = (db: Firestore) => {
   const inputs = {
     db,
     path: "homeConfigs",
-    pathSegments: ["listen", "feelingList"],
+    pathSegments: [...basePath],
     converter,
   };
   const { values, loading, error } = useGetCollectionOn(inputs);
@@ -73,7 +60,7 @@ const useGetHomeFeelingList = (db: Firestore) => {
   const inputs = {
     db,
     path: "homeConfigs",
-    pathSegments: ["listen", "feelingList"],
+    pathSegments: [...basePath],
     converter,
   };
   const { values, loading, error } = useGetCollectionOnce(inputs);
@@ -88,11 +75,11 @@ const useGetHomeFeelingList = (db: Firestore) => {
 const useAddHomeFeeling = (db: Firestore) => {
   const addFunc = useAddDoc();
 
-  return async (inputs: CreateFeelingInputs) => {
+  return async (inputs: WithFieldValue<Feeling>) => {
     const addInputs = {
       db,
       path: "homeConfigs",
-      pathSegments: ["listen", "feelingList"],
+      pathSegments: [...basePath],
       data: converter.toFirestore(inputs),
     };
 
@@ -105,13 +92,13 @@ const useAddHomeFeeling = (db: Firestore) => {
 const useUpdateHomeFeeling = (db: Firestore) => {
   const udpateFunc = useUpdateDoc();
 
-  return async (inputs: UpdateFeelingInputs) => {
-    const { id, ...rest } = inputs;
+  return async (inputs: WithFieldValue<Feeling>) => {
+    const { id } = inputs;
     const updateInputs = {
       db,
       path: "homeConfigs",
-      pathSegments: ["listen", "feelingList", id],
-      data: converter.toFirestore(rest),
+      pathSegments: [...basePath, id.toString()],
+      data: converter.toFirestore(inputs),
     };
 
     await udpateFunc(updateInputs);
@@ -125,7 +112,7 @@ const useDeleteHomeFeeling = (db: Firestore) => {
     const deleteInputs = {
       db,
       path: "homeConfigs",
-      pathSegments: ["listen", "feelingList", id],
+      pathSegments: [...basePath, id],
     };
 
     await deleteFunc(deleteInputs);
