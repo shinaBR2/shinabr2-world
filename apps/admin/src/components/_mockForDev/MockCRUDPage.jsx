@@ -8,7 +8,14 @@ const MockCRUDPage = () => {
 
   const htmlTitle = "Entity: Audio";
   const entityName = "Audio";
-  const useLoadData = () => {};
+  const useLoadData = () => {
+    /**
+     * TODO
+     *
+     * Update this logic to get data from hooks
+     */
+    return { values: [], loading: true };
+  };
   const createFunc = async () => {};
   const updateFunc = async () => {};
   const deleteFunc = async () => {};
