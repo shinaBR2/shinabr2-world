@@ -15,7 +15,7 @@ Add new item in `apps/admin/src/layouts/dashboard/nav/config.jsx`
 
 ## Routing
 
-Add new route in `apps/admin/src/routes.jsx`
+Add a new route in `apps/admin/src/routes.jsx`
 
 ## Page component
 
