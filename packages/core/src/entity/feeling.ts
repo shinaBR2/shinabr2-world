@@ -14,8 +14,8 @@ import {
 import { BaseFirestoreInputs } from "../universal/dbQuery/interfaces";
 import { Feeling } from "./interfaces";
 
-const basePath = "/";
-const basePathSegments: string[] = [];
+const basePath = "/feelings";
+const basePathSegments: string[] = [""];
 
 const converter: FirestoreDataConverter<Feeling> = {
   toFirestore: (data: WithFieldValue<Feeling>) => {
