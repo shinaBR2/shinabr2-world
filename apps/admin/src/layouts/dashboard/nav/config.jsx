@@ -1,5 +1,6 @@
 import LibraryMusicTwoToneIcon from "@mui/icons-material/LibraryMusicTwoTone";
 import HomeTwoToneIcon from "@mui/icons-material/HomeTwoTone";
+import AssignmentIcon from "@mui/icons-material/Assignment";
 
 // component
 import SvgColor from "../../../components/svg-color";
@@ -35,6 +36,11 @@ const navConfig = [
         icon: <HomeTwoToneIcon />,
       },
     ],
+  },
+  {
+    title: "entity",
+    path: "/dashboard/entity",
+    icon: <AssignmentIcon />,
   },
   {
     title: "user",
