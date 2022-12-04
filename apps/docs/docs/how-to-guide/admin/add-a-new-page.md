@@ -24,7 +24,7 @@ For all kinds of pages, do the following first:
 
 Steps:
 
-- Copy all content from `apps/admin/src/components/_mockForDev/MockCRUDPage.jsx` into the newly created page component, and fix all imports if needed. Now I can access the page that show a full-page loading
+- Copy all content from `apps/admin/src/components/_mockForDev/MockCRUDPage.jsx` into the newly created page component, and fix all imports if needed. Now I can access the page that shows a full-page loading
 - Build hooks for CRUD operations
 - Build the `ListComponent`
 - Build the `FormComponent` component
