@@ -9,14 +9,22 @@ A new page will appear in these places:
 - Left menu
 - Routing
 
-## Left menu
+Requirements for each page:
 
-Add new item in `apps/admin/src/layouts/dashboard/nav/config.jsx`
+- URL
+- Icon
 
-## Routing
+For all kinds of pages, do the following first:
 
-Add a new route in `apps/admin/src/routes.jsx`
+- Add new item in `apps/admin/src/layouts/dashboard/nav/config.jsx`
+- Add a new route in `apps/admin/src/routes.jsx`
+- Add new component in `apps/admin/src/pages`
 
-## Page component
+## CRUD page
 
-Add new component in `apps/admin/src/pages`
+Steps:
+
+- Copy all content from `apps/admin/src/components/_mockForDev/MockCRUDPage.jsx` into the newly created page component, and fix all imports if needed.
+- Build hooks for CRUD operations
+- Build the `ListComponent`
+- Build the `FormComponent` component
