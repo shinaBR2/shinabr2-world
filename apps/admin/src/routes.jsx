@@ -37,7 +37,21 @@ export default function Router() {
             },
           ],
         },
-        { path: "entity", element: <EntityPage /> },
+        {
+          path: "entity",
+          children: [
+            {
+              path: "audio",
+              element: <EntityPage />,
+              index: true,
+            },
+            {
+              path: "feeling",
+              element: <EntityPage />,
+              index: true,
+            },
+          ],
+        },
         { path: "user", element: <UserPage /> },
         { path: "products", element: <ProductsPage /> },
         { path: "blog", element: <BlogPage /> },
