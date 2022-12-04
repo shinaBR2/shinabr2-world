@@ -37,6 +37,9 @@ const CRUDPage = (props) => {
   const [showError, setShowError] = useState(false);
   const [activeEditItem, setActiveEditItem] = useState();
 
+  const handleCloseSuccess = () => setShowSuccess(false);
+  const handleCloseError = () => setShowError(false);
+
   const onClickCreate = () => {
     setIsCreate(true);
     setShowForm(true);
@@ -49,7 +52,7 @@ const CRUDPage = (props) => {
     setShowForm(true);
   };
 
-  const onCRUD = (isCreate) => async (data) => {
+  const onCRUD = async (data) => {
     const inputs = buildCRUDData(isCreate, data);
     const func = isCreate ? createFunc : updateFunc;
 
@@ -123,7 +126,7 @@ const CRUDPage = (props) => {
 
         {showForm && (
           <CRUDDialog
-            open={open}
+            open={showForm}
             onClose={() => setShowForm(false)}
             onConfirm={onCRUD}
             onDelete={onDelete}
