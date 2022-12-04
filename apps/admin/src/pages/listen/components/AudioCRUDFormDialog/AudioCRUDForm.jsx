@@ -56,7 +56,7 @@ const AudioCRUDForm = (props) => {
             type="text"
             fullWidth
             variant="outlined"
-            error={errors.src}
+            error={!!errors.src}
             helperText={errors.src && "Src is required"}
             {...field}
           />
@@ -74,7 +74,7 @@ const AudioCRUDForm = (props) => {
             type="text"
             fullWidth
             variant="outlined"
-            error={errors.name}
+            error={!!errors.name}
             helperText={errors.name && "Name is required"}
             {...field}
           />
@@ -92,7 +92,7 @@ const AudioCRUDForm = (props) => {
             type="text"
             fullWidth
             variant="outlined"
-            error={errors.artistName}
+            error={!!errors.artistName}
             helperText={errors.artistName && "Artist name is required"}
             {...field}
           />
@@ -110,7 +110,7 @@ const AudioCRUDForm = (props) => {
             type="text"
             fullWidth
             variant="outlined"
-            error={errors.image}
+            error={!!errors.image}
             helperText={errors.image && "Image is required"}
             {...field}
           />

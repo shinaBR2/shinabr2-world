@@ -58,7 +58,7 @@ const FeelingCRUDForm = (props) => {
               type="text"
               fullWidth
               variant="outlined"
-              error={errors.name}
+              error={!!errors.name}
               helperText={errors.name && "Name is required"}
               {...field}
             />
@@ -78,7 +78,7 @@ const FeelingCRUDForm = (props) => {
               type="text"
               fullWidth
               variant="outlined"
-              error={errors.value}
+              error={!!errors.value}
               helperText={errors.value && "Value is required"}
               {...field}
             />
