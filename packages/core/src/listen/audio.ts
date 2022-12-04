@@ -5,6 +5,7 @@ import {
   SnapshotOptions,
   WithFieldValue,
 } from "firebase/firestore";
+import { AudioItem } from "../entity/interfaces";
 import {
   useAddDoc,
   useDeleteDoc,
@@ -12,9 +13,10 @@ import {
   useGetCollectionOnce,
   useUpdateDoc,
 } from "../universal/dbQuery";
-import { AudioItem } from "./interfaces";
+// import { AudioItem } from "./interfaces";
 
-const basePath = ["listen", "audioList"];
+const path = "homeConfigs";
+const basePathSegments = ["listen", "audioList"];
 
 /**
  * Some notes because of TS sucks
@@ -54,8 +56,8 @@ const converter: FirestoreDataConverter<AudioItem> = {
 const useListenHomeAudioList = (db: Firestore) => {
   const inputs = {
     db,
-    path: "homeConfigs",
-    pathSegments: [...basePath],
+    path,
+    pathSegments: [...basePathSegments],
     converter,
   };
   const { values, loading, error } = useGetCollectionOn(inputs);
@@ -70,8 +72,8 @@ const useListenHomeAudioList = (db: Firestore) => {
 const useGetHomeAudioList = (db: Firestore) => {
   const inputs = {
     db,
-    path: "homeConfigs",
-    pathSegments: [...basePath],
+    path,
+    pathSegments: [...basePathSegments],
     converter,
   };
   const { values, loading, error } = useGetCollectionOnce(inputs);
@@ -89,8 +91,8 @@ const useUploadHomeAudio = (db: Firestore) => {
   return async (inputs: WithFieldValue<AudioItem>) => {
     const addInputs = {
       db,
-      path: "homeConfigs",
-      pathSegments: [...basePath],
+      path,
+      pathSegments: [...basePathSegments],
       data: converter.toFirestore(inputs),
     };
 
@@ -107,8 +109,8 @@ const useUpdateHomeAudioItem = (db: Firestore) => {
     const { id } = inputs;
     const updateInputs = {
       db,
-      path: "homeConfigs",
-      pathSegments: [...basePath, id.toString()],
+      path,
+      pathSegments: [...basePathSegments, id.toString()],
       data: converter.toFirestore(inputs),
     };
 
@@ -122,8 +124,8 @@ const useDeleteHomeAudioItem = (db: Firestore) => {
   return async (id: string) => {
     const deleteInputs = {
       db,
-      path: "homeConfigs",
-      pathSegments: [...basePath, id],
+      path,
+      pathSegments: [...basePathSegments, id],
     };
 
     await deleteFunc(deleteInputs);

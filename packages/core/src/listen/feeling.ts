@@ -5,6 +5,7 @@ import {
   SnapshotOptions,
   WithFieldValue,
 } from "firebase/firestore";
+import { Feeling } from "../entity/interfaces";
 import {
   useAddDoc,
   useDeleteDoc,
@@ -12,9 +13,9 @@ import {
   useGetCollectionOnce,
   useUpdateDoc,
 } from "../universal/dbQuery";
-import { Feeling } from "./interfaces";
 
-const basePath = ["listen", "feelingList"];
+const path = "homeConfigs";
+const basePathSegments = ["listen", "feelingList"];
 
 const converter: FirestoreDataConverter<Feeling> = {
   toFirestore: (data: WithFieldValue<Feeling>) => {
@@ -43,8 +44,8 @@ const converter: FirestoreDataConverter<Feeling> = {
 const useListenHomeFeelingList = (db: Firestore) => {
   const inputs = {
     db,
-    path: "homeConfigs",
-    pathSegments: [...basePath],
+    path,
+    pathSegments: [...basePathSegments],
     converter,
   };
   const { values, loading, error } = useGetCollectionOn(inputs);
@@ -59,8 +60,8 @@ const useListenHomeFeelingList = (db: Firestore) => {
 const useGetHomeFeelingList = (db: Firestore) => {
   const inputs = {
     db,
-    path: "homeConfigs",
-    pathSegments: [...basePath],
+    path,
+    pathSegments: [...basePathSegments],
     converter,
   };
   const { values, loading, error } = useGetCollectionOnce(inputs);
@@ -78,8 +79,8 @@ const useAddHomeFeeling = (db: Firestore) => {
   return async (inputs: WithFieldValue<Feeling>) => {
     const addInputs = {
       db,
-      path: "homeConfigs",
-      pathSegments: [...basePath],
+      path,
+      pathSegments: [...basePathSegments],
       data: converter.toFirestore(inputs),
     };
 
@@ -96,8 +97,8 @@ const useUpdateHomeFeeling = (db: Firestore) => {
     const { id } = inputs;
     const updateInputs = {
       db,
-      path: "homeConfigs",
-      pathSegments: [...basePath, id.toString()],
+      path,
+      pathSegments: [...basePathSegments, id.toString()],
       data: converter.toFirestore(inputs),
     };
 
@@ -111,8 +112,8 @@ const useDeleteHomeFeeling = (db: Firestore) => {
   return async (id: string) => {
     const deleteInputs = {
       db,
-      path: "homeConfigs",
-      pathSegments: [...basePath, id],
+      path,
+      pathSegments: [...basePathSegments, id],
     };
 
     await deleteFunc(deleteInputs);
