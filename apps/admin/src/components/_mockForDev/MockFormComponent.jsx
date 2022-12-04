@@ -19,7 +19,7 @@ const getDefaultValues = (data) => {
   return data;
 };
 
-const MockFormComponent = () => {
+const MockFormComponent = (props) => {
   const { data, onConfirm, onDelete } = props;
   const useFormInputs = {
     defaultValues: getDefaultValues(data),

@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 
-const MockListComponent = () => {
+const MockListComponent = (props) => {
   const { data: itemList, onClickEdit } = props;
 
   return (
