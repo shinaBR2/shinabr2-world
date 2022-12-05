@@ -15,7 +15,7 @@ import {
 import { BaseFirestoreInputs } from "../universal/dbQuery/interfaces";
 import { AudioItem } from "./interfaces";
 
-const basePath = "/feelings";
+const basePath = "/audios";
 const basePathSegments: string[] = [""];
 
 type PathConfigs = Omit<BaseFirestoreInputs, "db">;
@@ -46,7 +46,7 @@ const converter: FirestoreDataConverter<AudioItem> = {
   },
 };
 
-const useListenAudioList = (db: Firestore, config?: PathConfigs) => {
+const useListenEntityList = (db: Firestore, config?: PathConfigs) => {
   const inputs = {
     db,
     path: basePath,
@@ -110,4 +110,4 @@ const useDeleteEntity = (db: Firestore) => {
   };
 };
 
-export { useListenAudioList, useAddEntity, useUpdateEntity, useDeleteEntity };
+export { useListenEntityList, useAddEntity, useUpdateEntity, useDeleteEntity };
