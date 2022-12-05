@@ -59,6 +59,7 @@ const CRUDPage = (props) => {
     const { error } = await pw(func(inputs));
 
     if (error) {
+      console.error(error);
       return setShowError(true);
     }
 
