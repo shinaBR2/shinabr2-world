@@ -6,7 +6,9 @@ const MockListComponent = (props) => {
   return (
     <Grid container spacing={3}>
       {itemList &&
-        itemList.map((_item, index) => <p>{`Item index: ${index}`}</p>)}
+        itemList.map((item, index) => (
+          <p key={item.id}>{`Item ${JSON.stringify(item)}, index: ${index}`}</p>
+        ))}
     </Grid>
   );
 };
