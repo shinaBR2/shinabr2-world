@@ -1,11 +1,10 @@
 import CRUDPage from "../../components/@crud-page";
-import MockFormComponent from "../../components/_mockForDev/MockFormComponent";
-import MockListComponent from "../../components/_mockForDev/MockListComponent";
 import { useAuthContext } from "../../providers/auth";
-// import MockFormComponent from "./MockFormComponent";
-// import MockListComponent from "./MockListComponent";
 
 import { Entity } from "core";
+import FeelingCRUDForm from "./components/FeelingCRUDForm";
+import db from "../../providers/firestore";
+import FeelingList from "./components/FeelingList";
 const { EntityFeeling } = Entity;
 
 const { useListenEntityList, useAddEntity, useUpdateEntity, useDeleteEntity } =
@@ -14,21 +13,28 @@ const { useListenEntityList, useAddEntity, useUpdateEntity, useDeleteEntity } =
 const EntityAudioPage = () => {
   const { user } = useAuthContext();
 
-  const htmlTitle = "Entity: Audio";
-  const entityName = "Audio";
-  const createFunc = useAddEntity();
-  const updateFunc = useUpdateEntity();
-  const deleteFunc = useDeleteEntity();
+  const htmlTitle = "Entity: Feeling";
+  const entityName = "Feeling";
+  const createFunc = useAddEntity(db);
+  const updateFunc = useUpdateEntity(db);
+  const deleteFunc = useDeleteEntity(db);
   const buildCRUDData = (isCreate, data) => {
-    /**
-     * TODO
-     *
-     * Update this logic
-     */
-    console.log(isCreate);
     const { uid } = user;
-    console.log(`Who did action: ${uid}`);
-    return { ...data };
+
+    const { id, name, value } = data;
+    const createData = {
+      name,
+      value,
+      creatorId: uid,
+    };
+    const updateData = {
+      id,
+      name,
+      value,
+      editorId: uid,
+    };
+
+    return isCreate ? createData : updateData;
   };
 
   return (
@@ -40,8 +46,8 @@ const EntityAudioPage = () => {
       updateFunc={updateFunc}
       deleteFunc={deleteFunc}
       buildCRUDData={buildCRUDData}
-      ListComponent={MockListComponent}
-      FormComponent={MockFormComponent}
+      ListComponent={FeelingList}
+      FormComponent={FeelingCRUDForm}
     />
   );
 };

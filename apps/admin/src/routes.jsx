@@ -9,7 +9,7 @@ import ProductsPage from "./pages/ProductsPage";
 import DashboardAppPage from "./pages/DashboardAppPage";
 import ListenHomeConfigAudioList from "./pages/listen/HomeConfigAudioList";
 import ListenHomeConfigFeelingList from "./pages/listen/HomeConfigFeelingList";
-import EntityAudioPage from "./pages/entity/Audio";
+import EntityFeelingPage from "./pages/entity/Feeling";
 
 // ----------------------------------------------------------------------
 
@@ -42,12 +42,12 @@ export default function Router() {
           children: [
             {
               path: "audio",
-              element: <EntityAudioPage />,
+              element: <EntityFeelingPage />,
               index: true,
             },
             {
               path: "feeling",
-              element: <EntityAudioPage />,
+              element: <EntityFeelingPage />,
               index: true,
             },
           ],
