@@ -20,7 +20,6 @@ import PlayingList from "./PlayingList";
 const { useSAudioPlayer } = hooks;
 
 interface MusicWidgetProps {
-  id: string;
   audioList: SAudioPlayerAudioItem[];
   index?: number;
   shuffle?: boolean;
