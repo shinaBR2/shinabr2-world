@@ -1,16 +1,16 @@
-import CRUDPage from "../../components/@crud-page";
-import { useAuthContext } from "../../providers/auth";
+import CRUDPage from "../../../components/@crud-page";
+import { useAuthContext } from "../../../providers/auth";
 
 import { Entity } from "core";
 import FeelingCRUDForm from "./components/FeelingCRUDForm";
-import db from "../../providers/firestore";
+import db from "../../../providers/firestore";
 import FeelingList from "./components/FeelingList";
 const { EntityFeeling } = Entity;
 
 const { useListenEntityList, useAddEntity, useUpdateEntity, useDeleteEntity } =
   EntityFeeling;
 
-const EntityAudioPage = () => {
+const EntityFeelingPage = () => {
   const { user } = useAuthContext();
 
   const htmlTitle = "Entity: Feeling";
@@ -52,4 +52,4 @@ const EntityAudioPage = () => {
   );
 };
 
-export default EntityAudioPage;
+export default EntityFeelingPage;
