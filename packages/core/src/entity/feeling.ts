@@ -19,11 +19,11 @@ const basePathSegments: string[] = [""];
 
 const converter: FirestoreDataConverter<Feeling> = {
   toFirestore: (data: WithFieldValue<Feeling>) => {
-    const { name, value } = data;
-
+    /**
+     * Should I validate the data here?
+     */
     return {
-      name,
-      value,
+      ...data,
     };
   },
   fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions) {
