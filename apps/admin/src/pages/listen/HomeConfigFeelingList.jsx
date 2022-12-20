@@ -1,93 +1,48 @@
-import pw from "a-promise-wrapper";
-
 import { Helmet } from "react-helmet-async";
-// @mui
-import { Grid, Button, Container, Stack, Typography } from "@mui/material";
-// components
-import Iconify from "../../components/iconify";
-import { BlogPostsSort, BlogPostsSearch } from "../../sections/@dashboard/blog";
-// mock
-import POSTS from "../../_mock/blog";
-import { ListenCore } from "core";
+import { Button, Container, Stack, Typography } from "@mui/material";
 import db from "../../providers/firestore";
-import AudioCard from "./components/AudioCard";
-import FullPageLoader from "../../components/@full-page-loader";
-import React, { useState } from "react";
-import AudioCRUDFormDialog from "./components/AudioCRUDFormDialog";
-import { useAuthContext } from "../../providers/auth";
+import React, { useEffect, useState } from "react";
 import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
-import FeelingCRUDFormDialog from "./components/FeelingCRUDFormDialog";
+import SelectionList from "../../components/@selectionList";
+import { Entity, ListenCore } from "core";
+
+const { EntityFeeling } = Entity;
+const { useListenHomeFeelingList } = ListenCore;
+const { useListenEntityList } = EntityFeeling;
 
 const ListenHomeConfigFeelingList = () => {
-  const { user } = useAuthContext();
+  const { values: feelingList } = useListenEntityList(db);
+  const { values: homeFeelingList } = useListenHomeFeelingList(db);
 
-  const { uid } = user;
-
-  const [showForm, setShowForm] = useState(false);
-  const [isCreate, setIsCreate] = useState(true);
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
-  const [activeEditItem, setActiveEditItem] = useState();
 
-  const createFunc = async () => {};
-  const updateFunc = async () => {};
-  const deleteFunc = async () => {};
+  const [selectedIds, setSelectedIds] = useState();
 
-  const onClickCreate = () => {
-    setIsCreate(true);
-    setShowForm(true);
+  const renderLabel = (item) => {
+    const { value } = item;
+
+    return value;
   };
 
-  const onClickEdit = (audioItem) => {
+  const onSave = () => {
     // TODO
-    setActiveEditItem(audioItem);
-    setIsCreate(false);
-    setShowForm(true);
+    console.log("selectedIds");
+    console.log(selectedIds);
+    console.log("end selectedIds");
   };
 
-  const onCRUD = (isCreate) => async (data) => {
-    const { name, value } = data;
-    const createData = {
-      name,
-      value,
-      creatorId: uid,
-    };
-    const updateData = {
-      id,
-      name,
-      value,
-      editorId: uid,
-    };
-    const inputs = isCreate ? createData : updateData;
-    const func = isCreate ? createFunc : updateFunc;
+  useEffect(() => {
+    const ids = homeFeelingList ? homeFeelingList.map((f) => f.id) : [];
+    setSelectedIds(ids);
+  }, [homeFeelingList]);
 
-    const { error } = await pw(func(inputs));
-
-    if (error) {
-      return setShowError(true);
-    }
-
-    setShowSuccess(true);
-    setShowForm(false);
-  };
-
-  const onDelete = async () => {
-    const { id } = activeEditItem;
-
-    if (!id) {
-      return;
-    }
-
-    const { error } = await pw(deleteFunc(id));
-
-    if (error) {
-      return setShowError(true);
-    }
-
-    setShowSuccess(true);
-    setShowForm(false);
-  };
+  console.log("selectedIds");
+  console.log(selectedIds);
+  console.log("end selectedIds");
+  console.log("homeFeelingList");
+  console.log(homeFeelingList);
+  console.log("end homeFeelingList");
 
   return (
     <>
@@ -103,27 +58,23 @@ const ListenHomeConfigFeelingList = () => {
           mb={5}
         >
           <Typography variant="h4" gutterBottom>
-            Feeling list
+            Homepage feeling list
           </Typography>
-          <Button
-            variant="contained"
-            startIcon={<Iconify icon="eva:plus-fill" />}
-            onClick={onClickCreate}
-          >
-            New feeling
-          </Button>
         </Stack>
 
-        {showForm && (
-          <FeelingCRUDFormDialog
-            open={showForm}
-            onClose={() => setShowForm(false)}
-            onConfirm={onCRUD}
-            onDelete={onDelete}
-            isCreate={isCreate}
-            data={activeEditItem}
-          />
-        )}
+        <SelectionList
+          list={feelingList}
+          selectedIds={selectedIds}
+          onChange={setSelectedIds}
+          renderLabel={renderLabel}
+        />
+        <Button
+          variant="contained"
+          // startIcon={<Iconify icon="eva:plus-fill" />}
+          onClick={onSave}
+        >
+          Save
+        </Button>
 
         {showSuccess && (
           <Snackbar
