@@ -10,7 +10,19 @@ server.listen(port, () => {
   log(`api running on ${port}`);
 }); */
 
-const hello = functions.https.onRequest((req, res) => {
+import { initializeApp } from "firebase-admin/app";
+import { getFirestore } from "firebase-admin/firestore";
+
+initializeApp();
+
+const db = getFirestore();
+
+const hello = functions.https.onRequest(async (req, res) => {
+  const snapshot = await db.collection("feelings").get();
+  snapshot.forEach((doc) => {
+    console.log(doc.id, "=>", doc.data());
+  });
+
   res.send("Firebase Cloud Functions");
 });
 
