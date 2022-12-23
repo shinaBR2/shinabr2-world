@@ -95,6 +95,7 @@ importers:
       '@types/node': ^18.11.9
       '@types/supertest': ^2.0.12
       body-parser: ^1.19.0
+      core: workspace:*
       cors: ^2.8.5
       eslint: ^7.32.0
       eslint-config-custom-server: workspace:*
@@ -111,6 +112,7 @@ importers:
       typescript: ^4.8.3
     dependencies:
       body-parser: 1.20.1
+      core: link:../../packages/core
       cors: 2.8.5
       express: 4.18.2
       firebase-admin: 11.4.0
@@ -360,14 +362,14 @@ importers:
     dependencies:
       eslint-config-next: 12.3.1
       eslint-config-prettier: 8.5.0
-      eslint-config-turbo: 0.0.4
+      eslint-config-turbo: 0.0.7
       eslint-plugin-react: 7.28.0
 
   packages/eslint-config-custom-server:
     specifiers:
       eslint-config-turbo: latest
     dependencies:
-      eslint-config-turbo: 0.0.4
+      eslint-config-turbo: 0.0.7
 
   packages/jest-presets:
     specifiers:
@@ -12715,12 +12717,12 @@ packages:
       eslint: '>=7.0.0'
     dev: false
 
-  /eslint-config-turbo/0.0.4:
-    resolution: {integrity: sha512-HErPS/wfWkSdV9Yd2dDkhZt3W2B78Ih/aWPFfaHmCMjzPalh+5KxRRGTf8MOBQLCebcWJX0lP1Zvc1rZIHlXGg==}
+  /eslint-config-turbo/0.0.7:
+    resolution: {integrity: sha512-WbrGlyfs94rOXrhombi1wjIAYGdV2iosgJRndOZtmDQeq5GLTzYmBUCJQZWtLBEBUPCj96RxZ2OL7Cn+xv/Azg==}
     peerDependencies:
-      eslint: ^7.23.0 || ^8.0.0
+      eslint: '>6.6.0'
     dependencies:
-      eslint-plugin-turbo: 0.0.4
+      eslint-plugin-turbo: 0.0.7
     dev: false
 
   /eslint-import-resolver-node/0.3.6:
@@ -12880,10 +12882,10 @@ packages:
       string.prototype.matchall: 4.0.7
     dev: false
 
-  /eslint-plugin-turbo/0.0.4:
-    resolution: {integrity: sha512-dfmYE/iPvoJInQq+5E/0mj140y/rYwKtzZkn3uVK8+nvwC5zmWKQ6ehMWrL4bYBkGzSgpOndZM+jOXhPQ2m8Cg==}
+  /eslint-plugin-turbo/0.0.7:
+    resolution: {integrity: sha512-iajOH8eD4jha3duztGVBD1BEmvNrQBaA/y3HFHf91vMDRYRwH7BpHSDFtxydDpk5ghlhRxG299SFxz7D6z4MBQ==}
     peerDependencies:
-      eslint: ^7.23.0 || ^8.0.0
+      eslint: '>6.6.0'
     dev: false
 
   /eslint-scope/4.0.3:
