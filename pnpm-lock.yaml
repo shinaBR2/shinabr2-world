@@ -104,8 +104,6 @@ importers:
       firebase-functions: ^4.1.1
       jest: ^26.6.3
       jest-presets: workspace:*
-      logger: workspace:*
-      morgan: ^1.10.0
       supertest: ^6.2.4
       tsconfig: workspace:*
       tsup: ^6.2.3
@@ -117,8 +115,6 @@ importers:
       express: 4.18.2
       firebase-admin: 11.4.0
       firebase-functions: 4.1.1_firebase-admin@11.4.0
-      logger: link:../../packages/logger
-      morgan: 1.10.0
     devDependencies:
       '@types/body-parser': 1.19.2
       '@types/cors': 2.8.12
@@ -9849,6 +9845,7 @@ packages:
     engines: {node: '>= 0.8'}
     dependencies:
       safe-buffer: 5.1.2
+    dev: true
 
   /batch/0.6.1:
     resolution: {integrity: sha512-x+VAiMRL6UPkx+kudNvxTl6hB2XNNCG2r+7wixVfIYwu/2HKRXimwQyaumLjMveWvT2Hkd/cAJw+QBMfJ/EKVw==}
@@ -17664,6 +17661,7 @@ packages:
       on-headers: 1.0.2
     transitivePeerDependencies:
       - supports-color
+    dev: true
 
   /move-concurrently/1.0.1:
     resolution: {integrity: sha512-hdrFxZOycD/g6A6SoI2bB5NA/5NEqD0569+S47WZhPvm46sD50ZHdYaFmnua5lndde9rCHGjmfK7Z8BuCt/PcQ==}
@@ -18048,6 +18046,7 @@ packages:
     engines: {node: '>= 0.8'}
     dependencies:
       ee-first: 1.1.1
+    dev: true
 
   /on-finished/2.4.1:
     resolution: {integrity: sha512-oVlzkg3ENAhCk2zdv7IJwd/QUD4z2RxRwpkcGY8psCVcCYZNq4wYnVWALHM+brtuJjePWiYF/ClmuDr8Ch5+kg==}
