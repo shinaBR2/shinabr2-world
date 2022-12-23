@@ -11,6 +11,7 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "dev-old": "tsup src/index.ts --format cjs --watch --onSuccess \"node dist/index.js\"",
     "dev": "tsc --watch | firebase emulators:start --only functions",
+    "deploy": "firebase deploy --only functions",
     "lint": "tsc --noEmit && TIMING=1 eslint \"src/**/*.ts*\"",
     "start": "node dist/index.js",
     "test": "jest --detectOpenHandles"
@@ -24,6 +25,7 @@
     "express": "^4.17.1",
     "firebase-admin": "^11.4.0",
     "firebase-functions": "^4.1.1",
+    "core": "workspace:*",
     "logger": "workspace:*",
     "morgan": "^1.10.0"
   },
