@@ -1,8 +1,13 @@
 import { FieldValue } from "firebase-admin/firestore";
 import * as functions from "firebase-functions";
 
-const onRequest = functions.https.onRequest;
-const onCall = functions.https.onCall;
+const functionConfig = {
+  region: "asia-south1",
+};
+const functionBuilder = functions.region(functionConfig.region);
+
+const onRequest = functionBuilder.https.onRequest;
+const onCall = functionBuilder.https.onCall;
 
 const getTimeStamp = () => FieldValue.serverTimestamp();
 
