@@ -61,4 +61,3 @@ jobs:
         env:
           GCP_SA_KEY: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_MY_WORLD_DEV }}"
           PROJECT_ID: my-world-dev
-          PROJECT_PATH: ./functions
