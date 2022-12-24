@@ -21,13 +21,14 @@ jobs:
         name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 18.12.0
 
       - id: setup_pnpm
         name: Setup pnpm
         uses: pnpm/action-setup@v2.2.4
         with:
-          version: 7
+          version: 7.14.1
+          run_install: true
 
       - id: install_packages
         name: Install packages
