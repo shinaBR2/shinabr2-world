@@ -5,39 +5,48 @@ authors: [ShinaBR2]
 tags: [Firebase, monorepo, pnpm]
 ---
 
-## NOTE
+## Problem
 
-```
-// .pnpmfile.cjs
-module.exports = {
-  hooks: {
-    readPackage(pkg) {
-      pkg.dependenciesMeta = pkg.dependenciesMeta || {};
-      for (const [depName, depVersion] of Object.entries(pkg.dependencies)) {
-        if (depVersion.startsWith("workspace:")) {
-          pkg.dependenciesMeta[depName] = {
-            injected: true,
-          };
-        }
-      }
-      return pkg;
-    },
-  },
-};
+I am a fan of serverless solution including Firebase Cloud Functions, but until now it still does not natively support monorepo and pnpm. This was a very frustrating development experience. After few hours research, try, fail and repeat the cycle, at least I can figure out a hack to solve this problem. See the problem here: https://github.com/firebase/firebase-tools/issues/653
 
-```
+Some references that I have read:
 
-## First working version
+- https://github.com/pnpm/pnpm/issues/4073
+- https://github.com/willviles/firebase-pnpm-workspaces
+- https://github.com/firebase/firebase-functions/issues/172
+- https://github.com/pnpm/pnpm/issues/2198
+- https://github.com/pnpm/pnpm/issues/4073
+- https://github.com/Madvinking/pnpm-isolate-workspace
+- https://github.com/pnpm/pnpm/issues/4378
+- https://github.com/pnpm/pnpm/discussions/4237
+
+## Hacky solution
 
 Solution: https://github.com/Madvinking/pnpm-isolate-workspace
+
+The idea is, build all the dependency into one single workspace with some tweak in the `package.json` file since `firebase deploy` command does not support the pnpm `workspace:*` protocol.
+
+In my case, the `api` (`apps/api` folder) is the name of the workspace I am working with the Firebase Cloud Functions, that has a dependency is the `core` (`packages/core` folder) workspace.
+
+The folder structure should be like
+
+```
+root
+  |- apps
+    |  api
+  |- packages
+    |  core
+  firebase.json
+  pnpm-workspace.yaml
+```
+
 Steps:
 
-- Run `pnpx pnpm-isolate-workspace api` at the root folder
-- Build local, Run `cp -r apps/api/dist apps/api/_isolated_`
-- Change the `firebase.json` `source` field to `"source": "apps/api/_isolated_",`
-- Build local, then copy the `apps/api/dist` folder into `apps/api/_isolated_/dist`
-- Go to the `apps/api/_isolated_` run `pnpm install`
-- Go to the `apps/api/_isolated_` rename `package.json` to `package-dev.json`
-- Go to the `apps/api/_isolated_` rename `package-prod.json` to `package.json`
-- Replace all `workspace:*` with `file:` protocol
+- Change the `firebase.json` `source` field to `"source": "apps/api/_isolated_",` and remove the `predeploy` hook
+- Build Cloud Functions locally, the output will be in `apps/api/dist`
+- Run `pnpx pnpm-isolate-workspace api` at the root folder, it will create the folder name `_isolated_`.
+- Copy build folder into new created folder `cp -r apps/api/dist apps/api/_isolated_`
+- Go to the `apps/api/_isolated_` run `mv package.json package-dev.json`
+- Go to the `apps/api/_isolated_` run `mv package-prod.json package.json`
+- Go to the `apps/api/_isolated_` run `sed -i 's/"core\"\: \"workspace:\*\"/"core\"\: \"file\:workspaces\/packages\/core\"/g' package.json`, thanks to [this comment](https://github.com/firebase/firebase-tools/issues/653#issuecomment-827960976)
 - Finally run `firebase deploy --only functions` at the root folder
