@@ -51,7 +51,7 @@ jobs:
         run: |
           mv apps/api/_isolated_/package.json apps/api/_isolated_/package-dev.json
           mv apps/api/_isolated_/package-prod.json apps/api/_isolated_/package.json
-          sed -i 's/"core\"\: \"workspace:\*\"/"core\"\: \"file\:workspaces\/packages\/core\"/g' package.json
+          sed -i 's/"core\"\: \"workspace:\*\"/"core\"\: \"file\:workspaces\/packages\/core\"/g' apps/api/_isolated_/package.json
 
       - id: deploy
         name: Deploy

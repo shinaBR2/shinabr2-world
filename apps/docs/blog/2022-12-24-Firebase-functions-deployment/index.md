@@ -50,3 +50,7 @@ Steps:
 - Go to the `apps/api/_isolated_` run `mv package-prod.json package.json`
 - Go to the `apps/api/_isolated_` run `sed -i 's/"core\"\: \"workspace:\*\"/"core\"\: \"file\:workspaces\/packages\/core\"/g' package.json`, thanks to [this comment](https://github.com/firebase/firebase-tools/issues/653#issuecomment-827960976)
 - Finally run `firebase deploy --only functions` at the root folder
+
+## Other notes
+
+In order to deploy the Cloud Functions, the service account need to have some specific roles, check out the official docs: https://firebase.google.com/docs/projects/iam/permissions#functions
