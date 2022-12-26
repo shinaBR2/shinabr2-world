@@ -1,3 +1,3 @@
-import { getHomepageFeelings, saveHomepageFeelings } from "./homepage";
+import homepage from "./homepage";
 
-export default { getHomepageFeelings, saveHomepageFeelings };
+export default { homepage };

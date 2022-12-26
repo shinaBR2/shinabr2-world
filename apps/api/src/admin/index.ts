@@ -1,3 +1,3 @@
-import * as ListenAPIs from "./listen";
+import listen from "./listen";
 
-export { ListenAPIs };
+export default { listen };

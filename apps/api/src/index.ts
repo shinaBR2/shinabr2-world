@@ -1,10 +1,6 @@
 import * as healthCheck from "./healthCheck";
-import { ListenAPIs } from "./admin";
+import admin from "./admin";
 
 // trigger deploy 5
 
-const adminAPIs = {
-  admin: ListenAPIs,
-};
-
-export { healthCheck, adminAPIs };
+export { healthCheck, admin };
