@@ -4,11 +4,12 @@ import {
   SAudioPlayerInputs,
   SAudioPlayerLoopMode,
   commonHelpers,
+  requestHelpers,
 } from "./universal";
 
 export * as ListenCore from "./listen";
 export * as Entity from "./entity";
-export { commonHelpers };
+export { commonHelpers, requestHelpers };
 
 export type { SAudioPlayerAudioItem, SAudioPlayerInputs, SAudioPlayerLoopMode };
 export default hooks;
