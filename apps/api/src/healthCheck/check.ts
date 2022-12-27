@@ -1,11 +1,14 @@
 import db, { getTimeStamp, onRequest } from "../singleton";
 
 import { commonHelpers } from "core";
+import { dbRead } from "../singleton/db";
 
 const { compareString } = commonHelpers;
 
 const checkRead = onRequest(async (req, res) => {
-  const snapshot = await db.collection("feelings").get();
+  const snapshot = (await dbRead(
+    "feelings"
+  )) as FirebaseFirestore.QuerySnapshot;
   snapshot.forEach((doc) => {
     console.log(doc.id, "=>", doc.data());
   });

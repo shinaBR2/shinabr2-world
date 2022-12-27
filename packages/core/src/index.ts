@@ -7,6 +7,7 @@ import {
 } from "./universal";
 
 export * as ListenCore from "./listen";
+export * as Entity from "./entity";
 export { commonHelpers };
 
 export type { SAudioPlayerAudioItem, SAudioPlayerInputs, SAudioPlayerLoopMode };
