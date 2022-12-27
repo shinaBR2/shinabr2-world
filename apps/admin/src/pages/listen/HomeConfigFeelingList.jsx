@@ -42,12 +42,12 @@ const ListenHomeConfigFeelingList = () => {
     console.log(inputs);
     console.log("end inputs");
 
-    const { data, erorr } = await pw(
+    const { data, error } = await pw(
       callable("admin-listen-homepage-saveFeelings", inputs)
     );
 
     if (error) {
-      console.error(erorr);
+      return console.error(error);
     }
 
     console.log(`success: ${JSON.stringify(data)}`);
