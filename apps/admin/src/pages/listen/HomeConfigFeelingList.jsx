@@ -4,11 +4,14 @@ import db from "../../providers/firestore";
 import React, { useEffect, useState } from "react";
 import Snackbar from "@mui/material/Snackbar";
 import SelectionList from "../../components/@selectionList";
-import { Entity, ListenCore } from "core";
+import { Entity, ListenCore, requestHelpers } from "core";
+import pw from "a-promise-wrapper";
 
 const { EntityFeeling } = Entity;
 const { useListenHomeFeelingList } = ListenCore;
 const { useListenEntityList } = EntityFeeling;
+
+const { callable } = requestHelpers;
 
 const ListenHomeConfigFeelingList = () => {
   const { values: feelingList } = useListenEntityList(db);
@@ -25,24 +28,35 @@ const ListenHomeConfigFeelingList = () => {
     return value;
   };
 
-  const onSave = () => {
-    // TODO
-    console.log("selectedIds");
-    console.log(selectedIds);
-    console.log("end selectedIds");
+  const onSave = async () => {
+    const inputs = {
+      feelings: selectedIds.map((id) => {
+        return {
+          id,
+          value: feelingList.find((f) => f.id === id),
+        };
+      }),
+    };
+
+    console.log("inputs");
+    console.log(inputs);
+    console.log("end inputs");
+
+    const { data, erorr } = await pw(
+      callable("admin-listen-homepage-saveFeelings", inputs)
+    );
+
+    if (error) {
+      console.error(erorr);
+    }
+
+    console.log(`success: ${JSON.stringify(data)}`);
   };
 
   useEffect(() => {
     const ids = homeFeelingList ? homeFeelingList.map((f) => f.id) : [];
     setSelectedIds(ids);
   }, [homeFeelingList]);
-
-  console.log("selectedIds");
-  console.log(selectedIds);
-  console.log("end selectedIds");
-  console.log("homeFeelingList");
-  console.log(homeFeelingList);
-  console.log("end homeFeelingList");
 
   return (
     <>
