@@ -36,7 +36,7 @@ const ListenHomeConfigFeelingList = () => {
         return undefined;
       }
 
-      const { id, ...rest } = item;
+      const { id: _id, ...rest } = item;
 
       return {
         id,
