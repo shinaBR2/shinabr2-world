@@ -36,4 +36,4 @@ const onAdminCall = (handler: (data: any) => void) => {
 
 const getTimeStamp = () => FieldValue.serverTimestamp();
 
-export { onAdminCall, onCall, onRequest, getTimeStamp };
+export { onAdminCall, onCall, onRequest, AppError, getTimeStamp };
