@@ -62,7 +62,9 @@ jobs:
         name: Deploy
         uses: w9jds/firebase-action@master
         with:
-          args: firebase use my-world-dev && firebase deploy --only functions
+          args: >
+            use my-world-dev
+            && firebase deploy --only functions
         env:
           GCP_SA_KEY: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_MY_WORLD_DEV }}"
           PROJECT_ID: my-world-dev
