@@ -29,13 +29,22 @@ const ListenHomeConfigFeelingList = () => {
   };
 
   const onSave = async () => {
+    const feelings = selectedIds.map((id) => {
+      const item = feelingList.find((f) => f.id === id);
+
+      if (!item) {
+        return undefined;
+      }
+
+      const { id, ...rest } = item;
+
+      return {
+        id,
+        value: rest,
+      };
+    });
     const inputs = {
-      feelings: selectedIds.map((id) => {
-        return {
-          id,
-          value: feelingList.find((f) => f.id === id),
-        };
-      }),
+      feelings: feelings.filter(Boolean),
     };
 
     console.log("inputs");
