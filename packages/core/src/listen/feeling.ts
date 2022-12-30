@@ -15,7 +15,7 @@ import {
 } from "../universal/dbQuery";
 
 const path = "homeConfigs";
-const basePathSegments = ["listen", "feelingList"];
+const basePathSegments = ["listen", "feelings"];
 
 const converter: FirestoreDataConverter<Feeling> = {
   toFirestore: (data: WithFieldValue<Feeling>) => {

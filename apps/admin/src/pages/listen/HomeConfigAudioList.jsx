@@ -1,80 +1,150 @@
 // @mui
-import { Grid } from "@mui/material";
+import { Alert, Container, Stack, Typography } from "@mui/material";
 // components
 // mock
-import { ListenCore } from "core";
+import { Entity, ListenCore, requestHelpers } from "core";
 import db from "../../providers/firestore";
-import AudioCard from "./components/AudioCard";
-import React from "react";
-import { useAuthContext } from "../../providers/auth";
-import CRUDPage from "../../components/@crud-page";
-import AudioCRUDForm from "./components/AudioCRUDFormDialog/AudioCRUDForm";
+import React, { useEffect, useState } from "react";
+import Snackbar from "@mui/material/Snackbar";
+import { Helmet } from "react-helmet-async";
+import pw from "a-promise-wrapper";
+import SelectionList from "../../components/@selectionList";
+import { LoadingButton } from "@mui/lab";
 
-const {
-  useListenHomeAudioList,
-  useUploadHomeAudio,
-  useUpdateHomeAudioItem,
-  useDeleteHomeAudioItem,
-} = ListenCore;
+const { EntityAudio } = Entity;
+const { useListenHomeAudioList } = ListenCore;
+const { useListenEntityList } = EntityAudio;
+
+const { callable } = requestHelpers;
+
 // ----------------------------------------------------------------------
 
-const ListComponent = (props) => {
-  const { data: audioList, onClickEdit } = props;
+const ListenHomeConfigAudioList = () => {
+  const { values: audioList } = useListenEntityList(db);
+  const { values: homeAudioList } = useListenHomeAudioList(db);
+
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+
+  const [selectedIds, setSelectedIds] = useState();
+
+  const renderLabel = (item) => {
+    const { name, artistName } = item;
+
+    return `${name} - by ${artistName}`;
+  };
+
+  const onSave = async () => {
+    const audios = selectedIds.map((id) => {
+      const item = audioList.find((f) => f.id === id);
+
+      if (!item) {
+        return undefined;
+      }
+
+      const { id: _id, ...rest } = item;
+
+      return {
+        id,
+        value: rest,
+      };
+    });
+    const inputs = {
+      audios: audios.filter(Boolean),
+    };
+
+    setIsSaving(true);
+
+    const { data, error } = await pw(
+      callable("admin-listen-homepage-saveAudios", inputs)
+    );
+
+    if (error) {
+      setShowError(true);
+      setIsSaving(false);
+      return console.error(error);
+    }
+
+    console.log(`success: ${JSON.stringify(data)}`);
+    setShowSuccess(true);
+    setIsSaving(false);
+  };
+
+  useEffect(() => {
+    const ids = homeAudioList ? homeAudioList.map((f) => f.id) : [];
+    setSelectedIds(ids);
+  }, [homeAudioList]);
+
+  const handleCloseSuccess = () => setShowSuccess(false);
+  const handleCloseError = () => setShowError(false);
 
   return (
-    <Grid container spacing={3}>
-      {audioList &&
-        audioList.map((audio, index) => (
-          <AudioCard
-            onEdit={onClickEdit}
-            key={audio.id}
-            audio={audio}
-            index={index}
-          />
-        ))}
-    </Grid>
+    <>
+      <Helmet>
+        <title> Listen: Home page audio list </title>
+      </Helmet>
+
+      <Container>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          mb={5}
+        >
+          <Typography variant="h4" gutterBottom>
+            Homepage audio list
+          </Typography>
+        </Stack>
+
+        <SelectionList
+          list={audioList}
+          selectedIds={selectedIds}
+          onChange={setSelectedIds}
+          renderLabel={renderLabel}
+        />
+        <LoadingButton
+          loading={isSaving}
+          variant="contained"
+          // startIcon={<Iconify icon="eva:plus-fill" />}
+          onClick={onSave}
+        >
+          Save
+        </LoadingButton>
+
+        {showSuccess && (
+          <Snackbar
+            open={showSuccess}
+            autoHideDuration={6000}
+            onClose={handleCloseSuccess}
+          >
+            <Alert
+              onClose={handleCloseSuccess}
+              severity="success"
+              sx={{ width: "100%" }}
+            >
+              Success!
+            </Alert>
+          </Snackbar>
+        )}
+        {showError && (
+          <Snackbar
+            open={showError}
+            autoHideDuration={6000}
+            onClose={handleCloseError}
+          >
+            <Alert
+              onClose={handleCloseError}
+              severity="error"
+              sx={{ width: "100%" }}
+            >
+              Error!
+            </Alert>
+          </Snackbar>
+        )}
+      </Container>
+    </>
   );
 };
 
-export default function ListenHomeConfig() {
-  const { user } = useAuthContext();
-  const createFunc = useUploadHomeAudio(db);
-  const updateFunc = useUpdateHomeAudioItem(db);
-  const deleteFunc = useDeleteHomeAudioItem(db);
-  const { uid } = user;
-
-  const buildCRUDData = (isCreate, data) => {
-    const { id, src, name, artistName, image } = data;
-    const createData = {
-      src,
-      name,
-      artistName,
-      image,
-      uploaderId: uid,
-    };
-    const updateData = {
-      id,
-      src,
-      name,
-      artistName,
-      image,
-      editorId: uid,
-    };
-
-    return isCreate ? createData : updateData;
-  };
-
-  return (
-    <CRUDPage
-      htmlTitle="Listen: Home page audio list"
-      entityName="Audio"
-      useLoadData={useListenHomeAudioList}
-      createFunc={createFunc}
-      updateFunc={updateFunc}
-      deleteFunc={deleteFunc}
-      buildCRUDData={buildCRUDData}
-      ListComponent={ListComponent}
-      FormComponent={AudioCRUDForm}
-    />
-  );
-}
+export default ListenHomeConfigAudioList;

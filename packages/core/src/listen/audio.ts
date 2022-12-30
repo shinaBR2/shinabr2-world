@@ -16,7 +16,7 @@ import {
 // import { AudioItem } from "./interfaces";
 
 const path = "homeConfigs";
-const basePathSegments = ["listen", "audioList"];
+const basePathSegments = ["listen", "audios"];
 
 /**
  * Some notes because of TS sucks
