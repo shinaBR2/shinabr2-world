@@ -49,10 +49,6 @@ const ListenHomeConfigFeelingList = () => {
       feelings: feelings.filter(Boolean),
     };
 
-    console.log("inputs");
-    console.log(inputs);
-    console.log("end inputs");
-
     setIsSaving(true);
 
     const { data, error } = await pw(
