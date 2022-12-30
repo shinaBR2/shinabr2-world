@@ -56,6 +56,8 @@ const ListenHomeConfigAudioList = () => {
 
     setIsSaving(true);
 
+    console.log(inputs);
+
     const { data, error } = await pw(
       callable("admin-listen-homepage-saveAudios", inputs)
     );

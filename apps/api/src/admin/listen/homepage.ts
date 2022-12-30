@@ -3,7 +3,20 @@ import { CallableContext } from "firebase-functions/v1/https";
 import { onCall, onRequest } from "../../singleton";
 import { dbBatchWrite, dbGetRef, dbRead } from "../../singleton/db";
 import { AppError, onAdminCall } from "../../singleton/request";
-import { saveHomepageFeelings } from "./helpers";
+import { saveHomepageAudios, saveHomepageFeelings } from "./helpers";
+
+const saveAudios = async (data: any) => {
+  const { audios } = data;
+
+  const { error } = await pw(saveHomepageAudios(data));
+
+  if (error) {
+    console.log(error);
+    throw AppError("Can not save homepage audios");
+  }
+
+  return "Success";
+};
 
 const saveFeelings = async (data: any) => {
   const { feelings } = data;
@@ -19,6 +32,7 @@ const saveFeelings = async (data: any) => {
 };
 
 const withRequest = {
+  saveAudios: onAdminCall(saveAudios),
   saveFeelings: onAdminCall(saveFeelings),
 };
 
