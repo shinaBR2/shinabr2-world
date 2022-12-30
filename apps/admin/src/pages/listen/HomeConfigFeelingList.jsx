@@ -1,11 +1,12 @@
 import { Helmet } from "react-helmet-async";
-import { Button, Container, Stack, Typography } from "@mui/material";
+import { Alert, Button, Container, Stack, Typography } from "@mui/material";
 import db from "../../providers/firestore";
 import React, { useEffect, useState } from "react";
 import Snackbar from "@mui/material/Snackbar";
 import SelectionList from "../../components/@selectionList";
 import { Entity, ListenCore, requestHelpers } from "core";
 import pw from "a-promise-wrapper";
+import { LoadingButton } from "@mui/lab";
 
 const { EntityFeeling } = Entity;
 const { useListenHomeFeelingList } = ListenCore;
@@ -19,6 +20,7 @@ const ListenHomeConfigFeelingList = () => {
 
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   const [selectedIds, setSelectedIds] = useState();
 
@@ -51,21 +53,30 @@ const ListenHomeConfigFeelingList = () => {
     console.log(inputs);
     console.log("end inputs");
 
+    setIsSaving(true);
+
     const { data, error } = await pw(
       callable("admin-listen-homepage-saveFeelings", inputs)
     );
 
     if (error) {
+      setShowError(true);
+      setIsSaving(false);
       return console.error(error);
     }
 
     console.log(`success: ${JSON.stringify(data)}`);
+    setShowSuccess(true);
+    setIsSaving(false);
   };
 
   useEffect(() => {
     const ids = homeFeelingList ? homeFeelingList.map((f) => f.id) : [];
     setSelectedIds(ids);
   }, [homeFeelingList]);
+
+  const handleCloseSuccess = () => setShowSuccess(false);
+  const handleCloseError = () => setShowError(false);
 
   return (
     <>
@@ -91,13 +102,14 @@ const ListenHomeConfigFeelingList = () => {
           onChange={setSelectedIds}
           renderLabel={renderLabel}
         />
-        <Button
+        <LoadingButton
+          loading={isSaving}
           variant="contained"
           // startIcon={<Iconify icon="eva:plus-fill" />}
           onClick={onSave}
         >
           Save
-        </Button>
+        </LoadingButton>
 
         {showSuccess && (
           <Snackbar
@@ -125,7 +137,7 @@ const ListenHomeConfigFeelingList = () => {
               severity="error"
               sx={{ width: "100%" }}
             >
-              Success!
+              Error!
             </Alert>
           </Snackbar>
         )}
