@@ -8,11 +8,10 @@ import { saveHomepageFeelings } from "./helpers";
 const saveFeelings = async (data: any) => {
   const { feelings } = data;
 
-  console.log(JSON.stringify(feelings));
-
   const { error } = await pw(saveHomepageFeelings(data));
 
   if (error) {
+    console.log(error);
     throw AppError("Can not save homepage feelings");
   }
 

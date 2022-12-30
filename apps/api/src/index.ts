@@ -5,4 +5,4 @@ import admin from "./admin";
 
 // console.log(healthCheck);
 
-export { admin };
+export { healthCheck, admin };

@@ -33,7 +33,7 @@ const dbRead = async (pathStr: string) => {
 
   const ref = dbGetRef(p);
 
-  return ref.get();
+  return await ref.get();
 };
 
 const dbAddDoc = async (

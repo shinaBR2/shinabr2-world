@@ -25,7 +25,7 @@ const saveHomepageFeelings = async (data: FeelingInputs) => {
 
   allDocs.map((doc) => {
     const { id } = doc;
-    console.log(`doc id: ${id}`);
+
     const docPath = `${path}/${id}`;
     const ref = dbGetRef(docPath) as FirebaseFirestore.DocumentReference;
     batch.delete(ref);
@@ -33,7 +33,7 @@ const saveHomepageFeelings = async (data: FeelingInputs) => {
 
   feelings.map((doc) => {
     const { id, value } = doc;
-    console.log(`doc id: ${id}`);
+
     const docPath = `${path}/${id}`;
     const ref = dbGetRef(docPath) as FirebaseFirestore.DocumentReference;
     batch.set(ref, value);

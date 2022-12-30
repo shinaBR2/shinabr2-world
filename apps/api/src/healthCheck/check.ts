@@ -1,9 +1,7 @@
 import db, { getTimeStamp, onRequest } from "../singleton";
 
-import { commonHelpers } from "core";
+// import { commonHelpers } from "core";
 import { dbRead } from "../singleton/db";
-
-const { compareString } = commonHelpers;
 
 const checkRead = onRequest(async (req, res) => {
   const snapshot = (await dbRead(
@@ -12,8 +10,6 @@ const checkRead = onRequest(async (req, res) => {
   snapshot.forEach((doc) => {
     console.log(doc.id, "=>", doc.data());
   });
-
-  console.log(`Compare string str1 and str2: ${compareString("str1", "str2")}`);
 
   res.send("Success");
 });
