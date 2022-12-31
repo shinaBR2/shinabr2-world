@@ -4,15 +4,14 @@ import db from "../../providers/firestore";
 import React, { useEffect, useState } from "react";
 import Snackbar from "@mui/material/Snackbar";
 import SelectionList from "../../components/@selectionList";
-import { Entity, ListenCore, requestHelpers } from "core";
+import { Entity, ListenCore } from "core";
 import pw from "a-promise-wrapper";
 import { LoadingButton } from "@mui/lab";
+import { callable } from "../../firebase";
 
 const { EntityFeeling } = Entity;
 const { useListenHomeFeelingList } = ListenCore;
 const { useListenEntityList } = EntityFeeling;
-
-const { callable } = requestHelpers;
 
 const ListenHomeConfigFeelingList = () => {
   const { values: feelingList } = useListenEntityList(db);

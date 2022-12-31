@@ -1,6 +1,7 @@
 /**
  * This should include all core
  */
+
 import hooks from "./hooks";
 import {
   SAudioPlayerInputs,
@@ -8,13 +9,13 @@ import {
   SAudioPlayerLoopMode,
 } from "./hooks";
 import { compareString } from "./common";
-import { callable } from "./request";
+// import { callable } from "./request";
 
 const commonHelpers = {
   compareString,
 };
 const requestHelpers = {
-  callable,
+  // callable,
 };
 
 export type { SAudioPlayerInputs, SAudioPlayerAudioItem, SAudioPlayerLoopMode };
