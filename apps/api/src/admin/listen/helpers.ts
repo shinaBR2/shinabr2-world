@@ -39,10 +39,11 @@ const saveHomepageAudios = async (data: AudiosInputs) => {
 
   audios.map((doc) => {
     const { id, value } = doc;
+    const { image: thumbnailUrl, ...rest } = value;
 
     const docPath = `${path}/${id}`;
     const ref = dbGetRef(docPath) as FirebaseFirestore.DocumentReference;
-    batch.set(ref, value);
+    batch.set(ref, { ...rest, thumbnailUrl });
   });
 
   // Commit the batch
