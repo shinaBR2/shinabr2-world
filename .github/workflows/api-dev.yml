@@ -64,7 +64,7 @@ jobs:
         with:
           args: >
             use my-world-dev
-            && firebase deploy --only "functions:admin-listen-homepage-saveFeelings"
+            && firebase deploy --only "functions:admin"
         env:
           GCP_SA_KEY: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_MY_WORLD_DEV }}"
           PROJECT_ID: my-world-dev
