@@ -3,8 +3,9 @@ import {
   FirestoreDataConverter,
   QueryDocumentSnapshot,
   SnapshotOptions,
+  WithFieldValue,
 } from "firebase/firestore";
-import { useGetCollectionOn } from "../universal/dbQuery";
+import { useGetCollectionOn, useUpdateDoc } from "../universal/dbQuery";
 import { PathConfigs } from "../universal/dbQuery/interfaces";
 import { FeatureFlagItem } from "./interfaces/featureFlag";
 
@@ -32,4 +33,22 @@ const useListenFeatureFlag = (db: Firestore, config: PathConfigs) => {
   };
 };
 
-export { featureFlagConverter, useListenFeatureFlag };
+const useSaveFeatureFlag = (
+  db: Firestore,
+  config: PathConfigs,
+  data: FeatureFlagItem
+) => {
+  const udpateFunc = useUpdateDoc();
+
+  return async (inputs: FeatureFlagItem) => {
+    const updateInputs = {
+      db,
+      ...config,
+      data: featureFlagConverter.toFirestore(inputs),
+    };
+
+    await udpateFunc(updateInputs);
+  };
+};
+
+export { featureFlagConverter, useListenFeatureFlag, useSaveFeatureFlag };
