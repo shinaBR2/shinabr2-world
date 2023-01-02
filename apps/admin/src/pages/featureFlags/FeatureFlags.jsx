@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { Grid, Container, Typography, Box, Tabs, Tab } from "@mui/material";
 import React from "react";
+import ListenFeatureFlags from "./Listen";
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -22,7 +23,7 @@ const FeatureFlags = () => {
   return (
     <>
       <Helmet>
-        <title> Dashboard | Minimal UI </title>
+        <title> Feature Flag Configuration </title>
       </Helmet>
       <Container maxWidth="xl">
         <h1>Feature flag configuration</h1>
@@ -35,7 +36,7 @@ const FeatureFlags = () => {
             </Tabs>
           </Box>
           <TabPanel value={tabValue} index={0}>
-            Listen feature flags
+            <ListenFeatureFlags />
           </TabPanel>
         </Box>
       </Container>
