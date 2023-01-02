@@ -4,6 +4,9 @@ import {
   Chip,
   Container,
   Grid,
+  List,
+  ListItem,
+  ListItemText,
   Stack,
   Theme,
   Typography,
@@ -15,6 +18,24 @@ import MusicWidget from "../music-widget";
 interface HomeContainerProps {
   audioList: SAudioPlayerAudioItem[];
 }
+
+const PlayingListItem = (props: HomeContainerProps) => {
+  const { audioList } = props;
+
+  return (
+    <List>
+      {audioList.map((a) => {
+        const { id, name, artistName } = a;
+
+        return (
+          <ListItem key={id}>
+            <ListItemText primary={name} secondary={artistName} />
+          </ListItem>
+        );
+      })}
+    </List>
+  );
+};
 
 const HomeContainer = (props: HomeContainerProps) => {
   const { audioList } = props;
@@ -36,18 +57,10 @@ const HomeContainer = (props: HomeContainerProps) => {
         <Grid container spacing={2}>
           {!hidden && (
             <Grid item md={8} sm={6} xs={0}>
-              <Card>
-                {audioList.map((a) => {
-                  const { id, image, name, artistName } = a;
-
-                  return (
-                    <Box key={id}>
-                      {/* <Box>image</Box> */}
-                      <Typography component="strong">{name}</Typography>
-                      <Typography variant="caption">{artistName}</Typography>
-                    </Box>
-                  );
-                })}
+              <Card
+                sx={{ height: "100%", maxHeight: "600px", overflowY: "auto" }}
+              >
+                <PlayingListItem audioList={audioList} />
               </Card>
             </Grid>
           )}
