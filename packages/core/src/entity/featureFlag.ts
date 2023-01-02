@@ -3,7 +3,6 @@ import {
   FirestoreDataConverter,
   QueryDocumentSnapshot,
   SnapshotOptions,
-  WithFieldValue,
 } from "firebase/firestore";
 import { useGetCollectionOn, useUpdateDoc } from "../universal/dbQuery";
 import { PathConfigs } from "../universal/dbQuery/interfaces";
@@ -14,7 +13,10 @@ const featureFlagConverter: FirestoreDataConverter<FeatureFlagItem> = {
   fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions) {
     const data = snapshot.data(options) as FeatureFlagItem;
 
-    return data;
+    return {
+      id: snapshot.id,
+      ...data,
+    };
   },
 };
 
