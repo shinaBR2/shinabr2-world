@@ -402,6 +402,7 @@ importers:
       '@types/jest': ^26.0.22
       '@types/react': ^18.0.25
       '@types/react-dom': ^18.0.8
+      '@types/react-helmet': ^6.1.6
       babel-loader: ^8.3.0
       core: workspace:*
       eslint: ^7.32.0
@@ -427,6 +428,7 @@ importers:
       '@types/jest': 26.0.24
       '@types/react': 18.0.25
       '@types/react-dom': 18.0.8
+      '@types/react-helmet': 6.1.6
       babel-loader: 8.3.0_npabyccmuonwo2rku4k53xo3hi
       eslint: 7.32.0
       eslint-config-custom: link:../eslint-config-custom
@@ -8290,6 +8292,12 @@ packages:
 
   /@types/react-dom/18.0.8:
     resolution: {integrity: sha512-C3GYO0HLaOkk9dDAz3Dl4sbe4AKUGTCfFIZsz3n/82dPNN8Du533HzKatDxeUYWu24wJgMP1xICqkWk1YOLOIw==}
+    dependencies:
+      '@types/react': 18.0.25
+    dev: true
+
+  /@types/react-helmet/6.1.6:
+    resolution: {integrity: sha512-ZKcoOdW/Tg+kiUbkFCBtvDw0k3nD4HJ/h/B9yWxN4uDO8OkRksWTO+EL+z/Qu3aHTeTll3Ro0Cc/8UhwBCMG5A==}
     dependencies:
       '@types/react': 18.0.25
     dev: true
