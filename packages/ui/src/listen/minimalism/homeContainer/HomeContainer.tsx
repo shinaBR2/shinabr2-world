@@ -22,9 +22,9 @@ const HomeContainer = (props: HomeContainerProps) => {
 
   return (
     <Container>
-      <Box mt={4}>
-        <Typography variant="h4" component="h1">
-          Listening is all you need
+      <Box my={4}>
+        <Typography variant="h3" component="h1" fontWeight={700}>
+          Just listen
         </Typography>
       </Box>
       <Stack direction="row" spacing={1} my={2}>
