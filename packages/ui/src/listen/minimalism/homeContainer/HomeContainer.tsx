@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet";
 import {
   Box,
   Card,
@@ -73,6 +74,10 @@ const HomeContainer = (props: HomeContainerProps) => {
 
   return (
     <Container maxWidth="xl">
+      <Helmet>
+        <title>{`Listen - ${audioList[currentIndex].name}`}</title>
+      </Helmet>
+
       <Box my={4}>
         <Typography variant="h3" component="h1" fontWeight={700}>
           Just listen
