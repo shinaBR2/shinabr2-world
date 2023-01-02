@@ -6,7 +6,7 @@ import Seeker from "./Seeker";
 import hooks from "core";
 //@ts-ignore
 import { SAudioPlayerAudioItem, SAudioPlayerLoopMode } from "core";
-import { Box, Grid, Slide } from "@mui/material";
+import { Box, Grid, Slide, Theme, useMediaQuery } from "@mui/material";
 import PlaylistButton from "./PlaylistButton";
 import { useRef, useState } from "react";
 import {
@@ -35,6 +35,9 @@ const MusicWidget = (props: MusicWidgetProps) => {
     getControlsProps();
   const contentRef = useRef(null);
   const [showPlayinglist, setShowPlayinglist] = useState(false);
+  const isMobile = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down("sm")
+  );
 
   if (!audioItem) {
     return null;
@@ -73,9 +76,11 @@ const MusicWidget = (props: MusicWidgetProps) => {
             <Typography gutterBottom variant="body2" component="p">
               {showPlayinglist ? "Playing list" : "Now playing"}
             </Typography>
-            <PlaylistButton
-              onClick={() => setShowPlayinglist(!showPlayinglist)}
-            />
+            {isMobile && (
+              <PlaylistButton
+                onClick={() => setShowPlayinglist(!showPlayinglist)}
+              />
+            )}
           </Box>
           <Typography gutterBottom variant="h4" component="strong">
             {artistName}
@@ -88,17 +93,19 @@ const MusicWidget = (props: MusicWidgetProps) => {
         <StyledCardActions>
           <Controls {...controlProps} />
         </StyledCardActions>
-        <Slide
-          direction="up"
-          in={showPlayinglist}
-          container={contentRef.current}
-        >
-          <PlayingList
-            audioList={audioList}
-            onSelect={onSelect}
-            currentId={audioItem.id}
-          />
-        </Slide>
+        {isMobile && (
+          <Slide
+            direction="up"
+            in={showPlayinglist}
+            container={contentRef.current}
+          >
+            <PlayingList
+              audioList={audioList}
+              onSelect={onSelect}
+              currentId={audioItem.id}
+            />
+          </Slide>
+        )}
         <audio {...getAudioProps()} />
       </StyledContent>
     </StyledCard>
