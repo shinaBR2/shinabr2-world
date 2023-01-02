@@ -32,7 +32,7 @@ const HomeContainer = (props: HomeContainerProps) => {
         <Chip label="Sad" />
         <Chip label="Heroic" />
       </Stack>
-      <Box display="flex" mt={4}>
+      <Box display="flex" my={4}>
         <Grid container spacing={2}>
           {!hidden && (
             <Grid item md={8} sm={6} xs={0}>
