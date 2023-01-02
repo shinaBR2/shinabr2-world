@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { ListenUI, SUI } from "ui";
 import { ListenCore } from "core";
 import db from "../../providers/firestore";
 
 const { SBackdrop } = SUI;
-const { AppBar, HomeContainer, MusicWidget } = ListenUI.Minimalism;
+const { AppBar, HomeContainer } = ListenUI.Minimalism;
 const { useListenHomeAudioList } = ListenCore;
 
 console.log(db);
