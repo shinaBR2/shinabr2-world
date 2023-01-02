@@ -4,6 +4,7 @@ import {
   Button,
   Card,
   Checkbox,
+  Chip,
   FormControlLabel,
   Grid,
   IconButton,
@@ -65,6 +66,22 @@ const EmptyTableBody = () => {
   );
 };
 
+const renderUsers = (idMap) => {
+  if (!idMap) {
+    return null;
+  }
+
+  const ids = Object.keys(idMap);
+
+  return (
+    <>
+      {ids.map((id) => (
+        <Chip key={id} label={id} />
+      ))}
+    </>
+  );
+};
+
 const ListenFeatureFlags = (props) => {
   const { data, onConfirm, onDelete } = props;
 
@@ -109,7 +126,7 @@ const ListenFeatureFlags = (props) => {
                   <TableRow>
                     <TableCell padding="normal">Id</TableCell>
                     <TableCell>Is Global</TableCell>
-                    <TableCell>Allow user ids</TableCell>
+                    <TableCell>Allowed users</TableCell>
                     <TableCell></TableCell>
                   </TableRow>
                 </TableHead>
@@ -126,7 +143,7 @@ const ListenFeatureFlags = (props) => {
                             <Checkbox checked={f.isGlobal} />
                           </TableCell>
                           <TableCell align="left">
-                            {f.allowedUserIds && f.allowedUserIds
+                            {renderUsers(f.allowedUserIds) && f.allowedUserIds
                               ? Object.keys(f.allowedUserIds).join(",")
                               : ""}
                           </TableCell>
