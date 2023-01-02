@@ -25,6 +25,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Scrollbar from "../../../components/scrollbar/Scrollbar";
 import Iconify from "../../../components/iconify/Iconify";
 import { useState } from "react";
+import FormDialog from "./FormDialog";
 
 const createSchema = yup
   .object({
@@ -105,12 +106,22 @@ const ListenFeatureFlags = (props) => {
   const isDebug = true;
 
   const [open, setOpen] = useState(null);
+  const [openForm, setOpenForm] = useState(false);
+  const [activeItem, setActiveItem] = useState(null);
 
-  const handleOpenMenu = (event) => {
+  const handleOpenMenu = (featureFlagItem) => (event) => {
     setOpen(event.currentTarget);
+    setActiveItem(featureFlagItem);
   };
   const handleCloseMenu = () => {
     setOpen(null);
+  };
+  const handleOpenForm = () => {
+    handleCloseMenu();
+    setOpenForm(true);
+  };
+  const handleCloseForm = () => {
+    setOpenForm(false);
   };
 
   const isEmpty = !data.length;
@@ -134,6 +145,8 @@ const ListenFeatureFlags = (props) => {
                 {!isEmpty && (
                   <TableBody>
                     {data.map((f) => {
+                      const { allowedUserIds } = f;
+
                       return (
                         <TableRow key={f.id} hover>
                           <TableCell component="th" scope="row">
@@ -143,8 +156,10 @@ const ListenFeatureFlags = (props) => {
                             <Checkbox checked={f.isGlobal} />
                           </TableCell>
                           <TableCell align="left">
-                            {renderUsers(f.allowedUserIds) && f.allowedUserIds
-                              ? Object.keys(f.allowedUserIds).join(",")
+                            {allowedUserIds
+                              ? allowedUserIds.map((id) => (
+                                  <Chip key={id} label={id} />
+                                ))
                               : ""}
                           </TableCell>
 
@@ -152,7 +167,7 @@ const ListenFeatureFlags = (props) => {
                             <IconButton
                               size="large"
                               color="inherit"
-                              onClick={handleOpenMenu}
+                              onClick={handleOpenMenu(f)}
                             >
                               <Iconify icon={"eva:more-vertical-fill"} />
                             </IconButton>
@@ -168,6 +183,7 @@ const ListenFeatureFlags = (props) => {
             </TableContainer>
           </Scrollbar>
         </Card>
+
         <Popover
           open={Boolean(open)}
           anchorEl={open}
@@ -186,16 +202,18 @@ const ListenFeatureFlags = (props) => {
             },
           }}
         >
-          <MenuItem>
+          <MenuItem onClick={handleOpenForm}>
             <Iconify icon={"eva:edit-fill"} sx={{ mr: 2 }} />
             Edit
           </MenuItem>
-
-          <MenuItem sx={{ color: "error.main" }}>
-            <Iconify icon={"eva:trash-2-outline"} sx={{ mr: 2 }} />
-            Delete
-          </MenuItem>
         </Popover>
+
+        <FormDialog
+          open={openForm}
+          onClose={handleCloseForm}
+          data={activeItem}
+          onConfirm={onSubmit}
+        />
       </>
     );
   }
