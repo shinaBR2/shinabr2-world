@@ -1,6 +1,6 @@
 export interface FeatureFlagItem {
   isGlobal: boolean;
-  allowUserIds: {
+  allowedUserIds: {
     [userId: string]: boolean;
   };
 }
