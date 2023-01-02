@@ -8,6 +8,7 @@ import {
   Grid,
   IconButton,
   MenuItem,
+  Paper,
   Popover,
   Table,
   TableBody,
@@ -16,6 +17,7 @@ import {
   TableHead,
   TableRow,
   TextField,
+  Typography,
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -41,8 +43,33 @@ const getDefaultValues = (data) => {
   return data;
 };
 
+const EmptyTableBody = () => {
+  return (
+    <TableBody>
+      <TableRow>
+        <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+          <Paper
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            <Typography variant="h6" paragraph>
+              Not found
+            </Typography>
+
+            <Typography variant="body2">No results found</Typography>
+          </Paper>
+        </TableCell>
+      </TableRow>
+    </TableBody>
+  );
+};
+
 const ListenFeatureFlags = (props) => {
   const { data, onConfirm, onDelete } = props;
+
+  console.log(data);
+
   const useFormInputs = {
     defaultValues: getDefaultValues(data),
     resolver: !data ? yupResolver(createSchema) : undefined,
@@ -69,6 +96,8 @@ const ListenFeatureFlags = (props) => {
     setOpen(null);
   };
 
+  const isEmpty = !data.length;
+
   if (isDebug) {
     return (
       <>
@@ -78,34 +107,46 @@ const ListenFeatureFlags = (props) => {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell padding="normal">Name</TableCell>
+                    <TableCell padding="normal">Id</TableCell>
                     <TableCell>Is Global</TableCell>
                     <TableCell>Allow user ids</TableCell>
                     <TableCell></TableCell>
                   </TableRow>
                 </TableHead>
 
-                <TableBody>
-                  <TableRow hover>
-                    <TableCell component="th" scope="row">
-                      Name
-                    </TableCell>
-                    <TableCell align="left">
-                      <Checkbox checked={true} />
-                    </TableCell>
-                    <TableCell align="left">UIDs</TableCell>
+                {!isEmpty && (
+                  <TableBody>
+                    {data.map((f) => {
+                      return (
+                        <TableRow key={f.id} hover>
+                          <TableCell component="th" scope="row">
+                            {f.id}
+                          </TableCell>
+                          <TableCell align="left">
+                            <Checkbox checked={f.isGlobal} />
+                          </TableCell>
+                          <TableCell align="left">
+                            {f.allowedUserIds && f.allowedUserIds
+                              ? Object.keys(f.allowedUserIds).join(",")
+                              : ""}
+                          </TableCell>
 
-                    <TableCell align="right">
-                      <IconButton
-                        size="large"
-                        color="inherit"
-                        onClick={handleOpenMenu}
-                      >
-                        <Iconify icon={"eva:more-vertical-fill"} />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
+                          <TableCell align="right">
+                            <IconButton
+                              size="large"
+                              color="inherit"
+                              onClick={handleOpenMenu}
+                            >
+                              <Iconify icon={"eva:more-vertical-fill"} />
+                            </IconButton>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                )}
+
+                {isEmpty && <EmptyTableBody />}
               </Table>
             </TableContainer>
           </Scrollbar>

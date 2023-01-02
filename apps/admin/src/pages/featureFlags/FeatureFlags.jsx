@@ -2,6 +2,11 @@ import { Helmet } from "react-helmet-async";
 import { Grid, Container, Typography, Box, Tabs, Tab } from "@mui/material";
 import React from "react";
 import ListenFeatureFlags from "./Listen";
+import { Entity } from "core";
+import db from "../../providers/firestore";
+import FullPageLoader from "../../components/@full-page-loader";
+
+const { useListenFeatureFlag } = Entity.EntityFeatureFlag;
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -20,6 +25,19 @@ const FeatureFlags = () => {
     setTabValue(newValue);
   };
 
+  const pathConfig = {
+    path: "configs",
+    pathSegments: ["listen", "features"],
+  };
+  const { values: listenData, loading: listenLoading } = useListenFeatureFlag(
+    db,
+    pathConfig
+  );
+
+  if (listenLoading) {
+    return <FullPageLoader open={listenLoading} />;
+  }
+
   return (
     <>
       <Helmet>
@@ -36,7 +54,7 @@ const FeatureFlags = () => {
             </Tabs>
           </Box>
           <TabPanel value={tabValue} index={0}>
-            <ListenFeatureFlags />
+            <ListenFeatureFlags data={listenData} />
           </TabPanel>
         </Box>
       </Container>
