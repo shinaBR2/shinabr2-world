@@ -35,7 +35,7 @@ const featureFlagConverter: FirestoreDataConverter<FeatureFlagItem> = {
 
     return {
       id: snapshot.id,
-      isGlobal,
+      ...data,
       allowedUserIds: ids,
     };
   },
