@@ -77,7 +77,9 @@ const renderUsers = (idMap) => {
   return (
     <>
       {ids.map((id) => (
-        <Chip key={id} label={id} />
+        <Box mx={1}>
+          <Chip key={id} label={id} />
+        </Box>
       ))}
     </>
   );
@@ -157,7 +159,9 @@ const ListenFeatureFlags = (props) => {
                           <TableCell align="left">
                             {allowedUserIds
                               ? allowedUserIds.map((id) => (
-                                  <Chip key={id} label={id} />
+                                  <Box m={1}>
+                                    <Chip key={id} label={id} />
+                                  </Box>
                                 ))
                               : ""}
                           </TableCell>
