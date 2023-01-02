@@ -11,7 +11,6 @@ console.log(db);
 
 const Home = () => {
   const { values: audioList, loading } = useListenHomeAudioList(db);
-  console.log(audioList);
 
   if (loading) {
     return (
