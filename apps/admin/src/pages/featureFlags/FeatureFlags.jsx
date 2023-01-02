@@ -6,6 +6,7 @@ import { Entity } from "core";
 import db from "../../providers/firestore";
 import FullPageLoader from "../../components/@full-page-loader";
 import pw from "a-promise-wrapper";
+import { useAuthContext } from "../../providers/auth";
 
 const { useListenFeatureFlag, useSaveFeatureFlag } = Entity.EntityFeatureFlag;
 
@@ -20,6 +21,7 @@ const TabPanel = (props) => {
 };
 
 const FeatureFlags = () => {
+  const { user } = useAuthContext();
   const [tabValue, setTabValue] = useState(0);
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
@@ -43,11 +45,14 @@ const FeatureFlags = () => {
   const saveFunc = useSaveFeatureFlag(db, pathConfig);
 
   const onSaveSingleItem = async (id, data) => {
-    console.log("id => data");
-    console.log(id);
-    console.log(data);
+    const { uid } = user;
 
-    const { error } = await pw(saveFunc(id, data));
+    const newData = {
+      ...data,
+      editorId: uid,
+    };
+
+    const { error } = await pw(saveFunc(id, newData));
 
     if (error) {
       setShowError(true);
