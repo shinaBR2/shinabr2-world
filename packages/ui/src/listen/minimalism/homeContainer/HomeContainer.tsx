@@ -1,4 +1,13 @@
-import { Box, Card, Chip, Container, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Card,
+  Chip,
+  Container,
+  Grid,
+  Theme,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import { SAudioPlayerAudioItem } from "core";
 import MusicWidget from "../music-widget";
 
@@ -8,6 +17,7 @@ interface HomeContainerProps {
 
 const HomeContainer = (props: HomeContainerProps) => {
   const { audioList } = props;
+  const hidden = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
 
   return (
     <Container>
@@ -21,23 +31,25 @@ const HomeContainer = (props: HomeContainerProps) => {
         <Chip label="Sad" />
         <Chip label="Heroic" />
       </Box>
-      <Grid container>
-        <Grid item xs={12} sm={8}>
-          <Card>
-            {audioList.map((a) => {
-              const { id, image, name, artistName } = a;
+      <Grid container spacing={2}>
+        {!hidden && (
+          <Grid item md={8} sm={6} xs={0}>
+            <Card>
+              {audioList.map((a) => {
+                const { id, image, name, artistName } = a;
 
-              return (
-                <Box key={id}>
-                  {/* <Box>image</Box> */}
-                  <Typography component="strong">{name}</Typography>
-                  <Typography variant="caption">{artistName}</Typography>
-                </Box>
-              );
-            })}
-          </Card>
-        </Grid>
-        <Grid item xs={12} sm={4}>
+                return (
+                  <Box key={id}>
+                    {/* <Box>image</Box> */}
+                    <Typography component="strong">{name}</Typography>
+                    <Typography variant="caption">{artistName}</Typography>
+                  </Box>
+                );
+              })}
+            </Card>
+          </Grid>
+        )}
+        <Grid item md={4} sm={6} xs={12} container justifyContent="center">
           <MusicWidget audioList={audioList} />
         </Grid>
       </Grid>
