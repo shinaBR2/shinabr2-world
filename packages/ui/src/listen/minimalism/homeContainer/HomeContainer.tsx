@@ -6,6 +6,7 @@ import {
   Grid,
   List,
   ListItem,
+  ListItemButton,
   ListItemText,
   Stack,
   Theme,
@@ -29,7 +30,9 @@ const PlayingListItem = (props: HomeContainerProps) => {
 
         return (
           <ListItem key={id}>
-            <ListItemText primary={name} secondary={artistName} />
+            <ListItemButton>
+              <ListItemText primary={name} secondary={artistName} />
+            </ListItemButton>
           </ListItem>
         );
       })}
@@ -42,16 +45,16 @@ const HomeContainer = (props: HomeContainerProps) => {
   const hidden = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
 
   return (
-    <Container>
+    <Container maxWidth="xl">
       <Box my={4}>
         <Typography variant="h3" component="h1" fontWeight={700}>
           Just listen
         </Typography>
       </Box>
       <Stack direction="row" spacing={1} my={2}>
-        <Chip label="Default" />
-        <Chip label="Sad" />
-        <Chip label="Heroic" />
+        <Chip label="Default" color="primary" onClick={() => {}} />
+        {/* <Chip label="Sad" />
+        <Chip label="Heroic" /> */}
       </Stack>
       <Box display="flex" my={4}>
         <Grid container spacing={2}>
