@@ -12,7 +12,7 @@ const reduceFunc = (ids: string[]) => {
   return ids.reduce((acc, id) => {
     return {
       ...acc,
-      id: true,
+      [id]: true,
     };
   }, {});
 };
@@ -56,17 +56,15 @@ const useListenFeatureFlag = (db: Firestore, config: PathConfigs) => {
   };
 };
 
-const useSaveFeatureFlag = (
-  db: Firestore,
-  config: PathConfigs,
-  data: FeatureFlagItem
-) => {
+const useSaveFeatureFlag = (db: Firestore, config: PathConfigs) => {
   const udpateFunc = useUpdateDoc();
 
-  return async (inputs: FeatureFlagItem) => {
+  return async (id: string, inputs: FeatureFlagItem) => {
+    const { path, pathSegments } = config;
     const updateInputs = {
       db,
-      ...config,
+      path,
+      pathSegments: [...pathSegments, id],
       data: featureFlagConverter.toFirestore(inputs),
     };
 
