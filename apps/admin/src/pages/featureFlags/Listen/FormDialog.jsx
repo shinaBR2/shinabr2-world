@@ -17,6 +17,7 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
+const delimiter = ",";
 const obj = {
   isGlobal: yup.boolean().required(),
   uids: yup.string().required(),
@@ -35,12 +36,14 @@ const getDefaultValues = (data) => {
 
   return {
     isGlobal: !!isGlobal,
-    uids: allowedUserIds ? allowedUserIds.join(",").replace(/,\s*$/, "") : "",
+    uids: allowedUserIds
+      ? allowedUserIds.join(delimiter).replace(/,\s*$/, "")
+      : "",
   };
 };
 
 const FormComponent = (props) => {
-  const { data } = props;
+  const { data, onConfirm } = props;
   const useFormInputs = {
     defaultValues: getDefaultValues(data),
     resolver: !data ? yupResolver(schema) : undefined,
@@ -50,16 +53,21 @@ const FormComponent = (props) => {
     handleSubmit,
     formState: { errors },
   } = useForm(useFormInputs);
-  const onSubmit = (data) => {
-    console.log(data);
-    // onConfirm(data);
+  const preSubmit = (data) => {
+    const { isGlobal, uids: idString } = data;
+    const newData = {
+      isGlobal,
+      allowedUserIds: idString.split(delimiter),
+    };
+
+    onConfirm(newData);
   };
 
   return (
     <Grid
       container
       component={"form"}
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(preSubmit)}
       spacing={2}
     >
       <Controller
