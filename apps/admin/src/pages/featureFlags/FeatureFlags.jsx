@@ -1,10 +1,11 @@
 import { Helmet } from "react-helmet-async";
-import { Grid, Container, Typography, Box, Tabs, Tab } from "@mui/material";
-import React from "react";
+import { Container, Box, Tabs, Tab, Snackbar, Alert } from "@mui/material";
+import React, { useState } from "react";
 import ListenFeatureFlags from "./Listen";
 import { Entity } from "core";
 import db from "../../providers/firestore";
 import FullPageLoader from "../../components/@full-page-loader";
+import pw from "a-promise-wrapper";
 
 const { useListenFeatureFlag, useSaveFeatureFlag } = Entity.EntityFeatureFlag;
 
@@ -19,7 +20,13 @@ const TabPanel = (props) => {
 };
 
 const FeatureFlags = () => {
-  const [tabValue, setTabValue] = React.useState(0);
+  const [tabValue, setTabValue] = useState(0);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+
+  const handleCloseSuccess = () => setShowSuccess(false);
+  const handleCloseError = () => setShowError(false);
 
   const handleChange = (_event, newValue) => {
     setTabValue(newValue);
@@ -35,11 +42,19 @@ const FeatureFlags = () => {
   );
   const saveFunc = useSaveFeatureFlag(db, pathConfig);
 
-  const onSaveSingleItem = (id, data) => {
+  const onSaveSingleItem = async (id, data) => {
     console.log("id => data");
     console.log(id);
     console.log(data);
-    saveFunc(id, data);
+
+    const { error } = await pw(saveFunc(id, data));
+
+    if (error) {
+      setShowError(true);
+      return console.error(error);
+    }
+
+    setShowSuccess(true);
   };
 
   if (listenLoading) {
@@ -68,6 +83,37 @@ const FeatureFlags = () => {
             />
           </TabPanel>
         </Box>
+
+        {showSuccess && (
+          <Snackbar
+            open={showSuccess}
+            autoHideDuration={6000}
+            onClose={handleCloseSuccess}
+          >
+            <Alert
+              onClose={handleCloseSuccess}
+              severity="success"
+              sx={{ width: "100%" }}
+            >
+              Success!
+            </Alert>
+          </Snackbar>
+        )}
+        {showError && (
+          <Snackbar
+            open={showError}
+            autoHideDuration={6000}
+            onClose={handleCloseError}
+          >
+            <Alert
+              onClose={handleCloseError}
+              severity="error"
+              sx={{ width: "100%" }}
+            >
+              Error!
+            </Alert>
+          </Snackbar>
+        )}
       </Container>
     </>
   );
