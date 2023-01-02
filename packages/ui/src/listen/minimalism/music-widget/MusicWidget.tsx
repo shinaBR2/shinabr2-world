@@ -17,23 +17,19 @@ import {
 } from "./Styled";
 import PlayingList from "./PlayingList";
 
-const { useSAudioPlayer } = hooks;
-
 interface MusicWidgetProps {
   audioList: SAudioPlayerAudioItem[];
+  hookResult: any;
+  onItemSelect: (id: string) => void;
   index?: number;
   shuffle?: boolean;
   loopMode?: SAudioPlayerLoopMode;
 }
 
 const MusicWidget = (props: MusicWidgetProps) => {
-  const { audioList } = props;
-  const [index, setIndex] = useState(0);
+  const { audioList, hookResult, onItemSelect } = props;
   const { getAudioProps, getSeekerProps, getControlsProps, playerState } =
-    useSAudioPlayer({
-      audioList,
-      index,
-    });
+    hookResult;
   const { isPlay, isShuffled, loopMode, audioItem } = playerState;
   const { onPlay, onPrev, onNext, onShuffle, onChangeLoopMode } =
     getControlsProps();
@@ -47,13 +43,7 @@ const MusicWidget = (props: MusicWidgetProps) => {
   const { name, artistName, image } = audioItem;
 
   const onSelect = (id: string) => () => {
-    const index = audioList.findIndex((a) => a.id === id);
-    setIndex(index);
-
-    if (!isPlay) {
-      onPlay();
-    }
-
+    onItemSelect(id);
     setShowPlayinglist(false);
   };
 

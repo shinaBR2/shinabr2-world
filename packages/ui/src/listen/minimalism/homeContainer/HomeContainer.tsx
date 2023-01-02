@@ -13,15 +13,24 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import { SAudioPlayerAudioItem } from "core";
+import hooks, { SAudioPlayerAudioItem } from "core";
+import { useState } from "react";
 import MusicWidget from "../music-widget";
+const { useSAudioPlayer } = hooks;
 
 interface HomeContainerProps {
   audioList: SAudioPlayerAudioItem[];
 }
 
-const PlayingListItem = (props: HomeContainerProps) => {
-  const { audioList } = props;
+interface PlayingListItemProps {
+  audioList: SAudioPlayerAudioItem[];
+  currentId: string;
+  onItemSelect: (id: string) => void;
+}
+
+const PlayingList = (props: PlayingListItemProps) => {
+  const { audioList, currentId, onItemSelect } = props;
+  const onClick = (id: string) => () => onItemSelect(id);
 
   return (
     <List>
@@ -30,7 +39,7 @@ const PlayingListItem = (props: HomeContainerProps) => {
 
         return (
           <ListItem key={id}>
-            <ListItemButton>
+            <ListItemButton selected={id === currentId} onClick={onClick(id)}>
               <ListItemText primary={name} secondary={artistName} />
             </ListItemButton>
           </ListItem>
@@ -43,6 +52,24 @@ const PlayingListItem = (props: HomeContainerProps) => {
 const HomeContainer = (props: HomeContainerProps) => {
   const { audioList } = props;
   const hidden = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
+
+  const [index, setIndex] = useState(0);
+  const hookResult = useSAudioPlayer({
+    audioList,
+    index,
+  });
+  const { getControlsProps, playerState } = hookResult;
+  const { isPlay, currentIndex } = playerState;
+  const { onPlay } = getControlsProps();
+
+  const onItemSelect = (id: string) => {
+    const index = audioList.findIndex((a) => a.id === id);
+    setIndex(index);
+
+    if (!isPlay) {
+      onPlay();
+    }
+  };
 
   return (
     <Container maxWidth="xl">
@@ -63,12 +90,20 @@ const HomeContainer = (props: HomeContainerProps) => {
               <Card
                 sx={{ height: "100%", maxHeight: "600px", overflowY: "auto" }}
               >
-                <PlayingListItem audioList={audioList} />
+                <PlayingList
+                  audioList={audioList}
+                  onItemSelect={onItemSelect}
+                  currentId={audioList[currentIndex].id}
+                />
               </Card>
             </Grid>
           )}
           <Grid item md={4} sm={6} xs={12} container justifyContent="center">
-            <MusicWidget audioList={audioList} />
+            <MusicWidget
+              audioList={audioList}
+              hookResult={hookResult}
+              onItemSelect={onItemSelect}
+            />
           </Grid>
         </Grid>
       </Box>
