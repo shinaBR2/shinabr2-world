@@ -4,6 +4,7 @@ import {
   Chip,
   Container,
   Grid,
+  Stack,
   Theme,
   Typography,
   useMediaQuery,
@@ -21,38 +22,40 @@ const HomeContainer = (props: HomeContainerProps) => {
 
   return (
     <Container>
-      <Box>
-        <Typography variant="h1" component="h1">
+      <Box mt={4}>
+        <Typography variant="h4" component="h1">
           Listening is all you need
         </Typography>
       </Box>
-      <Box>
+      <Stack direction="row" spacing={1} my={2}>
         <Chip label="Default" />
         <Chip label="Sad" />
         <Chip label="Heroic" />
-      </Box>
-      <Grid container spacing={2}>
-        {!hidden && (
-          <Grid item md={8} sm={6} xs={0}>
-            <Card>
-              {audioList.map((a) => {
-                const { id, image, name, artistName } = a;
+      </Stack>
+      <Box display="flex" mt={4}>
+        <Grid container spacing={2}>
+          {!hidden && (
+            <Grid item md={8} sm={6} xs={0}>
+              <Card>
+                {audioList.map((a) => {
+                  const { id, image, name, artistName } = a;
 
-                return (
-                  <Box key={id}>
-                    {/* <Box>image</Box> */}
-                    <Typography component="strong">{name}</Typography>
-                    <Typography variant="caption">{artistName}</Typography>
-                  </Box>
-                );
-              })}
-            </Card>
+                  return (
+                    <Box key={id}>
+                      {/* <Box>image</Box> */}
+                      <Typography component="strong">{name}</Typography>
+                      <Typography variant="caption">{artistName}</Typography>
+                    </Box>
+                  );
+                })}
+              </Card>
+            </Grid>
+          )}
+          <Grid item md={4} sm={6} xs={12} container justifyContent="center">
+            <MusicWidget audioList={audioList} />
           </Grid>
-        )}
-        <Grid item md={4} sm={6} xs={12} container justifyContent="center">
-          <MusicWidget audioList={audioList} />
         </Grid>
-      </Grid>
+      </Box>
     </Container>
   );
 };
