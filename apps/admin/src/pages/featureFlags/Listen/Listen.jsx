@@ -84,7 +84,7 @@ const renderUsers = (idMap) => {
 };
 
 const ListenFeatureFlags = (props) => {
-  const { data, onConfirm, onDelete } = props;
+  const { data, onSaveSingleItem, onDelete } = props;
 
   console.log(data);
 
@@ -97,10 +97,6 @@ const ListenFeatureFlags = (props) => {
     handleSubmit,
     formState: { errors },
   } = useForm(useFormInputs);
-  const onSubmit = (data) => {
-    console.log(data);
-    // onConfirm(data);
-  };
 
   const submitLabel = !!data ? "Update" : "Create";
   const isDebug = true;
@@ -122,6 +118,9 @@ const ListenFeatureFlags = (props) => {
   };
   const handleCloseForm = () => {
     setOpenForm(false);
+  };
+  const preSaveSingleItem = (data) => {
+    onSaveSingleItem(activeItem.id, data);
   };
 
   const isEmpty = !data.length;
@@ -212,7 +211,7 @@ const ListenFeatureFlags = (props) => {
           open={openForm}
           onClose={handleCloseForm}
           data={activeItem}
-          onConfirm={onSubmit}
+          onConfirm={preSaveSingleItem}
         />
       </>
     );

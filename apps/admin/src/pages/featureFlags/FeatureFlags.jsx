@@ -6,7 +6,7 @@ import { Entity } from "core";
 import db from "../../providers/firestore";
 import FullPageLoader from "../../components/@full-page-loader";
 
-const { useListenFeatureFlag } = Entity.EntityFeatureFlag;
+const { useListenFeatureFlag, useSaveFeatureFlag } = Entity.EntityFeatureFlag;
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -33,6 +33,14 @@ const FeatureFlags = () => {
     db,
     pathConfig
   );
+  const saveFunc = useSaveFeatureFlag(db, pathConfig);
+
+  const onSaveSingleItem = (id, data) => {
+    console.log("id => data");
+    console.log(id);
+    console.log(data);
+    saveFunc(id, data);
+  };
 
   if (listenLoading) {
     return <FullPageLoader open={listenLoading} />;
@@ -54,7 +62,10 @@ const FeatureFlags = () => {
             </Tabs>
           </Box>
           <TabPanel value={tabValue} index={0}>
-            <ListenFeatureFlags data={listenData} />
+            <ListenFeatureFlags
+              data={listenData}
+              onSaveSingleItem={onSaveSingleItem}
+            />
           </TabPanel>
         </Box>
       </Container>
