@@ -91,6 +91,7 @@ const HomeContainer = (props: HomeContainerProps) => {
     }
 
     const filtered = audioList.filter((a) => {
+      // @ts-ignore
       if (a.feelingMap && !!a.feelingMap[id]) {
         return true;
       }
