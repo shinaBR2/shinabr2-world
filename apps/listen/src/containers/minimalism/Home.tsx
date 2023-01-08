@@ -1,9 +1,9 @@
 import React from "react";
-import { ListenUI, SUI } from "ui";
+import { ListenUI, UniversalUI } from "ui";
 import { ListenCore } from "core";
 import db from "../../providers/firestore";
 
-const { SBackdrop } = SUI;
+const { LoadingBackdrop } = UniversalUI;
 const { AppBar, HomeContainer } = ListenUI.Minimalism;
 const { useListenHomeAudioList, useListenHomeFeelingList } = ListenCore;
 
@@ -15,11 +15,7 @@ const Home = () => {
   const isLoadig = loadingAudios || loadingFeelings;
 
   if (isLoadig) {
-    return (
-      <SBackdrop open={true} loading={isLoadig}>
-        {" "}
-      </SBackdrop>
-    );
+    return <LoadingBackdrop message="Valuable things deserve waiting" />;
   }
 
   return (
