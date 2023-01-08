@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ListenUI, SUI } from "ui";
+import { ListenUI } from "ui";
 // import { AuthProvider } from "./providers/auth";
 import Home from "./containers/minimalism/Home";
 

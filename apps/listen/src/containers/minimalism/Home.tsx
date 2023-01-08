@@ -13,6 +13,9 @@ const Home = () => {
   const { values: feelingList, loading: loadingFeelings } =
     useListenHomeFeelingList(db);
   const isLoadig = loadingAudios || loadingFeelings;
+  const hasAudio = !!audioList && !!audioList?.length;
+  const hasFeeling = !!feelingList && !!feelingList?.length;
+  const hasFullData = hasAudio && hasFeeling;
 
   if (isLoadig) {
     return <LoadingBackdrop message="Valuable things deserve waiting" />;
@@ -21,7 +24,7 @@ const Home = () => {
   return (
     <main>
       <AppBar />
-      {!!audioList && !!audioList?.length && (
+      {hasFullData && (
         <HomeContainer feelingList={feelingList} audioList={audioList} />
       )}
     </main>
