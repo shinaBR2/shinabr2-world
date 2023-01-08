@@ -4,7 +4,7 @@ import { ListenCore } from "core";
 import db from "../../providers/firestore";
 
 const { LoadingBackdrop } = UniversalUI;
-const { AppBar, HomeContainer } = ListenUI.Minimalism;
+const { AppBar, Logo, HomeContainer } = ListenUI.Minimalism;
 const { useListenHomeAudioList, useListenHomeFeelingList } = ListenCore;
 
 const Home = () => {
@@ -22,12 +22,16 @@ const Home = () => {
   }
 
   return (
-    <main>
-      <AppBar />
-      {hasFullData && (
-        <HomeContainer feelingList={feelingList} audioList={audioList} />
-      )}
-    </main>
+    <>
+      <AppBar>
+        <Logo />
+      </AppBar>
+      <main>
+        {hasFullData && (
+          <HomeContainer feelingList={feelingList} audioList={audioList} />
+        )}
+      </main>
+    </>
   );
 };
 
