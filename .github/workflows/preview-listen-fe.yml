@@ -46,7 +46,7 @@ jobs:
           entryPoint: "apps/listen"
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_MY_WORLD_DEV }}"
-          projectId: my-world-dev
+          projectId: ${{ secrets.VITE_PROJECT_ID }}
 
   prod_deploy:
     if: "${{ github.event.pull_request.head.repo.full_name == github.repository }}"

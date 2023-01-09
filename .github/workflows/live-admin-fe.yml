@@ -46,7 +46,7 @@ jobs:
           entryPoint: "apps/admin"
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_MY_WORLD_DEV }}"
-          projectId: my-world-dev
+          projectId: ${{ secrets.VITE_PROJECT_ID }}
           channelId: live
 
   prod_deploy:
@@ -86,5 +86,5 @@ jobs:
           entryPoint: "apps/admin"
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_SWORLD_PROD }}"
-          projectId: my-world-dev
+          projectId: ${{ secrets.VITE_PROJECT_ID }}
           channelId: live
