@@ -52,7 +52,7 @@ jobs:
   prod_deploy:
     runs-on: ubuntu-latest
     environment:
-      name: dev
+      name: prod
     steps:
       - name: Check out code
         uses: actions/checkout@v3
