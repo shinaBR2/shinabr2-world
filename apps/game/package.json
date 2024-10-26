@@ -1,0 +1,12 @@
+{
+  "name": "game",
+  "scripts": {
+    "dev": "pnpx http-server",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "eslint-config-custom": "workspace:*",
+    "tsconfig": "workspace:*",
+    "typescript": "^4.8.3"
+  }
+}

@@ -12,6 +12,7 @@
     "dev:api": "turbo run dev --filter=api",
     "dev:listen": "turbo run dev --filter=listen --filter=core --filter=ui --no-cache --parallel --continue",
     "dev:admin": "turbo run dev --filter=admin --filter=core --no-cache --parallel --continue",
+    "dev:game": "turbo run dev --filter=game --filter=core --no-cache --parallel --continue",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
     "test": "turbo run test"
