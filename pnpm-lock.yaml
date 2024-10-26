@@ -310,7 +310,35 @@ importers:
         version: 3.2.10(@types/node@18.19.39)(terser@5.31.1)
 
   apps/game:
+    dependencies:
+      phaser:
+        specifier: ^3.86.0
+        version: 3.86.0
+      react:
+        specifier: ^18.2.0
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.3.1(react@18.3.1)
     devDependencies:
+      '@originjs/vite-plugin-commonjs':
+        specifier: ^1.0.3
+        version: 1.0.3
+      '@types/node':
+        specifier: ^18.11.9
+        version: 18.19.39
+      '@types/react':
+        specifier: ^18.0.25
+        version: 18.3.3
+      '@types/react-dom':
+        specifier: ^18.0.8
+        version: 18.3.0
+      '@vitejs/plugin-react':
+        specifier: ^2.1.0
+        version: 2.2.0(vite@3.2.10(@types/node@18.19.39)(terser@5.31.1))
+      eslint:
+        specifier: ^7.32.0
+        version: 7.32.0
       eslint-config-custom:
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
@@ -320,6 +348,12 @@ importers:
       typescript:
         specifier: ^4.8.3
         version: 4.9.5
+      vite:
+        specifier: ^3.1.0
+        version: 3.2.10(@types/node@18.19.39)(terser@5.31.1)
+      vite-plugin-pwa:
+        specifier: ^0.13.3
+        version: 0.13.3(vite@3.2.10(@types/node@18.19.39)(terser@5.31.1))(workbox-build@6.6.0(@types/babel__core@7.20.5))(workbox-window@6.6.0)
 
   apps/listen:
     dependencies:
@@ -5627,6 +5661,7 @@ packages:
   eslint@8.4.1:
     resolution: {integrity: sha512-TxU/p7LB1KxQ6+7aztTnO7K0i+h0tDi81YRY9VzB6Id71kNz+fFYnf5HD5UOQmxkzcoa0TlVZf9dpMtUv0GpWg==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
 
   espree@7.3.1:
@@ -5694,6 +5729,9 @@ packages:
 
   eventemitter3@4.0.7:
     resolution: {integrity: sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==}
+
+  eventemitter3@5.0.1:
+    resolution: {integrity: sha512-GWkBvjiSZK87ELrYOSESUYeVIc9mvLLf/nXalMOS5dYrgZq9o5OVkbZAVM06CVxYsCwH9BDZFPlQTlPA1j4ahA==}
 
   events@3.3.0:
     resolution: {integrity: sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==}
@@ -8158,6 +8196,9 @@ packages:
 
   pend@1.2.0:
     resolution: {integrity: sha512-F3asv42UuXchdzt+xXqfW1OGlVBe+mxa2mqI0pg5yAHZPvFmY3Y6drSf/GQ1A86WgWEN9Kzh/WrgKa6iGcHXLg==}
+
+  phaser@3.86.0:
+    resolution: {integrity: sha512-A7rog3GhXYcWsPimteQmudyY6W0fx0eviOoo9Cwpzae1RPeJBDkhmWv5IFrQO9dL+T907E4dprQPnd2D4WhoEw==}
 
   picocolors@0.2.1:
     resolution: {integrity: sha512-cMlDqaLEqfSaW8Z7N5Jw+lyIW869EzT73/F5lhtY9cLGoVxSXznfgfXMO0Z5K0o0Q2TkTXq+0KFsdnSe3jDViA==}
@@ -18583,6 +18624,8 @@ snapshots:
 
   eventemitter3@4.0.7: {}
 
+  eventemitter3@5.0.1: {}
+
   events@3.3.0: {}
 
   evp_bytestokey@1.0.3:
@@ -20305,7 +20348,11 @@ snapshots:
       pretty-format: 26.6.2
       throat: 5.0.0
     transitivePeerDependencies:
+      - bufferutil
+      - canvas
       - supports-color
+      - ts-node
+      - utf-8-validate
 
   jest-leak-detector@26.6.2:
     dependencies:
@@ -21703,6 +21750,10 @@ snapshots:
       sha.js: 2.4.11
 
   pend@1.2.0: {}
+
+  phaser@3.86.0:
+    dependencies:
+      eventemitter3: 5.0.1
 
   picocolors@0.2.1: {}
 
