@@ -4,8 +4,13 @@ import { viteCommonjs } from "@originjs/vite-plugin-commonjs";
 // import { visualizer } from "rollup-plugin-visualizer";
 import { VitePWA } from "vite-plugin-pwa";
 
+console.log("akdjhkasdhkadh");
 // https://github.com/vitejs/vite/issues/5308#issuecomment-1010652389
 export default defineConfig({
+  server: {
+    port: 3003,
+    host: "localhost",
+  },
   plugins: [
     viteCommonjs(),
     react(),
