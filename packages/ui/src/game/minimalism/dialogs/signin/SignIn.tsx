@@ -12,7 +12,8 @@ import PersonIcon from "@mui/icons-material/Person";
 import AddIcon from "@mui/icons-material/Add";
 // import Typography from "@mui/material/Typography";
 import { blue } from "@mui/material/colors";
-import { DialogContent } from "@mui/material";
+import { Box, CardMedia, DialogContent } from "@mui/material";
+import { GoogleIcon } from "./CustomIcons";
 
 export interface SignInProps {
   open: boolean;
@@ -22,23 +23,25 @@ export interface SignInProps {
 const SignIn = (props: SignInProps) => {
   const { onSubmit, open } = props;
 
-  const handleSubmit = () => {
-    onSubmit();
-  };
-
   return (
     <Dialog open={open}>
-      <DialogTitle>Set backup account</DialogTitle>
+      <DialogTitle>Sign in</DialogTitle>
       <DialogContent>
-        <Button
-          variant="contained"
-          color="secondary"
-          size="large"
-          type="button"
-          onClick={handleSubmit}
-        >
-          Join
-        </Button>
+        <CardMedia
+          sx={{ objectFit: "cover", width: "100%", minHeight: "120px" }}
+          image="/assets/beach.png"
+          title="beach"
+        />
+        <Box mt={2}>
+          <Button
+            fullWidth
+            variant="outlined"
+            onClick={onSubmit}
+            startIcon={<GoogleIcon />}
+          >
+            Sign in with Google
+          </Button>
+        </Box>
       </DialogContent>
     </Dialog>
   );
