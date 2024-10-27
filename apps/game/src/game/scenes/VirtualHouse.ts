@@ -2,6 +2,7 @@ import { Scene } from "phaser";
 import { EventBus } from "../EventBus";
 
 export class VirtualHouse extends Scene {
+  private avatar: string;
   private player: Phaser.Physics.Arcade.Sprite;
   private headphone: Phaser.Physics.Arcade.Sprite;
   private desk: Phaser.Physics.Arcade.Image;
@@ -39,6 +40,13 @@ export class VirtualHouse extends Scene {
     EventBus.on("signed_in", (isSignedIn: boolean) => {
       console.log("is sigend in?", isSignedIn);
     });
+    EventBus.on("avatar_selected", (avatar: string) => {
+      console.log("selected avater", avatar);
+      this.avatar = avatar;
+
+      this.createPlayer();
+      this.createStaticObjects();
+    });
 
     // const bg = this.add.image(0, 0, "background");
     // bg.setOrigin(0, 0);
@@ -67,9 +75,6 @@ export class VirtualHouse extends Scene {
       backgroundColor: "#000000",
       padding: { x: 10, y: 5 },
     });
-
-    this.createStaticObjects();
-    this.createPlayer();
 
     this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -129,8 +134,14 @@ export class VirtualHouse extends Scene {
   }
 
   private createPlayer(): void {
-    this.player = this.physics.add.sprite(150, 350, "player");
-    this.player.setScale(0.3);
+    console.log("createPlayer called");
+    if (this.avatar == "male") {
+      this.player = this.physics.add.sprite(150, 350, "male-character");
+    } else {
+      this.player = this.physics.add.sprite(150, 350, "female-character");
+    }
+
+    this.player.setScale(1.3);
     this.player.setCollideWorldBounds(true);
 
     // Match collision box to sprite
@@ -189,6 +200,10 @@ export class VirtualHouse extends Scene {
   }
 
   update(): void {
+    if (!this.avatar) {
+      return;
+    }
+
     if (!this.isUsingHeadphone) {
       // Handle movement
       const speed = 160;
