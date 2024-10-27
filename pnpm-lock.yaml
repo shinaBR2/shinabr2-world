@@ -311,6 +311,9 @@ importers:
 
   apps/game:
     dependencies:
+      core:
+        specifier: workspace:*
+        version: link:../../packages/core
       phaser:
         specifier: ^3.86.0
         version: 3.86.0

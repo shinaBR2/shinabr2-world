@@ -3,9 +3,10 @@
   "scripts": {
     "build": "vite build",
     "serve": "vite preview",
-    "dev": "vite --host 0.0.0.0 --port 3003 --clearScreen false"
+    "dev": "vite"
   },
   "dependencies": {
+    "core": "workspace:*",
     "phaser": "^3.86.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
