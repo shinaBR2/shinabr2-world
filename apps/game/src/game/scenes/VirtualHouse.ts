@@ -15,6 +15,7 @@ export class VirtualHouse extends Scene {
   private currentAudioIndex: number = 0;
   private audio: HTMLAudioElement | null = null;
   private audioList: string[] = [];
+  private isUsingHeadphone: boolean = false;
 
   constructor() {
     super({
