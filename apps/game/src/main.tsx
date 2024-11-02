@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
-import App from "./App";
 import { Auth } from "core";
 
 // Import the generated route tree
@@ -39,7 +38,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Auth.AuthProvider firebaseConfig={firebaseConfig}>
       <RouterProvider router={router} />
-      {/* <App /> */}
     </Auth.AuthProvider>
   </React.StrictMode>
 );
