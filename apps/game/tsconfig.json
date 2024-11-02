@@ -5,6 +5,5 @@
     "rootDir": "src",
     "outDir": "dist"
   },
-  "include": ["src"],
-  "files": ["node_modules/phaser3-docs/typescript/phaser.d.ts"]
+  "include": ["src"]
 }
