@@ -1,4 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { StrictMode, useEffect, useRef, useState } from "react";
+import ReactDOM from "react-dom/client";
+import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { Auth } from "core";
 import { UniversalUI } from "ui";
 import { GameUI } from "ui";
@@ -8,8 +10,15 @@ import { EventBus } from "./game/EventBus";
 const { LoadingBackdrop } = UniversalUI;
 const { UniversalMinimalismThemeProvider } = UniversalUI.Minimalism;
 
-const { Dialogs } = GameUI.Minimalism;
+const { Dialogs, Containers } = GameUI.Minimalism;
 const { SignInDialog, ChooseAvatar } = Dialogs;
+const { HomeContainer } = Containers;
+
+// Import the generated route tree
+import { routeTree } from "./routeTree.gen";
+
+// Create a new router instance
+const router = createRouter({ routeTree });
 
 const App = () => {
   const { user, isLoading, isSignedIn, signIn } = Auth.useAuthContext();
@@ -50,6 +59,15 @@ const App = () => {
     EventBus.emit("avatar_selected", value);
     setShowChooseAvatarInDialog(false);
   };
+  const gameList = [
+    {
+      id: "1",
+      name: "Bobble dungeon",
+      slug: "bobble-dungeon",
+      description: "Ride the Dungeons with just a bubble shooter.",
+      imageUrl: "/assets/bobble-dungeon/bobble_dungeon_intro.png",
+    },
+  ];
 
   if (isLoading) {
     return <LoadingBackdrop message="Valuable things deserve waiting" />;
@@ -57,21 +75,14 @@ const App = () => {
 
   return (
     <UniversalMinimalismThemeProvider>
-      <div
-        style={{
-          position: "absolute",
-          width: "100%",
-          height: "100%",
-          overflow: "hidden",
-        }}
-      >
-        <SignInDialog open={showSignInDialog} onSubmit={handleSignedIn} />
+      {/* <SignInDialog open={showSignInDialog} onSubmit={handleSignedIn} />
         <ChooseAvatar
           open={showChooseAvatarInDialog}
           onSubmit={handleSelectAvatar}
-        />
-      </div>
-      <PhaserGame ref={phaserRef} currentActiveScene={currentScene} />
+        /> */}
+      <HomeContainer gameList={gameList} />
+
+      {/* <PhaserGame ref={phaserRef} currentActiveScene={currentScene} /> */}
     </UniversalMinimalismThemeProvider>
   );
 };
