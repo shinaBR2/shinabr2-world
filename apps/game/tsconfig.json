@@ -12,7 +12,7 @@
     "types": ["jest", "node"],
     "typeRoots": [
       "./node_modules/@types",
-      "./src/types"
+      "./src/types/*.d.ts"
     ]
   },
   "include": ["src", "test"],

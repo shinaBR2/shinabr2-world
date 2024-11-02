@@ -1,21 +1,8 @@
 import Player from "../objects/player";
 import DungeonGenerator from "../objects/dungeon_generator";
 
-export interface MatterCollisionData {
-  gameObjectB: any;
-}
-
-interface MatterCollision {
-  addOnCollideStart(config: {
-    objectA: any;
-    callback: (data: MatterCollisionData) => void;
-    context: any;
-  }): void;
-}
 export interface GameScene extends Phaser.Scene {
   playAudio: (key: string) => void;
-  matterCollision: MatterCollision;
-  // player: Player
 }
 
 export default class Game extends Phaser.Scene {
@@ -35,7 +22,7 @@ export default class Game extends Phaser.Scene {
   timer!: Phaser.Time.TimerEvent;
   trailLayer!: Phaser.GameObjects.Layer;
   unsubscribePlayerCollide: any;
-  matterCollision: any;
+  // matterCollision: any;
   audios!: {
     jump:
       | Phaser.Sound.NoAudioSound
@@ -148,8 +135,12 @@ export default class Game extends Phaser.Scene {
   }
 
   /*
-    This method adds the player to the scene. It creates a new Player object along with a trail layer that will be used to draw the trail of the player.
-  */
+
+  /**
+   * This method adds the player to the scene.
+   * It creates a new Player object along with a trail layer
+   * that will be used to draw the trail of the player.
+   */
   addPlayer() {
     this.trailLayer = this.add.layer();
     this.player = new Player(
@@ -161,8 +152,13 @@ export default class Game extends Phaser.Scene {
   }
 
   /*
-  This method sets up the collisions between the player and anything else. Basically, it sets a callback function that will be called when the player collides with something.
+
   */
+  /**
+   * This method sets up the collisions between the player and anything else.
+   * Basically, it sets a callback function that will be called
+   * when the player collides with something.
+   */
   addCollisions() {
     this.unsubscribePlayerCollide = this.matterCollision.addOnCollideStart({
       objectA: this.player.sprite,
@@ -181,7 +177,7 @@ export default class Game extends Phaser.Scene {
   /*
   This is the callback that we call when the player collides with something. We check the label of the object that the player collides with and call the corresponding method.
   */
-  onPlayerCollide({ gameObjectA, gameObjectB }) {
+  onPlayerCollide({ gameObjectA, gameObjectB }: CollisionData) {
     if (!gameObjectB) return;
     if (gameObjectB.label === "coin") this.playerPicksCoin(gameObjectB);
     if (gameObjectB.label === "keys") this.playerPicksKey(gameObjectB);

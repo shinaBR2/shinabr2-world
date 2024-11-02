@@ -53,7 +53,7 @@ As we did with the player and the bat, we create this callback to handle the col
   /*
 This will be called when the bubble hits the wizard. We "load" the wizard inside the bubble and destroy the wizard.
   */
-  onWizardCollide({ gameObjectB }: { gameObjectB: any }) {
+  onWizardCollide({ gameObjectB }: CollisionData) {
     if (gameObjectB instanceof Bubble) {
       gameObjectB.load("wizard");
       this.destroy();
