@@ -218,7 +218,13 @@ export default class Game extends Phaser.Scene {
   /*
   Every time we need to show points, we call this method. It creates a text element, adds a tween to it, and destroys it when the tween is finished.
   */
-  showPoints(x, y, score, textElement, color = 0xffffff) {
+  showPoints(
+    x: number,
+    y: number,
+    score: string | number,
+    textElement: Phaser.GameObjects.BitmapText,
+    color = 0xffffff
+  ) {
     let text = this.add
       .bitmapText(x + 20, y - 80, "default", "+" + score, 10)
       .setDropShadow(2, 3, color, 0.7)
@@ -269,7 +275,7 @@ export default class Game extends Phaser.Scene {
     };
   }
 
-  playAudio(key) {
+  playAudio(key: string) {
     this.audios[key].play();
   }
 
@@ -303,7 +309,7 @@ export default class Game extends Phaser.Scene {
   updateSeconds(points = 1) {
     const seconds = +this.registry.get("seconds") + points;
     this.registry.set("seconds", seconds);
-    this.scoreSeconds.setText(seconds);
+    this.scoreSeconds.setText(seconds.toString());
   }
 
   /*
@@ -327,7 +333,7 @@ export default class Game extends Phaser.Scene {
   /*
   We have this method to update the text elements when we add points to the score. In this class is not used currently but we could use it later or in other classes.
   */
-  textUpdateEffect(textElement, color) {
+  textUpdateEffect(textElement: Phaser.GameObjects.BitmapText, color: number) {
     textElement.setTint(color);
     const prev = textElement.y;
     this.tweens.add({

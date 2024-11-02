@@ -340,7 +340,7 @@ Every time the player moves, we add a few dust particles to the scene. This is d
   /*
     This is called when the player finishes the shooting animation. We use it to play the idle animation again.
   */
-  animationComplete(animation) {
+  animationComplete(animation: { key: string }) {
     if (animation.key === "playershot") {
       this.sprite.anims.play("playeridle", true);
     }
