@@ -21,13 +21,13 @@ export default class Player {
     The init method is called from the constructor and in this case, it has several jobs. This is just a conventional class that contains a compound body: it consists of different bodies for the player, and we need to add them to the Matter world. We also need to add the player sprite to the scene and set up the animations. Finally, we need to add the colliders and events that will be used to control the player. If you set the debug to true you'll see the different bodies that make up the player. The ones on the sides it's used to detect collisions with walls and be able to climb up.
   */
   init(x, y) {
-    // Before Matter's update, 
+    // Before Matter's update,
     // reset our record of what surfaces the player is touching.
     this.scene.matter.world.on("beforeupdate", this.resetTouching, this);
     this.sprite = this.scene.matter.add.sprite(0, 0, "player", 0);
 
     // Native Matter modules
-    const { Body, Bodies } = Phaser.Physics.Matter.Matter; 
+    const { Body, Bodies } = Phaser.Physics.Matter.Matter;
     const { width: w, height: h } = this.sprite;
 
     const mainBody = Bodies.rectangle(0, 5, w - 14, h - 10, {
@@ -52,7 +52,7 @@ export default class Player {
     });
     this.sprite
       .setExistingBody(compoundBody)
-      .setFixedRotation() 
+      .setFixedRotation()
       // Sets inertia to infinity so the player can't rotate
       .setPosition(x, y);
 
@@ -91,33 +91,6 @@ export default class Player {
     These define the different animation states to the player: idle, walking, shooting, etc.
   */
   addAnimations() {
-    this.scene.anims.create({
-      key: "playeridle",
-      frames: this.scene.anims.generateFrameNumbers(this.label, {
-        start: 0,
-        end: 1,
-      }),
-      frameRate: 5,
-      repeat: -1,
-    });
-
-    this.scene.anims.create({
-      key: "playerwalk",
-      frames: this.scene.anims.generateFrameNumbers(this.label, {
-        start: 0,
-        end: 3,
-      }),
-      frameRate: 6,
-    });
-
-    this.scene.anims.create({
-      key: "playershot",
-      frames: this.scene.anims.generateFrameNumbers(this.label, {
-        start: 4,
-        end: 5,
-      }),
-      frameRate: 4,
-    });
     this.sprite.anims.play("playeridle", true);
     this.sprite.on("animationcomplete", this.animationComplete, this);
   }
@@ -142,7 +115,7 @@ export default class Player {
   */
   onSensorCollide({ bodyA, bodyB, pair }) {
     // We only care about collisions with physical objects
-    if (bodyB.isSensor) return; 
+    if (bodyB.isSensor) return;
     if (bodyA === this.sensors.left) {
       this.friction();
       this.onWall = true;

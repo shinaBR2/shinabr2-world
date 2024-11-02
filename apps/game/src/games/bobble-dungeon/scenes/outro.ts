@@ -84,12 +84,6 @@ First, we add all elements to the scene: player image, score, text, and the inpu
       .sprite(this.center_width, this.center_height - 120, "player")
       .setOrigin(0.5)
       .setScale(3);
-    this.anims.create({
-      key: "playeridle",
-      frames: this.anims.generateFrameNumbers("player", { start: 0, end: 1 }),
-      frameRate: 5,
-      repeat: -1,
-    });
 
     this.player.anims.play("playeridle");
   }

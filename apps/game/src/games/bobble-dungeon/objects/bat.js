@@ -18,25 +18,6 @@ export default class Bat extends Phaser.Physics.Matter.Sprite {
     Initiate the bat animation and movement. Also, add the update event to the scene so it will update in this class.
   */
   init() {
-    this.scene.anims.create({
-      key: this.label,
-      frames: this.scene.anims.generateFrameNumbers(this.label, {
-        start: 0,
-        end: 1,
-      }),
-      frameRate: 5,
-      repeat: -1,
-    });
-
-    this.scene.anims.create({
-      key: this.label + "death",
-      frames: this.scene.anims.generateFrameNumbers(this.label, {
-        start: 2,
-        end: 5,
-      }),
-      frameRate: 5,
-    });
-
     this.anims.play(this.label, true);
     this.on("animationcomplete", this.animationComplete, this);
     this.setVelocityX(this.direction * 5);

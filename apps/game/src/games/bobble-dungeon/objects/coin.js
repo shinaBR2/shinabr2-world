@@ -11,15 +11,6 @@ export default class Coin extends Phaser.Physics.Matter.Sprite {
     The coin animation is created and played. Also, we add a tween to make it move up and down to make it more "desirable".
   */
   init() {
-    this.scene.anims.create({
-      key: this.label,
-      frames: this.scene.anims.generateFrameNumbers(this.label, {
-        start: 0,
-        end: 3,
-      }),
-      frameRate: 10,
-      repeat: -1,
-    });
     this.anims.play(this.label, true);
     this.tween = this.scene.tweens.add({
       targets: this,

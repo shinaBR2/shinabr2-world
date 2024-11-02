@@ -23,14 +23,6 @@ export default class Dust extends Phaser.GameObjects.Sprite {
       });
     }
 
-    this.scene.anims.create({
-      key: this.name,
-      frames: this.scene.anims.generateFrameNumbers(this.name, {
-        start: 0,
-        end: 10,
-      }),
-      frameRate: 10,
-    });
     this.on("animationcomplete", this.animationComplete, this);
     this.anims.play(this.name, true);
   }

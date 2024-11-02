@@ -138,12 +138,6 @@ export default class Splash extends Phaser.Scene {
   */
   addPlayerAndFoe() {
     this.player = this.add.sprite(this.width - 100, 350, "player").setScale(2);
-    this.anims.create({
-      key: "playeridle",
-      frames: this.anims.generateFrameNumbers("player", { start: 0, end: 3 }),
-      frameRate: 5,
-      repeat: -1,
-    });
     this.player.anims.play("playeridle");
     this.foe = this.add.sprite(this.width, 350, "wizard").setScale(2);
     this.anims.create({

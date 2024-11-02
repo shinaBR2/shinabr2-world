@@ -38,11 +38,18 @@ export default class Bootloader extends Phaser.Scene {
     this.load.on(
       "complete",
       () => {
+        this.createAnimations();
+
+        console.log("Bootloader: load complete");
         EventBus.emit(SCENE_READY, this);
         this.scene.start("splash");
       },
       this
     );
+
+    this.load.on("loaderror", (file) => {
+      console.log("Error loading:", file.src);
+    });
   }
 
   private loadFonts(): void {
@@ -130,5 +137,93 @@ export default class Bootloader extends Phaser.Scene {
       20
     );
     this.progressBar = this.add.graphics();
+  }
+
+  private createAnimations(): void {
+    this.anims.create({
+      key: "coin",
+      frames: this.anims.generateFrameNumbers("coin", {
+        start: 0,
+        end: 3,
+      }),
+      frameRate: 10,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "bat",
+      frames: this.anims.generateFrameNumbers("bat", {
+        start: 0,
+        end: 1,
+      }),
+      frameRate: 5,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "batdeath",
+      frames: this.anims.generateFrameNumbers("bat", {
+        start: 2,
+        end: 5,
+      }),
+      frameRate: 5,
+    });
+
+    this.anims.create({
+      key: "wizard",
+      frames: this.anims.generateFrameNumbers("wizard", {
+        start: 0,
+        end: 5,
+      }),
+      frameRate: 5,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "wizardshot",
+      frames: this.anims.generateFrameNumbers("wizard", {
+        start: 4,
+        end: 5,
+      }),
+      frameRate: 5,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "playeridle",
+      frames: this.anims.generateFrameNumbers("player", {
+        start: 0,
+        end: 1,
+      }),
+      frameRate: 5,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "playerwalk",
+      frames: this.anims.generateFrameNumbers("player", {
+        start: 0,
+        end: 3,
+      }),
+      frameRate: 6,
+    });
+
+    this.anims.create({
+      key: "playershot",
+      frames: this.anims.generateFrameNumbers("player", {
+        start: 4,
+        end: 5,
+      }),
+      frameRate: 4,
+    });
+
+    this.anims.create({
+      key: "dust",
+      frames: this.anims.generateFrameNumbers("dust", {
+        start: 0,
+        end: 10,
+      }),
+      frameRate: 10,
+    });
   }
 }

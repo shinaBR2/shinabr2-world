@@ -18,16 +18,6 @@ export default class Wizard extends Phaser.Physics.Matter.Sprite {
 This function inits the wizard. It creates the animations and the update event. Also, we create a timer that will be used to shoot the fireballs.
   */
   init() {
-    this.scene.anims.create({
-      key: this.label,
-      frames: this.scene.anims.generateFrameNumbers(this.label, {
-        start: 0,
-        end: 5,
-      }),
-      frameRate: 5,
-      repeat: -1,
-    });
-
     this.anims.play(this.label, true);
     this.scene.events.on("update", this.update, this);
     this.timer = this.scene.time.addEvent({
