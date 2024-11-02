@@ -1,6 +1,23 @@
 import Player from "../objects/player";
 import DungeonGenerator from "../objects/dungeon_generator";
 
+export interface MatterCollisionData {
+  gameObjectB: any;
+}
+
+interface MatterCollision {
+  addOnCollideStart(config: {
+    objectA: any;
+    callback: (data: MatterCollisionData) => void;
+    context: any;
+  }): void;
+}
+export interface GameScene extends Phaser.Scene {
+  playAudio: (key: string) => void;
+  matterCollision: MatterCollision;
+  // player: Player
+}
+
 export default class Game extends Phaser.Scene {
   player: null;
   score: number;
@@ -349,3 +366,5 @@ export default class Game extends Phaser.Scene {
     });
   }
 }
+
+// export type GameScene = typeof Game;

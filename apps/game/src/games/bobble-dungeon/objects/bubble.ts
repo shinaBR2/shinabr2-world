@@ -1,7 +1,9 @@
+import { GameScene } from "../scenes/game";
 import Bat from "./bat";
 import Wizard from "./wizard";
 
 export default class Bubble extends Phaser.Physics.Matter.Sprite {
+  scene: GameScene;
   offset: any;
   startX: any;
   startY: number;
@@ -10,7 +12,7 @@ export default class Bubble extends Phaser.Physics.Matter.Sprite {
   blob!: Phaser.Tweens.Tween;
 
   constructor(
-    scene: Phaser.Scene,
+    scene: GameScene,
     x: any,
     y: number,
     offset: any,
@@ -31,7 +33,6 @@ export default class Bubble extends Phaser.Physics.Matter.Sprite {
     This function loads the sprite that will be inside the bubble. It also creates a tween to make it rotate.
   */
   load(sprite: string) {
-    console.log("bubble load called", sprite);
     this.scene.playAudio("trap");
     this.loaded = this.scene.add
       .sprite(this.x, this.y, sprite)
@@ -74,7 +75,7 @@ export default class Bubble extends Phaser.Physics.Matter.Sprite {
           () => {
             this.destroy();
           },
-          null,
+          undefined,
           this
         );
       },
@@ -97,7 +98,7 @@ export default class Bubble extends Phaser.Physics.Matter.Sprite {
       to: -300,
       duration: 4500,
       ease: Phaser.Math.Easing.Sine.InOut,
-      onUpdate: (tween, target) => {
+      onUpdate: (_tween, target) => {
         const y = this.startY + target.value;
         const dy = y - this.y;
         this.y = y;
@@ -110,7 +111,7 @@ export default class Bubble extends Phaser.Physics.Matter.Sprite {
           () => {
             this.destroy();
           },
-          null,
+          undefined,
           this
         );
       },

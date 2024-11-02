@@ -1,17 +1,20 @@
 import Fireball from "./fireball";
 import Bubble from "./bubble";
+import { GameScene } from "../scenes/game";
 
 export default class Wizard extends Phaser.Physics.Matter.Sprite {
+  scene: GameScene;
   label: string;
   startX: number;
   direction: number;
-  timer: Phaser.Time.TimerEvent;
+  timer: Phaser.Time.TimerEvent | undefined;
   unsubscribeBatCollide: any;
-  delayedTurn: Phaser.Time.TimerEvent;
+  delayedTurn: Phaser.Time.TimerEvent | undefined;
   fireball: any;
 
-  constructor(scene: Phaser.Scene, x: number, y: number, texture = "wizard") {
+  constructor(scene: GameScene, x: number, y: number, texture = "wizard") {
     super(scene.matter.world, x, y, texture, 0);
+    this.scene = scene;
     this.label = "wizard";
     this.scene.add.existing(this);
     this.startX = x;

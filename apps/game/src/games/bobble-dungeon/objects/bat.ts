@@ -1,13 +1,15 @@
+import { GameScene, MatterCollisionData } from "../scenes/game";
 import Bubble from "./bubble";
 
 export default class Bat extends Phaser.Physics.Matter.Sprite {
+  scene: GameScene;
   label: string;
   startX: any;
   direction: number;
   unsubscribeBatCollide: any;
   dead: boolean = false;
 
-  constructor(scene: Phaser.Scene, x: number, y: number, texture = "bat") {
+  constructor(scene: GameScene, x: number, y: number, texture = "bat") {
     super(scene.matter.world, x, y, texture, 0);
     this.label = "bat";
     this.scene = scene;
@@ -41,7 +43,7 @@ export default class Bat extends Phaser.Physics.Matter.Sprite {
     });
   }
 
-  onBatCollide({ gameObjectB }) {
+  onBatCollide({ gameObjectB }: MatterCollisionData) {
     if (gameObjectB instanceof Bubble) {
       gameObjectB.load("bat");
       this.destroy();
@@ -53,7 +55,7 @@ export default class Bat extends Phaser.Physics.Matter.Sprite {
   */
   update() {
     if (!this.active) return;
-    if (Math.abs(this.body.velocity.x) <= 0.5) this.turn();
+    if (Math.abs(this.body?.velocity?.x ?? 0) <= 0.5) this.turn();
   }
 
   /*

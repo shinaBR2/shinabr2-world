@@ -4,7 +4,10 @@
     "build": "vite build",
     "serve": "vite preview",
     "dev": "vite",
-    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@mikewesthad/dungeon": "^2.0.1",
@@ -17,6 +20,7 @@
     "ui": "workspace:*"
   },
   "devDependencies": {
+    "@jest/globals": "^29.7.0",
     "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@tanstack/router-devtools": "^1.78.2",
     "@tanstack/router-plugin": "^1.78.2",

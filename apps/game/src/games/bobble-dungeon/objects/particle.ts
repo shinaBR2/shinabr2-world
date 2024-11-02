@@ -1,6 +1,10 @@
+import { GameScene } from "../scenes/game";
+
 export default class Dust extends Phaser.GameObjects.Sprite {
+  scene: GameScene;
+
   constructor(
-    scene: Phaser.Scene,
+    scene: GameScene,
     x: number,
     y: number,
     name = "dust",

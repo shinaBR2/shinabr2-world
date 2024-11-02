@@ -4,15 +4,16 @@ import Key from "./key";
 import Bat from "./bat";
 import Wizard from "./wizard";
 import SeeSaw from "./seesaw";
+import { GameScene } from "../scenes/game";
 
 export default class DungeonGenerator {
-  scene: Phaser.Scene;
+  scene: GameScene;
   dungeon: Dungeon | undefined;
   groundLayer: any;
   map: any;
   stuffLayer: any;
 
-  constructor(scene: Phaser.Scene) {
+  constructor(scene: GameScene) {
     this.scene = scene;
     this.generate();
   }

@@ -1,9 +1,15 @@
 {
-  "exclude": ["node_modules"],
+  "exclude": [
+    "node_modules",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "test"
+  ],
   "extends": "tsconfig/vite.json",
   "compilerOptions": {
     "rootDir": "src",
-    "outDir": "dist"
+    "outDir": "dist",
+    "types": ["jest", "node"]
   },
-  "include": ["src"]
+  "include": ["src", "test"],
 }

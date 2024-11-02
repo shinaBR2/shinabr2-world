@@ -1,8 +1,9 @@
+import { GameScene } from "../scenes/game";
 import Bubble from "./bubble";
 import Dust from "./particle";
 
 export default class Player {
-  scene: Phaser.Scene;
+  scene: GameScene;
   label: string;
   moveForce: number;
   invincible: boolean;
@@ -23,7 +24,7 @@ export default class Player {
   isInAir: boolean;
   destroyed: boolean;
 
-  constructor(scene: Phaser.Scene, x: number, y: number) {
+  constructor(scene: GameScene, x: number, y: number) {
     this.scene = scene;
     this.label = "player";
     this.moveForce = 0.01;

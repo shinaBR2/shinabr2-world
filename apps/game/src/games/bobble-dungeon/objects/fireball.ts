@@ -1,9 +1,12 @@
+import { GameScene } from "../scenes/game";
+
 export default class Fireball extends Phaser.Physics.Matter.Sprite {
+  scene: GameScene;
   label: string;
   direction: number;
   tween: Phaser.Tweens.Tween | undefined;
 
-  constructor(scene: Phaser.Scene, x: number, y: number, direction: number) {
+  constructor(scene: GameScene, x: number, y: number, direction: number) {
     super(scene.matter.world, x, y, "fireball", 0);
     this.label = "fireball";
     this.scene = scene;

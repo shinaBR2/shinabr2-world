@@ -1,9 +1,12 @@
+import { GameScene } from "../scenes/game";
+
 export default class key extends Phaser.Physics.Matter.Sprite {
+  scene: GameScene;
   label: string;
   tween: Phaser.Tweens.Tween | undefined;
 
   constructor(
-    scene: Phaser.Scene,
+    scene: GameScene,
     x: number,
     y: number,
     texture = "keys",

@@ -1,5 +1,7 @@
+import { GameScene } from "../scenes/game";
+
 export default class SeeSaw {
-  constructor(scene: Phaser.Scene, x: any, y: any, numTiles = 5) {
+  constructor(scene: GameScene, x: any, y: any, numTiles = 5) {
     const platform = scene.add.tileSprite(
       x,
       y,
@@ -16,7 +18,7 @@ export default class SeeSaw {
       density: 0.0005,
     });
 
-    const { Constraint } = Phaser.Physics.Matter.Matter;
+    const { Constraint } = (Phaser.Physics.Matter as any).Matter;
 
     const constraint = Constraint.create({
       pointA: { x: platform.x, y: platform.y },
