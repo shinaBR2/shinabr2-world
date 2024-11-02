@@ -46,7 +46,7 @@ export default class Bootloader extends Phaser.Scene {
       this
     );
 
-    this.load.on("loaderror", (file) => {
+    this.load.on("loaderror", (file: { src: any; }) => {
       console.log("Error loading:", file.src);
     });
   }

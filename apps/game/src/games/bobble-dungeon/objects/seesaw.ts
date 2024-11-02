@@ -18,7 +18,7 @@ export default class SeeSaw {
       density: 0.0005,
     });
 
-    const { Constraint } = (Phaser.Physics.Matter as any).Matter;
+    const { Constraint } = Phaser.Physics.Matter.Matter;
 
     const constraint = Constraint.create({
       pointA: { x: platform.x, y: platform.y },
