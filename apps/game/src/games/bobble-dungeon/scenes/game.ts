@@ -218,9 +218,12 @@ export default class Game extends Phaser.Scene {
     key.destroy();
   }
 
-  /*
-  Unless the player is invincible (blinking at the beginning), this is called when the player hits any foe. It kills the player, destroys the foe, and restarts the scene.
-  */
+  /**
+   *
+   * Unless the player is invincible (blinking at the beginning),
+   * this is called when the player hits any foe. It kills the player,
+   * destroys the foe, and restarts the scene.
+   */
   playerHitsFoe(foe) {
     if (this.player.invincible) return;
     this.player.explosion();
@@ -228,9 +231,11 @@ export default class Game extends Phaser.Scene {
     this.restartScene();
   }
 
-  /*
-  Every time we need to show points, we call this method. It creates a text element, adds a tween to it, and destroys it when the tween is finished.
-  */
+  /**
+   *
+   * Every time we need to show points, we call this method.
+   * It creates a text element, adds a tween to it, and destroys it when the tween is finished.
+   */
   showPoints(
     x: number,
     y: number,
@@ -259,9 +264,10 @@ export default class Game extends Phaser.Scene {
     this.textUpdateEffect(textElement, color);
   }
 
-  /*
-  This method adds the camera to the scene and the background color. It sets the bounds of the camera to the size of the map and makes it follow the player.
-  */
+  /**
+   * This method adds the camera to the scene and the background color.
+   * It sets the bounds of the camera to the size of the map and makes it follow the player.
+   */
   addCamera() {
     this.cameras.main.setBounds(
       0,
@@ -273,9 +279,9 @@ export default class Game extends Phaser.Scene {
     this.cameras.main.setBackgroundColor(0x25131a);
   }
 
-  /*
-  As we did in other games, here we add the audio files to the scene along with a method to play them.
-  */
+  /**
+   * As we did in other games, here we add the audio files to the scene along with a method to play them.
+   */
   loadAudios() {
     this.audios = {
       jump: this.sound.add("jump"),
@@ -292,9 +298,10 @@ export default class Game extends Phaser.Scene {
     this.audios[key].play();
   }
 
-  /*
-  This method is called when the player dies. It makes the camera shake and fade out and then restarts the scene.
-  */
+  /**
+   * This method is called when the player dies.
+   * It makes the camera shake and fade out and then restarts the scene.
+   */
   restartScene() {
     this.player.sprite.visible = false;
     this.cameras.main.shake(100);
@@ -302,9 +309,9 @@ export default class Game extends Phaser.Scene {
     this.cameras.main.once("camerafadeoutcomplete", () => this.scene.restart());
   }
 
-  /*
-  If a player finishes the stage, we fade out the camera and start the outro scene.
-  */
+  /**
+   * If a player finishes the stage, we fade out the camera and start the outro scene.
+   */
   finishScene() {
     this.cameras.main.fade(250, 0, 0, 0);
     this.cameras.main.once("camerafadeoutcomplete", () => {
@@ -316,18 +323,23 @@ export default class Game extends Phaser.Scene {
     });
   }
 
-  /*
-    This method is called every second. It updates the seconds and the timer because, for any competitive player, time is the most important thing. We could add a scoreboard at the end ordered by time.
-  */
+  /**
+   *
+   * This method is called every second.
+   * It updates the seconds and the timer because, for any competitive player,
+   * time is the most important thing. We could add a scoreboard at the end ordered by time.
+   */
   updateSeconds(points = 1) {
     const seconds = +this.registry.get("seconds") + points;
     this.registry.set("seconds", seconds);
     this.scoreSeconds.setText(seconds.toString());
   }
 
-  /*
-  The next two functions update the coins and keys scores. In the case of the keys, if the player has collected all the keys, we finish the scene.
-  */
+  /**
+   *
+   * The next two functions update the coins and keys scores.
+   * In the case of the keys, if the player has collected all the keys, we finish the scene.
+   */
   updateCoins(points = 1) {
     const coins = +this.registry.get("coins") + points;
     this.registry.set("coins", coins);
@@ -343,9 +355,11 @@ export default class Game extends Phaser.Scene {
     }
   }
 
-  /*
-  We have this method to update the text elements when we add points to the score. In this class is not used currently but we could use it later or in other classes.
-  */
+  /**
+   *
+   * We have this method to update the text elements when we add points to the score.
+   * In this class is not used currently but we could use it later or in other classes.
+   */
   textUpdateEffect(textElement: Phaser.GameObjects.BitmapText, color: number) {
     textElement.setTint(color);
     const prev = textElement.y;
@@ -362,5 +376,3 @@ export default class Game extends Phaser.Scene {
     });
   }
 }
-
-// export type GameScene = typeof Game;
