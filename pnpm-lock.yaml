@@ -320,6 +320,9 @@ importers:
       phaser:
         specifier: ^3.86.0
         version: 3.86.0
+      phaser-matter-collision-plugin:
+        specifier: ^1.0.0
+        version: 1.0.0(phaser@3.86.0)
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -357,6 +360,9 @@ importers:
       eslint-config-custom:
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
+      phaser3-docs:
+        specifier: github:photonstorm/phaser3-docs
+        version: https://codeload.github.com/photonstorm/phaser3-docs/tar.gz/c249e38a121effaa1382fb237542b817f4bf6bb3
       tsconfig:
         specifier: workspace:*
         version: link:../../packages/tsconfig
@@ -577,7 +583,7 @@ importers:
         version: 6.1.11
       babel-loader:
         specifier: ^8.3.0
-        version: 8.3.0(@babel/core@7.24.7)(webpack@5.92.1(esbuild@0.17.19))
+        version: 8.3.0(@babel/core@7.24.7)(webpack@5.92.1)
       eslint:
         specifier: ^7.32.0
         version: 7.32.0
@@ -8537,6 +8543,15 @@ packages:
 
   pend@1.2.0:
     resolution: {integrity: sha512-F3asv42UuXchdzt+xXqfW1OGlVBe+mxa2mqI0pg5yAHZPvFmY3Y6drSf/GQ1A86WgWEN9Kzh/WrgKa6iGcHXLg==}
+
+  phaser-matter-collision-plugin@1.0.0:
+    resolution: {integrity: sha512-8ihbK5tPmMzpLSbJkrnyPKNZT/TyhN2bjHtthTl2cmTCiJpY6Ih7SZf1Kb6zWtUD8kWlllPrBktF1CcwmMvc0w==}
+    peerDependencies:
+      phaser: ^3.55.2
+
+  phaser3-docs@https://codeload.github.com/photonstorm/phaser3-docs/tar.gz/c249e38a121effaa1382fb237542b817f4bf6bb3:
+    resolution: {tarball: https://codeload.github.com/photonstorm/phaser3-docs/tar.gz/c249e38a121effaa1382fb237542b817f4bf6bb3}
+    version: 0.0.0
 
   phaser@3.86.0:
     resolution: {integrity: sha512-A7rog3GhXYcWsPimteQmudyY6W0fx0eviOoo9Cwpzae1RPeJBDkhmWv5IFrQO9dL+T907E4dprQPnd2D4WhoEw==}
@@ -17777,15 +17792,6 @@ snapshots:
       schema-utils: 2.7.1
       webpack: 4.47.0
 
-  babel-loader@8.3.0(@babel/core@7.24.7)(webpack@5.92.1(esbuild@0.17.19)):
-    dependencies:
-      '@babel/core': 7.24.7
-      find-cache-dir: 3.3.2
-      loader-utils: 2.0.4
-      make-dir: 3.1.0
-      schema-utils: 2.7.1
-      webpack: 5.92.1(esbuild@0.17.19)
-
   babel-loader@8.3.0(@babel/core@7.24.7)(webpack@5.92.1):
     dependencies:
       '@babel/core': 7.24.7
@@ -23085,6 +23091,12 @@ snapshots:
 
   pend@1.2.0: {}
 
+  phaser-matter-collision-plugin@1.0.0(phaser@3.86.0):
+    dependencies:
+      phaser: 3.86.0
+
+  phaser3-docs@https://codeload.github.com/photonstorm/phaser3-docs/tar.gz/c249e38a121effaa1382fb237542b817f4bf6bb3: {}
+
   phaser@3.86.0:
     dependencies:
       eventemitter3: 5.0.1
@@ -25122,17 +25134,6 @@ snapshots:
     transitivePeerDependencies:
       - bluebird
 
-  terser-webpack-plugin@5.3.10(esbuild@0.17.19)(webpack@5.92.1(esbuild@0.17.19)):
-    dependencies:
-      '@jridgewell/trace-mapping': 0.3.25
-      jest-worker: 27.5.1
-      schema-utils: 3.3.0
-      serialize-javascript: 6.0.2
-      terser: 5.31.1
-      webpack: 5.92.1(esbuild@0.17.19)
-    optionalDependencies:
-      esbuild: 0.17.19
-
   terser-webpack-plugin@5.3.10(webpack@5.92.1):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
@@ -25969,37 +25970,6 @@ snapshots:
       schema-utils: 3.3.0
       tapable: 2.2.1
       terser-webpack-plugin: 5.3.10(webpack@5.92.1)
-      watchpack: 2.4.1
-      webpack-sources: 3.2.3
-    transitivePeerDependencies:
-      - '@swc/core'
-      - esbuild
-      - uglify-js
-
-  webpack@5.92.1(esbuild@0.17.19):
-    dependencies:
-      '@types/eslint-scope': 3.7.7
-      '@types/estree': 1.0.5
-      '@webassemblyjs/ast': 1.12.1
-      '@webassemblyjs/wasm-edit': 1.12.1
-      '@webassemblyjs/wasm-parser': 1.12.1
-      acorn: 8.12.0
-      acorn-import-attributes: 1.9.5(acorn@8.12.0)
-      browserslist: 4.23.1
-      chrome-trace-event: 1.0.4
-      enhanced-resolve: 5.17.0
-      es-module-lexer: 1.5.4
-      eslint-scope: 5.1.1
-      events: 3.3.0
-      glob-to-regexp: 0.4.1
-      graceful-fs: 4.2.11
-      json-parse-even-better-errors: 2.3.1
-      loader-runner: 4.3.0
-      mime-types: 2.1.35
-      neo-async: 2.6.2
-      schema-utils: 3.3.0
-      tapable: 2.2.1
-      terser-webpack-plugin: 5.3.10(esbuild@0.17.19)(webpack@5.92.1(esbuild@0.17.19))
       watchpack: 2.4.1
       webpack-sources: 3.2.3
     transitivePeerDependencies:

@@ -1,21 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
-// import { createFileRoute } from '@tanstack/react-router'
-import React from "react";
+import BobbleDungeonConfig from "../games/bobble-dungeon/";
 
-const fetchPost = async (gameSlug: string) => {
-  return 1;
-};
+const fetchGame = async (gameSlug: string) => {
+  if (gameSlug == "bobble-dungeon") {
+    return BobbleDungeonConfig;
+  }
 
-export const GamesComponent = () => {
-  const { gameSlug } = Route.useParams();
-
-  console.log("gameSlug", gameSlug);
-
-  return <div>Games</div>;
+  return {};
 };
 
 export const Route = createFileRoute("/$gameSlug")({
   loader: async ({ params }) => {
-    return await fetchPost(params.gameSlug);
+    return await fetchGame(params.gameSlug);
   },
 });

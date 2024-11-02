@@ -10,6 +10,7 @@
     "@tanstack/react-router": "^1.78.2",
     "core": "workspace:*",
     "phaser": "^3.86.0",
+    "phaser-matter-collision-plugin": "^1.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "ui": "workspace:*"
@@ -24,6 +25,7 @@
     "@vitejs/plugin-react": "^2.1.0",
     "eslint": "^7.32.0",
     "eslint-config-custom": "workspace:*",
+    "phaser3-docs": "github:photonstorm/phaser3-docs",
     "tsconfig": "workspace:*",
     "typescript": "^5.2.0",
     "vite": "^3.1.0",

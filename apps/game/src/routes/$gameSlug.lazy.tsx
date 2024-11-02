@@ -1,6 +1,6 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
-import { GamesComponent } from "./$gameSlug";
+import GameContainer from "../core/GameContainer";
 
 export const Route = createLazyFileRoute("/$gameSlug")({
-  component: GamesComponent,
+  component: GameContainer,
 });
