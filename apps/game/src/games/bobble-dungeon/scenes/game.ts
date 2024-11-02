@@ -1,7 +1,55 @@
-import Player from "../gameobjects/player";
-import DungeonGenerator from "../gameobjects/dungeon_generator";
+import Player from "../objects/player";
+import DungeonGenerator from "../objects/dungeon_generator";
 
 export default class Game extends Phaser.Scene {
+  player: null;
+  score: number;
+  scoreText: null;
+  name: any;
+  number: any;
+  width!: number;
+  height!: number;
+  center_width!: number;
+  center_height!: number;
+  dungeon: any;
+  scoreCoins!: Phaser.GameObjects.BitmapText;
+  scoreSeconds!: Phaser.GameObjects.BitmapText;
+  scoreKeys!: Phaser.GameObjects.BitmapText;
+  timer!: Phaser.Time.TimerEvent;
+  trailLayer!: Phaser.GameObjects.Layer;
+  unsubscribePlayerCollide: any;
+  matterCollision: any;
+  audios!: {
+    jump:
+      | Phaser.Sound.NoAudioSound
+      | Phaser.Sound.HTML5AudioSound
+      | Phaser.Sound.WebAudioSound;
+    bubble:
+      | Phaser.Sound.NoAudioSound
+      | Phaser.Sound.HTML5AudioSound
+      | Phaser.Sound.WebAudioSound;
+    trap:
+      | Phaser.Sound.NoAudioSound
+      | Phaser.Sound.HTML5AudioSound
+      | Phaser.Sound.WebAudioSound;
+    crash:
+      | Phaser.Sound.NoAudioSound
+      | Phaser.Sound.HTML5AudioSound
+      | Phaser.Sound.WebAudioSound;
+    fireball:
+      | Phaser.Sound.NoAudioSound
+      | Phaser.Sound.HTML5AudioSound
+      | Phaser.Sound.WebAudioSound;
+    death:
+      | Phaser.Sound.NoAudioSound
+      | Phaser.Sound.HTML5AudioSound
+      | Phaser.Sound.WebAudioSound;
+    coin:
+      | Phaser.Sound.NoAudioSound
+      | Phaser.Sound.HTML5AudioSound
+      | Phaser.Sound.WebAudioSound;
+  };
+
   constructor() {
     super({ key: "game" });
     this.player = null;
@@ -24,8 +72,8 @@ export default class Game extends Phaser.Scene {
     From this, we create the whole thing. We call the methods to add the map, the player, the collisions, the camera and the scores.
   */
   create() {
-    this.width = this.sys.game.config.width;
-    this.height = this.sys.game.config.height;
+    this.width = this.sys.game.config.width as number;
+    this.height = this.sys.game.config.height as number;
     this.center_width = this.width / 2;
     this.center_height = this.height / 2;
 
@@ -42,7 +90,7 @@ export default class Game extends Phaser.Scene {
   */
   addMap() {
     this.dungeon = new DungeonGenerator(this);
-    this.input.keyboard.on("keydown-ENTER", () => this.finishScene(), this);
+    this.input.keyboard?.on("keydown-ENTER", () => this.finishScene(), this);
   }
 
   /*
