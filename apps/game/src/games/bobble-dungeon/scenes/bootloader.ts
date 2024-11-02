@@ -60,7 +60,7 @@ export default class Bootloader extends Phaser.Scene {
 
     this.load.image("pello", `${imagePath}/pello_ok.png`);
     this.load.image("fireball", `${imagePath}/fireball.png`);
-    this.load.image("tiles", `${imagePath}/pixel-poem-tiles.png`);
+    this.load.image("tiles", `${this.assetPath}/maps/pixel-poem-tiles.png`);
     this.load.image("block", `${imagePath}/block.png`);
     this.load.image("seesaw", `${imagePath}/seesaw.png`);
     this.load.image("bubble", `${imagePath}/bubble.png`);

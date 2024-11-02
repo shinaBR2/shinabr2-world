@@ -311,6 +311,9 @@ importers:
 
   apps/game:
     dependencies:
+      '@mikewesthad/dungeon':
+        specifier: ^2.0.1
+        version: 2.0.1
       '@tanstack/react-router':
         specifier: ^1.78.2
         version: 1.78.2(@tanstack/router-generator@1.78.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -2528,6 +2531,9 @@ packages:
   '@mdx-js/util@1.6.22':
     resolution: {integrity: sha512-H1rQc1ZOHANWBvPcW+JpGwr+juXSxM8Q8YCkm3GhZd8REu1fHR3z99CErO1p9pkcfcxZnMdIZdIsXkOHY0NilA==}
 
+  '@mikewesthad/dungeon@2.0.1':
+    resolution: {integrity: sha512-VfbXkueto+GpAWBk4IpAhDJ15ta/fctkfok4lK+Jxnvs2kUly3RALZnbriLwkez2N4lxaRWN3qrhyWzVWPIE0A==}
+
   '@mrmlnc/readdir-enhanced@2.2.1':
     resolution: {integrity: sha512-bPHp6Ji8b41szTOcaP63VlnbbO5Ny6dwAATtY6JTjh5N2OLrb5Qk/Th5cRkRQhkWCt+EJsYrNB0MiL+Gpn6e3g==}
     engines: {node: '>=4'}
@@ -3768,6 +3774,9 @@ packages:
 
   '@types/sax@1.2.7':
     resolution: {integrity: sha512-rO73L89PJxeYM3s3pPPjiPgVVcymqU490g0YO5n5By0k2Erzj6tay/4lr1CHAAU4JyOWd1rpQ8bCf6cZfHU96A==}
+
+  '@types/seedrandom@2.4.34':
+    resolution: {integrity: sha512-ytDiArvrn/3Xk6/vtylys5tlY6eo7Ane0hvcx++TKo6RxQXuVfW0AF/oeWqAj9dN29SyhtawuXstgmPlwNcv/A==}
 
   '@types/send@0.17.4':
     resolution: {integrity: sha512-x2EM6TJOybec7c52BX0ZspPodMsQUd5L6PRwOunVyVUhXiBSKf3AezDL8Dgvgt5o0UfKNfuA0eMLr2wLT4AiBA==}
@@ -9658,6 +9667,9 @@ packages:
     resolution: {integrity: sha512-vfD3pmTzGpufjScBh50YHKzEu2lxBWhVEHsNGoEXmCmn2hKGfeNLYMzCJpe8cD7gqX7TJluOVpBkAequ6dgMmA==}
     engines: {node: '>=4'}
 
+  seedrandom@3.0.5:
+    resolution: {integrity: sha512-8OwmbklUNzwezjGInmZ+2clQmExQPvomqjL7LFqOYqtmuxRgQYqOD3mHaU+MvZn5FLUeVxVfQjwLZW/n/JFuqg==}
+
   select-hose@2.0.0:
     resolution: {integrity: sha512-mEugaLK+YfkijB4fx0e6kImuJdCIt2LxCRcbEYPqRGCs4F2ogyfZU5IAZRdjCP8JPq2AtdNoC/Dux63d9Kiryg==}
 
@@ -14848,6 +14860,12 @@ snapshots:
 
   '@mdx-js/util@1.6.22': {}
 
+  '@mikewesthad/dungeon@2.0.1':
+    dependencies:
+      '@types/seedrandom': 2.4.34
+      core-js: 3.37.1
+      seedrandom: 3.0.5
+
   '@mrmlnc/readdir-enhanced@2.2.1':
     dependencies:
       call-me-maybe: 1.0.2
@@ -17039,6 +17057,8 @@ snapshots:
   '@types/sax@1.2.7':
     dependencies:
       '@types/node': 18.19.39
+
+  '@types/seedrandom@2.4.34': {}
 
   '@types/send@0.17.4':
     dependencies:
@@ -24397,6 +24417,8 @@ snapshots:
     dependencies:
       extend-shallow: 2.0.1
       kind-of: 6.0.3
+
+  seedrandom@3.0.5: {}
 
   select-hose@2.0.0: {}
 

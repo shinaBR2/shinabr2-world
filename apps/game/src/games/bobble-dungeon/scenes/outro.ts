@@ -2,13 +2,13 @@ export default class Outro extends Phaser.Scene {
   name: any;
   number: any;
   next: any;
-  width: string | number;
-  height: string | number;
-  center_width: number;
-  center_height: number;
-  scoreCoins: Phaser.GameObjects.BitmapText;
-  scoreSeconds: Phaser.GameObjects.BitmapText;
-  player: Phaser.GameObjects.Sprite;
+  width!: number;
+  height!: number;
+  center_width!: number;
+  center_height!: number;
+  scoreCoins!: Phaser.GameObjects.BitmapText;
+  scoreSeconds!: Phaser.GameObjects.BitmapText;
+  player!: Phaser.GameObjects.Sprite;
 
   constructor() {
     super({ key: "outro" });
@@ -24,8 +24,8 @@ export default class Outro extends Phaser.Scene {
 First, we add all elements to the scene: player image, score, text, and the input to restart the game.
   */
   create() {
-    this.width = this.sys.game.config.width;
-    this.height = this.sys.game.config.height;
+    this.width = this.sys.game.config.width as number;
+    this.height = this.sys.game.config.height as number;
     this.center_width = this.width / 2;
     this.center_height = this.height / 2;
     this.showPlayer();
@@ -68,8 +68,8 @@ First, we add all elements to the scene: player image, score, text, and the inpu
         25
       )
       .setOrigin(0.5);
-    this.input.keyboard.on("keydown-ENTER", () => this.loadNext(), this);
-    this.input.keyboard.on("keydown-SPACE", () => this.loadNext(), this);
+    this.input.keyboard?.on("keydown-ENTER", () => this.loadNext(), this);
+    this.input.keyboard?.on("keydown-SPACE", () => this.loadNext(), this);
   }
 
   loadNext() {
