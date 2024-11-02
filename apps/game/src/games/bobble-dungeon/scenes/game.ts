@@ -1,5 +1,7 @@
 import Player from "../objects/player";
 import DungeonGenerator from "../objects/dungeon_generator";
+import { RESULT_SAVED } from "../events/Events";
+import { EventBus } from "../../../events/EventBus";
 
 export interface GameScene extends Phaser.Scene {
   playAudio: (key: string) => void;
@@ -228,6 +230,7 @@ export default class Game extends Phaser.Scene {
     if (this.player.invincible) return;
     this.player.explosion();
     foe.destroy();
+    this.storeResult();
     this.restartScene();
   }
 
@@ -321,6 +324,7 @@ export default class Game extends Phaser.Scene {
         number: this.number + 1,
       });
     });
+    this.storeResult();
   }
 
   /**
@@ -373,6 +377,14 @@ export default class Game extends Phaser.Scene {
         textElement.setTint(0xffffff);
         textElement.y = prev;
       },
+    });
+  }
+
+  storeResult() {
+    EventBus.emit(RESULT_SAVED, {
+      seconds: this.registry.get("seconds"),
+      coins: this.registry.get("coins"),
+      keys: this.registry.get("keys"),
     });
   }
 }

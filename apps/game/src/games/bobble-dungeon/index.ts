@@ -7,18 +7,6 @@ import Game from "./scenes/game";
 import PhaserMatterCollisionPlugin from "phaser-matter-collision-plugin";
 import { MatterGravityFixPlugin } from "./plugins/matter_gravity_fix";
 
-declare module "phaser" {
-  interface Scene {
-    matterCollision: PhaserMatterCollisionPlugin;
-  }
-  /* eslint-disable @typescript-eslint/no-namespace */
-  namespace Scenes {
-    interface Systems {
-      matterCollision: PhaserMatterCollisionPlugin;
-    }
-  }
-}
-
 const config = {
   width: 600,
   height: 600,
