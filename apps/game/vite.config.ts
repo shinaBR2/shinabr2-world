@@ -3,8 +3,8 @@ import { defineConfig } from "vite";
 import { viteCommonjs } from "@originjs/vite-plugin-commonjs";
 // import { visualizer } from "rollup-plugin-visualizer";
 import { VitePWA } from "vite-plugin-pwa";
+import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 
-console.log("akdjhkasdhkadh");
 // https://github.com/vitejs/vite/issues/5308#issuecomment-1010652389
 export default defineConfig({
   server: {
@@ -13,6 +13,7 @@ export default defineConfig({
   },
   plugins: [
     viteCommonjs(),
+    TanStackRouterVite(),
     react(),
     // visualizer(),
     // VitePWA({
