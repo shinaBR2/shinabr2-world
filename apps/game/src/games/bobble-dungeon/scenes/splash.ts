@@ -1,4 +1,21 @@
+import { EventBus, SCENE_READY } from "../../../events/EventBus";
+
 export default class Splash extends Phaser.Scene {
+  width!: number;
+  height!: number;
+  center_width!: number;
+  center_height!: number;
+  backLayer!: Phaser.GameObjects.Layer;
+  theme: any;
+  textShadow1!: Phaser.GameObjects.BitmapText;
+  textShadow2!: Phaser.GameObjects.BitmapText;
+  text1!: Phaser.GameObjects.BitmapText;
+  text2!: Phaser.GameObjects.BitmapText;
+  text11!: Phaser.GameObjects.BitmapText;
+  text22!: Phaser.GameObjects.BitmapText;
+  space!: Phaser.GameObjects.BitmapText;
+  player!: Phaser.GameObjects.Sprite;
+  foe!: Phaser.GameObjects.Sprite;
   constructor() {
     super({ key: "splash" });
   }
@@ -7,8 +24,8 @@ export default class Splash extends Phaser.Scene {
   As always, we create everything we need on the scene from the create method.
   */
   create() {
-    this.width = this.sys.game.config.width;
-    this.height = this.sys.game.config.height;
+    this.width = this.sys.game.config.width as number;
+    this.height = this.sys.game.config.height as number;
     this.center_width = this.width / 2;
     this.center_height = this.height / 2;
 
@@ -18,11 +35,13 @@ export default class Splash extends Phaser.Scene {
     this.addPlayerAndFoe();
     this.addAnimationTweens();
 
-    this.time.delayedCall(1000, () => this.showInstructions(), null, this);
+    this.time.delayedCall(1000, () => this.showInstructions(), undefined, this);
 
-    this.input.keyboard.on("keydown-SPACE", () => this.startGame(), this);
-    this.input.keyboard.on("keydown-ENTER", () => this.startGame(), this);
+    this.input.keyboard?.on("keydown-SPACE", () => this.startGame(), this);
+    this.input.keyboard?.on("keydown-ENTER", () => this.startGame(), this);
     this.playMusic();
+
+    EventBus.emit(SCENE_READY, this);
   }
 
   startGame() {

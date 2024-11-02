@@ -1,6 +1,9 @@
+import { EventBus, SCENE_READY } from "../../../events/EventBus";
+
 export default class Bootloader extends Phaser.Scene {
-  private loadBar: Phaser.GameObjects.Graphics;
-  private progressBar: Phaser.GameObjects.Graphics;
+  private loadBar!: Phaser.GameObjects.Graphics;
+  private progressBar!: Phaser.GameObjects.Graphics;
+  private assetPath = "assets/bobble-dungeon";
 
   constructor() {
     super({ key: "bootloader" });
@@ -35,6 +38,7 @@ export default class Bootloader extends Phaser.Scene {
     this.load.on(
       "complete",
       () => {
+        EventBus.emit(SCENE_READY, this);
         this.scene.start("splash");
       },
       this
@@ -42,68 +46,75 @@ export default class Bootloader extends Phaser.Scene {
   }
 
   private loadFonts(): void {
+    const fontPath = `${this.assetPath}/fonts`;
+
     this.load.bitmapFont(
       "default",
-      "assets/fonts/pico.png",
-      "assets/fonts/pico.xml"
+      `${fontPath}/pico.png`,
+      `${fontPath}/pico.xml`
     );
   }
 
   private loadImages(): void {
-    this.load.image("pello", "assets/images/pello_ok.png");
-    this.load.image("fireball", "assets/images/fireball.png");
-    this.load.image("tiles", "assets/maps/pixel-poem-tiles.png");
-    this.load.image("block", "assets/images/block.png");
-    this.load.image("seesaw", "assets/images/seesaw.png");
-    this.load.image("bubble", "assets/images/bubble.png");
-    this.load.image("platform", "assets/images/platform.png");
+    const imagePath = `${this.assetPath}/images`;
+
+    this.load.image("pello", `${imagePath}/pello_ok.png`);
+    this.load.image("fireball", `${imagePath}/fireball.png`);
+    this.load.image("tiles", `${imagePath}/pixel-poem-tiles.png`);
+    this.load.image("block", `${imagePath}/block.png`);
+    this.load.image("seesaw", `${imagePath}/seesaw.png`);
+    this.load.image("bubble", `${imagePath}/bubble.png`);
+    this.load.image("platform", `${imagePath}/platform.png`);
   }
 
   private loadMaps(): void {
-    this.load.tilemapTiledJSON("scene0", "assets/maps/level.json");
+    this.load.tilemapTiledJSON("scene0", `${this.assetPath}/maps/level.json`);
   }
 
   private loadAudios(): void {
+    const soundPath = `${this.assetPath}/sounds`;
     Array(5)
       .fill(0)
       .forEach((_, i) => {
-        this.load.audio(`climb${i}`, `assets/sounds/climb${i}.mp3`);
+        this.load.audio(`climb${i}`, `${soundPath}/climb${i}.mp3`);
       });
 
-    this.load.audio("splash", "assets/sounds/splash.mp3");
-    this.load.audio("music", "assets/sounds/music.mp3");
-    this.load.audio("jump", "assets/sounds/jump.mp3");
-    this.load.audio("bubble", "assets/sounds/bubble.mp3");
-    this.load.audio("trap", "assets/sounds/trap.mp3");
-    this.load.audio("crash", "assets/sounds/crash.mp3");
-    this.load.audio("fireball", "assets/sounds/fireball.mp3");
-    this.load.audio("win", "assets/sounds/win.mp3");
-    this.load.audio("start", "assets/sounds/start.mp3");
-    this.load.audio("death", "assets/sounds/death.mp3");
+    this.load.audio("splash", `${soundPath}/splash.mp3`);
+    this.load.audio("music", `${soundPath}/music.mp3`);
+    this.load.audio("jump", `${soundPath}/jump.mp3`);
+    this.load.audio("bubble", `${soundPath}/bubble.mp3`);
+    this.load.audio("trap", `${soundPath}/trap.mp3`);
+    this.load.audio("crash", `${soundPath}/crash.mp3`);
+    this.load.audio("fireball", `${soundPath}/fireball.mp3`);
+    this.load.audio("win", `${soundPath}/win.mp3`);
+    this.load.audio("start", `${soundPath}/start.mp3`);
+    this.load.audio("death", `${soundPath}/death.mp3`);
   }
 
   private loadSpritesheets(): void {
-    this.load.spritesheet("player", "assets/images/player.png", {
+    const imagesPath = `${this.assetPath}/images`;
+
+    this.load.spritesheet("player", `${imagesPath}/player.png`, {
       frameWidth: 48,
       frameHeight: 48,
     });
-    this.load.spritesheet("dust", "assets/images/dust.png", {
+    this.load.spritesheet("dust", `${imagesPath}/dust.png`, {
       frameWidth: 32,
       frameHeight: 32,
     });
-    this.load.spritesheet("coin", "assets/images/coin.png", {
+    this.load.spritesheet("coin", `${imagesPath}/coin.png`, {
       frameWidth: 32,
       frameHeight: 32,
     });
-    this.load.spritesheet("keys", "assets/images/keys.png", {
+    this.load.spritesheet("keys", `${imagesPath}/keys.png`, {
       frameWidth: 48,
       frameHeight: 48,
     });
-    this.load.spritesheet("bat", "assets/images/bat.png", {
+    this.load.spritesheet("bat", `${imagesPath}/bat.png`, {
       frameWidth: 32,
       frameHeight: 32,
     });
-    this.load.spritesheet("wizard", "assets/images/wizard.png", {
+    this.load.spritesheet("wizard", `${imagesPath}/wizard.png`, {
       frameWidth: 48,
       frameHeight: 48,
     });

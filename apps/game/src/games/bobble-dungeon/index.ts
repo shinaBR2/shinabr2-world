@@ -15,7 +15,7 @@ const config = {
     autoCenter: Phaser.Scale.CENTER_BOTH,
   },
   autoRound: false,
-  parent: "contenedor",
+  parent: "game-container",
   physics: {
     default: "matter",
     matter: {

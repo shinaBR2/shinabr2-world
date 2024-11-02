@@ -1,4 +1,3 @@
-import { useParams } from "@tanstack/react-router";
 import React, { useRef } from "react";
 import { IRefPhaserGame, PhaserGame } from "./PhaserGame";
 import { useLoadGameConfig } from "./hooks/useLoadGameConfig";
@@ -11,18 +10,14 @@ const GameContainer = () => {
     console.log("current scene", scene.scene.key);
   };
 
-  console.log("gameSlug", gameSlug);
-  console.log("config", config);
-
   return (
-    <>
-      <div>GameContainer</div>
+    <div id="game-container">
       <PhaserGame
         config={config}
         ref={phaserRef}
         currentActiveScene={currentScene}
       />
-    </>
+    </div>
   );
 };
 
