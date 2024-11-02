@@ -40,7 +40,6 @@ export default class Bootloader extends Phaser.Scene {
       () => {
         this.createAnimations();
 
-        console.log("Bootloader: load complete");
         EventBus.emit(SCENE_READY, this);
         this.scene.start("splash");
       },
