@@ -1,5 +1,9 @@
 export default class Fireball extends Phaser.Physics.Matter.Sprite {
-  constructor(scene, x, y, direction) {
+  label: string;
+  direction: number;
+  tween: Phaser.Tweens.Tween | undefined;
+
+  constructor(scene: Phaser.Scene, x: number, y: number, direction: number) {
     super(scene.matter.world, x, y, "fireball", 0);
     this.label = "fireball";
     this.scene = scene;
@@ -28,7 +32,7 @@ export default class Fireball extends Phaser.Physics.Matter.Sprite {
       () => {
         this.destroy();
       },
-      null,
+      undefined,
       this
     );
   }
@@ -38,7 +42,7 @@ export default class Fireball extends Phaser.Physics.Matter.Sprite {
   }
 
   destroy() {
-    this.tween.destroy();
+    this.tween?.destroy();
     super.destroy();
   }
 }

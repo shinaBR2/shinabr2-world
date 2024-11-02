@@ -2,7 +2,15 @@ import Fireball from "./fireball";
 import Bubble from "./bubble";
 
 export default class Wizard extends Phaser.Physics.Matter.Sprite {
-  constructor(scene, x, y, texture = "wizard", ground) {
+  label: string;
+  startX: number;
+  direction: number;
+  timer: Phaser.Time.TimerEvent;
+  unsubscribeBatCollide: any;
+  delayedTurn: Phaser.Time.TimerEvent;
+  fireball: any;
+
+  constructor(scene: Phaser.Scene, x: number, y: number, texture = "wizard") {
     super(scene.matter.world, x, y, texture, 0);
     this.label = "wizard";
     this.scene.add.existing(this);
@@ -42,7 +50,7 @@ As we did with the player and the bat, we create this callback to handle the col
   /*
 This will be called when the bubble hits the wizard. We "load" the wizard inside the bubble and destroy the wizard.
   */
-  onWizardCollide({ gameObjectA, gameObjectB }) {
+  onWizardCollide({ gameObjectB }: { gameObjectB: any }) {
     if (gameObjectB instanceof Bubble) {
       gameObjectB.load("wizard");
       this.destroy();
@@ -65,7 +73,7 @@ The wizard will try to shoot directly at the player. It will shoot a fireball an
       () => {
         this.turn();
       },
-      null,
+      undefined,
       this
     );
   }

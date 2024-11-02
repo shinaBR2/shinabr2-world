@@ -58,7 +58,8 @@ export default class Game extends Phaser.Scene {
   }
 
   init(data) {
-    this.name = data.name;
+    console.log("game init", data);
+    // this.name = data.name;
     this.number = data.number;
   }
 

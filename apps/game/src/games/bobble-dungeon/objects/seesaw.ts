@@ -1,5 +1,5 @@
 export default class SeeSaw {
-  constructor(scene, x, y, numTiles = 5) {
+  constructor(scene: Phaser.Scene, x: any, y: any, numTiles = 5) {
     const platform = scene.add.tileSprite(
       x,
       y,

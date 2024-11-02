@@ -2,7 +2,20 @@ import Bat from "./bat";
 import Wizard from "./wizard";
 
 export default class Bubble extends Phaser.Physics.Matter.Sprite {
-  constructor(scene, x, y, offset, options = { isStatic: true }) {
+  offset: any;
+  startX: any;
+  startY: number;
+  loaded!: Phaser.GameObjects.Sprite | null;
+  loadedTween!: Phaser.Tweens.Tween;
+  blob!: Phaser.Tweens.Tween;
+
+  constructor(
+    scene: Phaser.Scene,
+    x: any,
+    y: number,
+    offset: any,
+    options = { isStatic: true }
+  ) {
     super(scene.matter.world, x + offset, y, "bubble", 0, options);
     this.offset = offset;
     this.setFriction(1, 0, Infinity);
@@ -17,7 +30,8 @@ export default class Bubble extends Phaser.Physics.Matter.Sprite {
   /*
     This function loads the sprite that will be inside the bubble. It also creates a tween to make it rotate.
   */
-  load(sprite) {
+  load(sprite: string) {
+    console.log("bubble load called", sprite);
     this.scene.playAudio("trap");
     this.loaded = this.scene.add
       .sprite(this.x, this.y, sprite)
@@ -108,12 +122,12 @@ export default class Bubble extends Phaser.Physics.Matter.Sprite {
   */
   respawn() {
     this.loadedTween.destroy();
-    if (this.loaded.name === "wizard") {
+    if (this.loaded?.name === "wizard") {
       new Wizard(this.scene, this.x, this.y);
-    } else if (this.loaded.name === "bat") {
+    } else if (this.loaded?.name === "bat") {
       new Bat(this.scene, this.x, this.y);
     }
-    this.loaded.destroy();
+    this.loaded?.destroy();
     this.loaded = null;
   }
 

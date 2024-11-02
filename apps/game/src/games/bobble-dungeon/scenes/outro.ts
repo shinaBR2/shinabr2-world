@@ -14,12 +14,6 @@ export default class Outro extends Phaser.Scene {
     super({ key: "outro" });
   }
 
-  init(data) {
-    this.name = data.name;
-    this.number = data.number;
-    this.next = data.next;
-  }
-
   /*
 First, we add all elements to the scene: player image, score, text, and the input to restart the game.
   */

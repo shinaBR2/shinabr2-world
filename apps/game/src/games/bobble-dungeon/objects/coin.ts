@@ -1,5 +1,14 @@
 export default class Coin extends Phaser.Physics.Matter.Sprite {
-  constructor(scene, x, y, texture = "coin", options = { isStatic: true }) {
+  label: string;
+  tween: Phaser.Tweens.Tween | undefined;
+
+  constructor(
+    scene: Phaser.Scene,
+    x: number,
+    y: number,
+    texture = "coin",
+    options = { isStatic: true }
+  ) {
     super(scene.matter.world, x, y, texture, 0, options);
     this.scene = scene;
     this.label = "coin";
@@ -25,7 +34,7 @@ export default class Coin extends Phaser.Physics.Matter.Sprite {
     When the coin is collected, we stop the tween and destroy the coin.
   */
   destroy() {
-    this.tween.stop();
+    this.tween?.stop();
     super.destroy();
   }
 }

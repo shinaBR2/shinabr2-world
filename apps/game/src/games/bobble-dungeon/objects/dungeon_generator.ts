@@ -1,4 +1,4 @@
-import Dungeon from "@mikewesthad/dungeon";
+import Dungeon, { Point, Room } from "@mikewesthad/dungeon";
 import Coin from "./coin";
 import Key from "./key";
 import Bat from "./bat";
@@ -6,7 +6,13 @@ import Wizard from "./wizard";
 import SeeSaw from "./seesaw";
 
 export default class DungeonGenerator {
-  constructor(scene) {
+  scene: Phaser.Scene;
+  dungeon: Dungeon | undefined;
+  groundLayer: any;
+  map: any;
+  stuffLayer: any;
+
+  constructor(scene: Phaser.Scene) {
     this.scene = scene;
     this.generate();
   }
@@ -20,7 +26,7 @@ export default class DungeonGenerator {
     // Watch the player and layer for collisions, for the duration of the scene:
     //this.physics.add.collider(this.player.sprite, layer);
 
-    this.dungeon.rooms.forEach((room) => {
+    this.dungeon?.rooms.forEach((room) => {
       // These room properties are all in grid units (not pixels units)
       const { x, y, width, height } = room;
       // Fill the room (minus the walls) with mostly clean floor tiles (90% of the time), but
@@ -71,8 +77,8 @@ export default class DungeonGenerator {
     this.map = this.scene.make.tilemap({
       tileWidth: 48,
       tileHeight: 48,
-      width: this.dungeon.width,
-      height: this.dungeon.height,
+      width: this.dungeon?.width,
+      height: this.dungeon?.height,
     });
     const tileset = this.map.addTilesetImage("tiles", null, 48, 48, 0, 0); // 1px margin, 2px spacing
     this.groundLayer = this.map.createBlankLayer("Layer 1", tileset);
@@ -80,7 +86,7 @@ export default class DungeonGenerator {
 
     // Get a 2D array of tile indices (using -1 to not render empty tiles) and place them into the
     // blank layer
-    const mappedTiles = this.dungeon.getMappedTiles({
+    const mappedTiles = this.dungeon?.getMappedTiles({
       empty: -1,
       floor: -1,
       door: 3,
@@ -95,7 +101,7 @@ export default class DungeonGenerator {
   /*
     This method places the corners of the room. We use the tile index to place the corner tiles.
   */
-  placeCorners(room) {
+  placeCorners(room: Room) {
     const { left, right, top, bottom } = room;
     this.groundLayer.putTileAt(0, left, top);
     this.groundLayer.putTileAt(5, right, top);
@@ -106,7 +112,7 @@ export default class DungeonGenerator {
   /*
     This method places the walls of the room. We use the tile index to place the wall tiles. It uses a weighted randomize method to place the tiles which means that we can give more weight (frequency) to some tiles than others.
   */
-  placeWalls(room) {
+  placeWalls(room: Room) {
     const { width, height, left, right, top, bottom } = room;
     this.groundLayer.weightedRandomize(
       [
@@ -153,7 +159,7 @@ export default class DungeonGenerator {
   /*
     As the name implies, this one adds the doors to the room. We use the tile index to place the door tiles.
   */
-  addDoors(room, doors, x, y) {
+  addDoors(room: Room, doors: Point[], x: number, y: number) {
     for (let i = 0; i < doors.length; i++) {
       const worldPosition = this.groundLayer.tileToWorldXY(
         x + doors[i].x,
@@ -175,7 +181,7 @@ export default class DungeonGenerator {
   /*
     Each room must have a key that the player has to collect. This method adds the key to the room.
   */
-  addKey(room) {
+  addKey(room: Room) {
     const keyX = Phaser.Math.Between(room.left + 2, room.right - 2);
     const keyY = Phaser.Math.Between(room.top + 2, room.bottom - 2);
     const worldPosition = this.groundLayer.tileToWorldXY(keyX, keyY);
@@ -185,7 +191,7 @@ export default class DungeonGenerator {
   /*
     Randomly, some rooms may have a seesaw. This method adds the seesaw to the center of the room.
   */
-  addSeeSaw(room) {
+  addSeeSaw(room: Room) {
     if (Phaser.Math.Between(0, 10) < 7) return;
     const worldPosition = this.groundLayer.tileToWorldXY(
       room.centerX,
@@ -202,7 +208,7 @@ export default class DungeonGenerator {
   /*
     Coins are randomly placed in the room. We use a random method to decide where to place the coins. It uses other helper methods to place the coins in different positions.
   */
-  addCoins(room) {
+  addCoins(room: Room) {
     const where = Phaser.Math.RND.pick([
       "top",
       "bottom",
@@ -210,8 +216,9 @@ export default class DungeonGenerator {
       "right",
       "none",
     ]);
-    const width = parseInt(room.width / 3) - Phaser.Math.Between(1, 2);
-    const height = parseInt(room.height / 3) - Phaser.Math.Between(1, 2);
+    const width = Math.floor(room.width / 3) - Phaser.Math.Between(1, 2);
+    const height = Math.floor(room.height / 3) - Phaser.Math.Between(1, 2);
+
     switch (where) {
       case "top":
         this.addCoinsTop(room, width, height);
@@ -230,7 +237,7 @@ export default class DungeonGenerator {
     }
   }
 
-  addCoinsTop(room, width, height) {
+  addCoinsTop(room: Room, width: number, height: number) {
     const keyY = room.top + Phaser.Math.Between(1, 2);
     const keyX = room.left + Phaser.Math.Between(1, 2);
 
@@ -249,7 +256,7 @@ export default class DungeonGenerator {
       });
   }
 
-  addCoinsdBottom(room, width, height) {
+  addCoinsdBottom(room: Room, width: number, height: number) {
     const keyY = room.bottom - Phaser.Math.Between(1, 2);
     const keyX = room.left + Phaser.Math.Between(1, 2);
 
@@ -268,7 +275,7 @@ export default class DungeonGenerator {
       });
   }
 
-  addCoinsdLeft(room, width, height) {
+  addCoinsdLeft(room: Room, width: number, height: number) {
     const keyY = room.top + Phaser.Math.Between(3, 4);
     const keyX = room.left + Phaser.Math.Between(1, 2);
 
@@ -287,7 +294,7 @@ export default class DungeonGenerator {
       });
   }
 
-  addCoinsdRight(room, width, height) {
+  addCoinsdRight(room: Room, width: number, height: number) {
     const keyY = room.top + Phaser.Math.Between(1, 2);
     const keyX = room.right - Phaser.Math.Between(3, 4);
 
@@ -306,7 +313,7 @@ export default class DungeonGenerator {
       });
   }
 
-  addFoes(room) {
+  addFoes(room: Room) {
     const keyX = Phaser.Math.Between(room.left + 2, room.right - 2);
     const keyY = Phaser.Math.Between(room.top + 2, room.bottom - 2);
 
@@ -332,11 +339,21 @@ export default class DungeonGenerator {
   /*
     This one adds the top traps or spikes to the room. Finally is not used in the game but it's a good example of how to add more elements to the dungeon.
   */
-  addTopTraps(room) {
+  addTopTraps(room: {
+    x: any;
+    y: any;
+    width: any;
+    height: any;
+    left: any;
+    right: any;
+    top: any;
+    bottom: any;
+    tiles: any;
+  }) {
     const { x, y, width, height, left, right, top, bottom, tiles } = room;
 
     const topTiles = tiles[0];
-    topTiles.forEach((tile, i) => {
+    topTiles.forEach((tile: number, i: number) => {
       if (tile === 1 && i > 0 && i < right)
         this.groundLayer.putTileAt(5, i + left, top + 1);
     });

@@ -1,7 +1,13 @@
 import Bubble from "./bubble";
 
 export default class Bat extends Phaser.Physics.Matter.Sprite {
-  constructor(scene, x, y, texture = "bat", ground) {
+  label: string;
+  startX: any;
+  direction: number;
+  unsubscribeBatCollide: any;
+  dead: boolean = false;
+
+  constructor(scene: Phaser.Scene, x: number, y: number, texture = "bat") {
     super(scene.matter.world, x, y, texture, 0);
     this.label = "bat";
     this.scene = scene;
@@ -35,7 +41,7 @@ export default class Bat extends Phaser.Physics.Matter.Sprite {
     });
   }
 
-  onBatCollide({ gameObjectA, gameObjectB }) {
+  onBatCollide({ gameObjectB }) {
     if (gameObjectB instanceof Bubble) {
       gameObjectB.load("bat");
       this.destroy();
@@ -71,7 +77,7 @@ export default class Bat extends Phaser.Physics.Matter.Sprite {
   /*
     This destroys the bat after the death animation is complete.
   */
-  animationComplete(animation, frame) {
+  animationComplete(animation: { key: string }) {
     if (animation.key === this.label + "death") {
       this.destroy();
     }

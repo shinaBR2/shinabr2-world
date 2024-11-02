@@ -1,5 +1,14 @@
 export default class key extends Phaser.Physics.Matter.Sprite {
-  constructor(scene, x, y, texture = "keys", options = { isStatic: true }) {
+  label: string;
+  tween: Phaser.Tweens.Tween | undefined;
+
+  constructor(
+    scene: Phaser.Scene,
+    x: number,
+    y: number,
+    texture = "keys",
+    options = { isStatic: true }
+  ) {
     super(
       scene.matter.world,
       x,
@@ -29,7 +38,7 @@ export default class key extends Phaser.Physics.Matter.Sprite {
   }
 
   destroy() {
-    this.tween.stop();
+    this.tween?.stop();
     super.destroy();
   }
 }

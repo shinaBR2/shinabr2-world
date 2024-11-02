@@ -2,7 +2,28 @@ import Bubble from "./bubble";
 import Dust from "./particle";
 
 export default class Player {
-  constructor(scene, x, y) {
+  scene: Phaser.Scene;
+  label: string;
+  moveForce: number;
+  invincible: boolean;
+  isTouching: { left: boolean; right: boolean; ground: boolean };
+  canJump: boolean;
+  jumpCooldownTimer: null;
+  canShoot: boolean;
+  shootCooldownTimer: null;
+  onWall: boolean;
+  sprite: any;
+  sensors: { bottom: any; left: any; right: any };
+  cursor: any;
+  W: any;
+  A: any;
+  S: any;
+  D: any;
+  isOnGround: any;
+  isInAir: boolean;
+  destroyed: boolean;
+
+  constructor(scene: Phaser.Scene, x: number, y: number) {
     this.scene = scene;
     this.label = "player";
     this.moveForce = 0.01;
@@ -20,7 +41,7 @@ export default class Player {
   /*
     The init method is called from the constructor and in this case, it has several jobs. This is just a conventional class that contains a compound body: it consists of different bodies for the player, and we need to add them to the Matter world. We also need to add the player sprite to the scene and set up the animations. Finally, we need to add the colliders and events that will be used to control the player. If you set the debug to true you'll see the different bodies that make up the player. The ones on the sides it's used to detect collisions with walls and be able to climb up.
   */
-  init(x, y) {
+  init(x: number, y: number) {
     // Before Matter's update,
     // reset our record of what surfaces the player is touching.
     this.scene.matter.world.on("beforeupdate", this.resetTouching, this);
@@ -145,11 +166,19 @@ export default class Player {
     This is used to add the controls to the player: WASD and arrows. We use the cursor keys to move the player and shoot bubbles.
   */
   addControls() {
-    this.cursor = this.scene.input.keyboard.createCursorKeys();
-    this.W = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-    this.A = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-    this.S = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-    this.D = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+    this.cursor = this.scene.input.keyboard?.createCursorKeys();
+    this.W = this.scene.input.keyboard?.addKey(
+      Phaser.Input.Keyboard.KeyCodes.W
+    );
+    this.A = this.scene.input.keyboard?.addKey(
+      Phaser.Input.Keyboard.KeyCodes.A
+    );
+    this.S = this.scene.input.keyboard?.addKey(
+      Phaser.Input.Keyboard.KeyCodes.S
+    );
+    this.D = this.scene.input.keyboard?.addKey(
+      Phaser.Input.Keyboard.KeyCodes.D
+    );
   }
 
   /*
@@ -311,7 +340,7 @@ Every time the player moves, we add a few dust particles to the scene. This is d
   /*
     This is called when the player finishes the shooting animation. We use it to play the idle animation again.
   */
-  animationComplete(animation, frame) {
+  animationComplete(animation) {
     if (animation.key === "playershot") {
       this.sprite.anims.play("playeridle", true);
     }

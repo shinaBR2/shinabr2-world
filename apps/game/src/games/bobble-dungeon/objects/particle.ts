@@ -1,5 +1,11 @@
 export default class Dust extends Phaser.GameObjects.Sprite {
-  constructor(scene, x, y, name = "dust", tween = false) {
+  constructor(
+    scene: Phaser.Scene,
+    x: number,
+    y: number,
+    name = "dust",
+    tween = false
+  ) {
     super(scene, x, y, name);
     this.scene = scene;
     this.name = name;
@@ -11,7 +17,7 @@ export default class Dust extends Phaser.GameObjects.Sprite {
   /*
     This dust is a simple sprite that plays an animation and then destroys itself. It's used when the player lands, slides on a wall, or jumps. We can optionally add a tween to make it fade out.
   */
-  init(tween) {
+  init(tween: boolean) {
     if (tween) {
       this.scene.tweens.add({
         targets: this,
