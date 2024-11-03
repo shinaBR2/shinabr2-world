@@ -1,4 +1,4 @@
-import { EventBus, SCENE_READY } from "../../../events/EventBus";
+import { EventBus, SCENE_READY } from "../../../core/EventBus";
 
 export default class Bootloader extends Phaser.Scene {
   private loadBar!: Phaser.GameObjects.Graphics;
@@ -46,7 +46,7 @@ export default class Bootloader extends Phaser.Scene {
       this
     );
 
-    this.load.on("loaderror", (file: { src: any; }) => {
+    this.load.on("loaderror", (file: { src: any }) => {
       console.log("Error loading:", file.src);
     });
   }

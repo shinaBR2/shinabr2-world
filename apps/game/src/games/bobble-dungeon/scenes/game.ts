@@ -1,7 +1,7 @@
 import Player from "../objects/player";
 import DungeonGenerator from "../objects/dungeon_generator";
 import { RESULT_SAVED } from "../events/Events";
-import { EventBus } from "../../../events/EventBus";
+import { EventBus } from "../../../core/EventBus";
 
 export interface GameScene extends Phaser.Scene {
   playAudio: (key: string) => void;

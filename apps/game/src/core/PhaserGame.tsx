@@ -1,5 +1,5 @@
 import React, { forwardRef, useEffect, useLayoutEffect, useRef } from "react";
-import { EventBus, SCENE_READY } from "../events/EventBus";
+import { EventBus, SCENE_READY } from "./EventBus";
 
 export interface IRefPhaserGame {
   game: Phaser.Game | null;

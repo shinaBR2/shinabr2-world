@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import GameContainer from "../../core/GameContainer";
-import { EventBus } from "../../events/EventBus";
+import { EventBus } from "../../core/EventBus";
 import { RESULT_SAVED } from "./events/Events";
 import config from "./config";
 

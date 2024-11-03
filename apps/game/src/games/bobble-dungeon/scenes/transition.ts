@@ -1,4 +1,4 @@
-import { EventBus, SCENE_READY } from "../../../events/EventBus";
+import { EventBus, SCENE_READY } from "../../../core/EventBus";
 
 export default class Transition extends Phaser.Scene {
   width!: number;
