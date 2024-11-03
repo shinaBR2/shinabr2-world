@@ -10,26 +10,63 @@ class GameScene extends Phaser.Scene {
   }
 
   create() {
-    // this.createMap();
-    this.createPlayer();
+    this.createMap();
+    // this.createPlayer();
     // this.createAnimations();
-    this.setupCamera();
+    // this.setupCamera();
     this.cursors = this.input.keyboard.createCursorKeys();
   }
 
   createMap() {
-    const map = this.make.tilemap({ key: 'map' });
-    const tileset = map.addTilesetImage('tileset', 'tiles');
+    const map = this.make.tilemap({ key: 'cloud-city-map' });
+    //
+    /**
+     * Add all tilesets
+     * First param is name from tsx file, second is the key you used in loading
+     */
+    const mapTileset = map.addTilesetImage('cloud_map', 'map-tileset');
+    const wallTileset = map.addTilesetImage('wall', 'wall-tileset');
+    const solidTileset = map.addTilesetImage('solid', 'solid-tileset');
 
-    const groundLayer = map.createLayer('Ground', tileset, 0, 0);
-    const objectLayer = map.createLayer('Objects', tileset, 0, 0);
+    /**
+     * When creating layers, pass array of all tilesets
+     */
+    const floorLayer = map.createLayer('floor', [mapTileset], 0, 0);
+    const onfloorLayer = map.createLayer(
+      'onfloor',
+      [wallTileset, solidTileset],
+      0,
+      0
+    );
 
-    objectLayer.setCollisionByProperty({ collides: true });
-    this.objectLayer = objectLayer;
+    const gameWidth = this.game.config.width;
+    const gameHeight = this.game.config.height;
+    const mapWidth = map.widthInPixels;
+    const mapHeight = map.heightInPixels;
+
+    // Scale camera to fit
+    // this.cameras.main.setBounds(0, 0, mapWidth, mapHeight);
+    this.cameras.main.setZoom(
+      Math.min(gameWidth / mapWidth, gameHeight / mapHeight)
+    );
+
+    // Center the map
+    this.cameras.main.centerOn(mapWidth / 2, mapHeight / 2);
+
+    // objectLayer.setCollisionByProperty({ collides: true });
+    // this.objectLayer = objectLayer;
   }
 
   createPlayer() {
+    const layer = map.createLayer('player', tileset);
+
+    // If you set collision on layer
+    // layer.setCollisionByProperty({ collides: true });
+
+    // Or if you set collision on specific tiles
+    // layer.setCollisionFromCollisionGroup();
     this.player = this.physics.add.sprite(400, 300, 'player');
+
     // this.player.setCollideWorldBounds(true);
     // this.physics.add.collider(this.player, this.objectLayer);
   }
@@ -75,7 +112,7 @@ class GameScene extends Phaser.Scene {
   }
 
   update() {
-    this.handlePlayerMovement();
+    // this.handlePlayerMovement();
   }
 
   handlePlayerMovement() {

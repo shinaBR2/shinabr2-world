@@ -79,6 +79,14 @@ class BootScene extends Phaser.Scene {
   loadAssets() {
     // Load all game assets here
     const basePath = 'assets/evil-minds';
+    this.load.tilemapTiledJSON(
+      'cloud-city-map',
+      `${basePath}/bomberman-cloud-city-map.json`
+    );
+    // Load ALL tileset images used in the map
+    this.load.image('map-tileset', `${basePath}/map/tileset.png`);
+    this.load.image('wall-tileset', `${basePath}/map/wall.png`);
+    this.load.image('solid-tileset', `${basePath}/map/solid.png`);
 
     // Character sprites
     this.load.spritesheet('player', `${basePath}/player.png`, {
