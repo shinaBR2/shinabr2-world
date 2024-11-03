@@ -16,6 +16,14 @@ const Home = () => {
       description: "Ride the Dungeons with just a bubble shooter.",
       imageUrl: "/assets/bobble-dungeon/bobble_dungeon_intro.png",
     },
+    {
+      id: "2",
+      url: "/evil-minds",
+      name: "Evil Minds",
+      slug: "evil-minds",
+      description: "Who is the next victim?",
+      imageUrl: "/assets/evil-minds/intro.png",
+    },
   ];
 
   return <HomeContainer gameList={gameList} />;
