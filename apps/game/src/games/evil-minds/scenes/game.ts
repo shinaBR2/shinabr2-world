@@ -13,48 +13,75 @@ class GameScene extends Phaser.Scene {
     this.createMap();
     // this.createPlayer();
     // this.createAnimations();
-    // this.setupCamera();
+    this.setupCamera();
     this.cursors = this.input.keyboard.createCursorKeys();
   }
 
   createMap() {
     const map = this.make.tilemap({ key: 'cloud-city-map' });
-    //
-    /**
-     * Add all tilesets
-     * First param is name from tsx file, second is the key you used in loading
-     */
     const mapTileset = map.addTilesetImage('cloud_map', 'map-tileset');
     const wallTileset = map.addTilesetImage('wall', 'wall-tileset');
     const solidTileset = map.addTilesetImage('solid', 'solid-tileset');
 
-    /**
-     * When creating layers, pass array of all tilesets
-     */
-    const floorLayer = map.createLayer('floor', [mapTileset], 0, 0);
+    // Calculate proper zoom first
+    const zoom = this.game.config.width / map.widthInPixels;
+
+    // Calculate vertical offset before creating layers
+    const yOffset =
+      (this.game.config.height - map.heightInPixels * zoom) / 2 / zoom;
+
+    // Create layers with offset
+    const floorLayer = map.createLayer('floor', [mapTileset], 0, yOffset);
     const onfloorLayer = map.createLayer(
       'onfloor',
       [wallTileset, solidTileset],
       0,
-      0
+      yOffset
     );
 
-    const gameWidth = this.game.config.width;
-    const gameHeight = this.game.config.height;
-    const mapWidth = map.widthInPixels;
-    const mapHeight = map.heightInPixels;
+    // Set camera zoom
+    this.cameras.main.setZoom(zoom);
 
-    // Scale camera to fit
-    // this.cameras.main.setBounds(0, 0, mapWidth, mapHeight);
-    this.cameras.main.setZoom(
-      Math.min(gameWidth / mapWidth, gameHeight / mapHeight)
+    // Set physics bounds
+    this.physics.world.setBounds(
+      0,
+      yOffset,
+      map.widthInPixels,
+      map.heightInPixels
     );
 
-    // Center the map
-    this.cameras.main.centerOn(mapWidth / 2, mapHeight / 2);
+    onfloorLayer.setCollisionByProperty({ collides: true });
 
-    // objectLayer.setCollisionByProperty({ collides: true });
-    // this.objectLayer = objectLayer;
+    // Add player with proper scale
+    this.player = this.physics.add.sprite(48, yOffset + 48, 'player');
+
+    // Scale player to match tile size (16px) * zoom
+    const targetSize = 16 * zoom;
+    this.player.setScale(targetSize / this.player.width);
+
+    // Adjust physics body to match tile size
+    this.player.body.setSize(16, 16);
+
+    // Make sure collision is enabled
+    this.physics.add.collider(this.player, onfloorLayer);
+
+    // Enable physics and collision
+    this.physics.world.enable(this.player);
+    this.player.setCollideWorldBounds(true);
+    this.physics.add.collider(this.player, onfloorLayer);
+
+    // Debug graphics to see collision boxes
+    const debugGraphics = this.add.graphics().setAlpha(0.7);
+    onfloorLayer.renderDebug(debugGraphics, {
+      tileColor: null,
+      collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
+      faceColor: new Phaser.Display.Color(40, 39, 37, 255),
+    });
+
+    // Enable debug for player physics body
+    this.physics.world.createDebugGraphic();
+    this.player.body.debugShowBody = true;
+    this.player.body.debugShowVelocity = true;
   }
 
   createPlayer() {
@@ -112,7 +139,7 @@ class GameScene extends Phaser.Scene {
   }
 
   update() {
-    // this.handlePlayerMovement();
+    this.handlePlayerMovement();
   }
 
   handlePlayerMovement() {

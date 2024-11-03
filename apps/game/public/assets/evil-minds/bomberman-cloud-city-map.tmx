@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="34">
  <editorsettings>
-  <export target="map/bomberman-cloud-city-map.json" format="json"/>
+  <export target="bomberman-cloud-city-map.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" name="cloud_map" tilewidth="16" tileheight="16" tilecount="1260" columns="45">
   <image source="map/tileset.png" width="720" height="448"/>
@@ -6356,10 +6356,23 @@
   </wangsets>
  </tileset>
  <tileset firstgid="1261" name="wall" tilewidth="16" tileheight="16" tilecount="1" columns="1">
+  <properties>
+   <property name="collides" type="bool" value="true"/>
+  </properties>
   <image source="map/wall.png" width="16" height="16"/>
+  <tile id="0">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
  </tileset>
  <tileset firstgid="1262" name="solid" tilewidth="16" tileheight="16" tilecount="1" columns="1">
   <image source="map/solid.png" width="16" height="16"/>
+  <tile id="0">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
  </tileset>
  <layer id="1" name="Floor-deprecated" width="30" height="20" visible="0">
   <data encoding="csv">
@@ -6415,7 +6428,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,1262,1261,1261,1261,1261,0,0,0,0,0,0,0,0,1262,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,1262,0,0,0,1261,1261,0,1262,0,1261,1261,1261,1261,1262,1262,0,0,0,1261,0,0,0,
-0,0,1262,1262,0,1262,0,1261,1261,1261,1261,0,0,1262,0,0,1261,1261,0,0,0,0,0,1262,0,1262,1261,0,0,0,
+0,0,1262,1262,0,1262,0,1261,1262,1261,1261,0,0,1262,0,0,1261,1261,0,0,0,0,0,1262,0,1262,1261,0,0,0,
 0,0,0,1262,0,1262,0,1262,0,0,1261,1261,0,1262,1261,1261,0,0,0,1261,1261,0,1261,1261,1261,0,1261,0,0,0,
 0,0,0,1262,0,0,1261,0,0,0,1261,0,0,1261,1261,0,1262,1261,1261,0,0,1261,0,0,1261,1261,1261,0,0,0,
 0,0,1261,1261,0,0,1261,1261,0,1262,1261,1261,1261,0,1261,0,0,1261,1262,0,1262,1261,0,0,0,1261,0,0,0,0,
