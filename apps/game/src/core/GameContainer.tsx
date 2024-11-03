@@ -13,12 +13,9 @@ const GameContainer = () => {
   };
 
   useEffect(() => {
-    EventBus.on(RESULT_SAVED, (data) => {
-      console.log("data on finish", data);
-
+    EventBus.on(RESULT_SAVED, (data: any) => {
       // @ts-ignore
       const currentData = localStorage.getItem(RESULT_SAVED);
-      console.log("current data", currentData);
 
       if (!currentData) {
         localStorage.setItem(RESULT_SAVED, JSON.stringify(data));
@@ -27,8 +24,6 @@ const GameContainer = () => {
 
       const currentResult = JSON.parse(currentData);
       const currentScore = currentResult.seconds;
-
-      console.log("current data", currentResult);
 
       if (currentScore < data.seconds) {
         localStorage.setItem(RESULT_SAVED, JSON.stringify(data));
