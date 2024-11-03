@@ -22,8 +22,9 @@ interface MatterCollisionPlugin {
   addOnCollideActive(config: CollisionConfig): () => void;
 }
 
+// codesandbox.io/p/sandbox/my3oyyqj39?file=%2Fsrc%2Findex.ts%3A22%2C1-22%2C24
 // Then extend Phaser's types
-declare module "phaser" {
+declare module 'phaser' {
   interface Scene {
     matterCollision: MatterCollisionPlugin;
   }
