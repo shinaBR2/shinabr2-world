@@ -13,6 +13,7 @@
     "@mikewesthad/dungeon": "^2.0.1",
     "@tanstack/react-router": "^1.78.2",
     "core": "workspace:*",
+    "grid-engine": "^2.45.5",
     "phaser": "^3.86.0",
     "phaser-matter-collision-plugin": "^1.0.0",
     "react": "^18.2.0",

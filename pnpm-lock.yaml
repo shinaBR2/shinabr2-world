@@ -320,6 +320,9 @@ importers:
       core:
         specifier: workspace:*
         version: link:../../packages/core
+      grid-engine:
+        specifier: ^2.45.5
+        version: 2.45.5(phaser@3.86.0)
       phaser:
         specifier: ^3.86.0
         version: 3.86.0
@@ -3742,6 +3745,9 @@ packages:
   '@types/minimatch@5.1.2':
     resolution: {integrity: sha512-K0VQKziLUWkVKiRVrx4a40iPaxTUefQmjtkQofBkYRcoaaL/8rhwDWww9qWbrgicNOgnpIsMxyNIUM4+n6dUIA==}
 
+  '@types/minimist@1.2.5':
+    resolution: {integrity: sha512-hov8bUuiLiyFPGyFPE1lwWhmzYbirOXQNNo40+y3zow8aFVTeyn3VWL0VFFfdNddA8S4Vf0Tc062rzyNr7Paag==}
+
   '@types/morgan@1.9.9':
     resolution: {integrity: sha512-iRYSDKVaC6FkGSpEVVIvrRGw0DfJMiQzIn3qr2G5B3C//AWkulhXgaBd7tS9/J79GWSYMTHGs7PfI5b3Y8m+RQ==}
 
@@ -6695,6 +6701,11 @@ packages:
     resolution: {integrity: sha512-5v6yZd4JK3eMI3FqqCouswVqwugaA9r4dNZB1wwcmrD02QkV5H0y7XBQW8QwQqEaZY1pM9aqORSORhJRdNK44Q==}
     engines: {node: '>=6.0'}
 
+  grid-engine@2.45.5:
+    resolution: {integrity: sha512-9tPK8WzjmW6S+HyyWdaYCHp4m9MGOhkm2rT1Y6V2oDq+Cjzllh3pLk5bN4Oto3PjoQL2Yh0cS2skGTxxmLKvFQ==}
+    peerDependencies:
+      phaser: ~3.86.0
+
   growly@1.3.0:
     resolution: {integrity: sha512-+xGQY0YyAWCnqy7Cd++hc2JqMYzlm0dG30Jd0beaA64sROr8C4nt8Yc9V5Ro3avlSUDTN0ulqP/VBKi1/lLygw==}
 
@@ -8228,6 +8239,9 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
+  mnemonist@0.39.8:
+    resolution: {integrity: sha512-vyWo2K3fjrUw8YeeZ1zF0fy6Mu59RHokURlld8ymdUPjMlD9EC9ov1/YPqTgqRvUN9nTr3Gqfz29LYAmu0PHPQ==}
+
   move-concurrently@1.0.1:
     resolution: {integrity: sha512-hdrFxZOycD/g6A6SoI2bB5NA/5NEqD0569+S47WZhPvm46sD50ZHdYaFmnua5lndde9rCHGjmfK7Z8BuCt/PcQ==}
     deprecated: This package is no longer supported.
@@ -8445,6 +8459,9 @@ packages:
 
   objectorarray@1.0.5:
     resolution: {integrity: sha512-eJJDYkhJFFbBBAxeh8xW+weHlkI28n2ZdQV/J/DNfWfSKlGEf2xcfAbZTv3riEXHAhL9SVOTs2pRmXiSTf78xg==}
+
+  obliterator@2.0.4:
+    resolution: {integrity: sha512-lgHwxlxV1qIg1Eap7LgIeoBWIMFibOjbrYPIPJZcI1mmGAI2m3lNYpK12Y+GBdPQ0U1hRwSord7GIaawz962qQ==}
 
   obuf@1.1.2:
     resolution: {integrity: sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==}
@@ -10443,6 +10460,9 @@ packages:
 
   thunky@1.1.0:
     resolution: {integrity: sha512-eHY7nBftgThBqOyHGVN+l8gF0BucP09fMo0oO/Lb0w1OF80dJv+lDVpXG60WMQvkcxAkNybKsrEIE3ZtKGmPrA==}
+
+  tiled-property-flattener@1.1.1:
+    resolution: {integrity: sha512-Acj6WKbBkJlmqyDtlUIwvGHtNgopUmxYNZiLYWvgxWOTmtVubwskvOoZV3qqCGepBtL/18Fq/t4396n1NpqHng==}
 
   timers-browserify@2.0.12:
     resolution: {integrity: sha512-9phl76Cqm6FhSX9Xe1ZUAMLtm1BLkKj2Qd5ApyWkXzsMRaA7dgr81kf4wJmQf/hAvg8EEyJxDo3du/0KlhPiKQ==}
@@ -15000,7 +15020,11 @@ snapshots:
       jest-runner: 26.6.3
       jest-runtime: 26.6.3
     transitivePeerDependencies:
+      - bufferutil
+      - canvas
       - supports-color
+      - ts-node
+      - utf-8-validate
 
   '@jest/transform@26.6.2':
     dependencies:
@@ -17249,6 +17273,8 @@ snapshots:
   '@types/mime@1.3.5': {}
 
   '@types/minimatch@5.1.2': {}
+
+  '@types/minimist@1.2.5': {}
 
   '@types/morgan@1.9.9':
     dependencies:
@@ -21158,6 +21184,13 @@ snapshots:
       section-matter: 1.0.0
       strip-bom-string: 1.0.0
 
+  grid-engine@2.45.5(phaser@3.86.0):
+    dependencies:
+      mnemonist: 0.39.8
+      phaser: 3.86.0
+      rxjs: 7.8.1
+      tiled-property-flattener: 1.1.1
+
   growly@1.3.0:
     optional: true
 
@@ -23086,6 +23119,10 @@ snapshots:
 
   mkdirp@1.0.4: {}
 
+  mnemonist@0.39.8:
+    dependencies:
+      obliterator: 2.0.4
+
   move-concurrently@1.0.1:
     dependencies:
       aproba: 1.2.0
@@ -23337,6 +23374,8 @@ snapshots:
       es-object-atoms: 1.0.0
 
   objectorarray@1.0.5: {}
+
+  obliterator@2.0.4: {}
 
   obuf@1.1.2: {}
 
@@ -25696,6 +25735,12 @@ snapshots:
       xtend: 4.0.2
 
   thunky@1.1.0: {}
+
+  tiled-property-flattener@1.1.1:
+    dependencies:
+      '@types/minimist': 1.2.5
+      lodash: 4.17.21
+      minimist: 1.2.8
 
   timers-browserify@2.0.12:
     dependencies:

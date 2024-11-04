@@ -11,6 +11,8 @@
 - https://www.youtube.com/watch?v=9ngQmaW-EUI&ab_channel=DoolinDigital
 - https://sky-office.co/
 - https://doc.mapeditor.org/en/stable/manual/terrain/
+- https://github.com/mikewesthad/phaser-matter-collision-plugin?tab=readme-ov-file
+- https://play.definya.com/auth/character
 
 # Development
 

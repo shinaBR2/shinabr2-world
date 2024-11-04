@@ -1,3 +1,4 @@
+import { GridEngine } from 'grid-engine';
 import BootScene from './scenes/boot';
 import GameScene from './scenes/game';
 
@@ -10,8 +11,17 @@ const config = {
     default: 'arcade',
     arcade: {
       gravity: { x: 0, y: 0 }, // No gravity for top-down view
-      debug: false,
+      debug: true,
     },
+  },
+  plugins: {
+    scene: [
+      {
+        key: 'gridEngine',
+        plugin: GridEngine,
+        mapping: 'gridEngine',
+      },
+    ],
   },
   scene: [
     BootScene, // Loading assets
