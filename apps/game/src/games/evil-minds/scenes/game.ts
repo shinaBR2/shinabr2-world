@@ -7,7 +7,8 @@ class GameScene extends Phaser.Scene {
     // Initialize variables
     this.player = null;
     this.cursors = null;
-    this.TILE_SIZE = 16; // Base tile size
+    this.SCALE = 1.5;
+    this.TILE_SIZE = 16 * this.SCALE; // Base tile size
     this.PLAYER_SCALE = 0.25; // 24x24 (1.5 tiles) for player
     this.wallPositions = new Set(); // Track wall positions
   }
@@ -17,13 +18,12 @@ class GameScene extends Phaser.Scene {
     this.createMap();
     // this.createPlayer();
     // this.createAnimations();
-    // this.setupCamera();
+    this.setupCamera();
     this.cursors = this.input.keyboard.createCursorKeys();
   }
 
   createMap() {
     // Create the tilemap
-    console.log('Available cache keys:', this.cache.json.keys);
     const map = this.make.tilemap({ key: 'map' });
 
     // Add tileset image to the map
@@ -37,16 +37,33 @@ class GameScene extends Phaser.Scene {
 
     // Set collision based on the custom property we created
     groundLayer.setCollisionByProperty({ collides: true });
-    onFloorLayer.setCollisionByProperty({ collides: true });
-    decorationLayer.setCollisionByProperty({ collides: true });
+    groundLayer?.setDepth(0);
+    groundLayer?.setScale(this.SCALE);
 
-    // Create player (assuming you already have this)
+    onFloorLayer.setCollisionByProperty({ collides: true });
+    onFloorLayer?.setDepth(1);
+    onFloorLayer?.setScale(this.SCALE);
+
+    decorationLayer.setCollisionByProperty({ collides: true });
+    decorationLayer?.setDepth(2);
+    decorationLayer?.setScale(this.SCALE);
+
+    const offsetX = this.TILE_SIZE / 2;
+    const offsetY = this.TILE_SIZE;
     this.player = this.physics.add.sprite(
-      this.TILE_SIZE * 2, // Start at 2 tiles from left
-      this.TILE_SIZE * 2, // Start at 2 tiles from top
-      'player'
+      5 * this.TILE_SIZE + offsetX, // Start at 2 tiles from left
+      14 * this.TILE_SIZE + offsetY, // Start at 2 tiles from top
+      'player',
+      55 // frame for the first load
     );
-    this.player.setScale(0.5);
+    this.player.setDepth(2);
+    this.player.setScale(this.SCALE);
+    this.player.setOrigin(0.5, 1);
+
+    // this.player.setPosition(
+    //   6 * this.TILE_SIZE + offsetX,
+    //   6 * this.TILE_SIZE + offsetY
+    // );
     // this.player.setScale(16 / 96);
     // this.player.setScale(this.PLAYER_SCALE);
     // Make hitbox slightly smaller than visual size for better gameplay
@@ -54,11 +71,11 @@ class GameScene extends Phaser.Scene {
     const bodySize = 28; // Slightly smaller than visual
     const bodyOffset = (96 * this.PLAYER_SCALE - bodySize) / 2;
 
-    this.player.body.setSize(bodySize, bodySize);
-    this.player.body.setOffset(
-      (96 - bodySize) / 2, // Center horizontally in the sprite
-      (96 - bodySize) / 2 // Center vertically in the sprite
-    );
+    // this.player.body.setSize(bodySize, bodySize);
+    // this.player.body.setOffset(
+    //   (96 - bodySize) / 2, // Center horizontally in the sprite
+    //   (96 - bodySize) / 2 // Center vertically in the sprite
+    // );
 
     // Add collision between player and layer
     this.physics.add.collider(this.player, groundLayer);

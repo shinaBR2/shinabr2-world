@@ -88,8 +88,8 @@ class BootScene extends Phaser.Scene {
 
     // Character sprites
     this.load.spritesheet('player', `${basePath}/player.png`, {
-      frameWidth: 96,
-      frameHeight: 96,
+      frameWidth: 26,
+      frameHeight: 36,
     });
     // this.load.spritesheet('npc', 'assets/characters/npc.png', {
     //   frameWidth: 32,
@@ -156,16 +156,16 @@ class BootScene extends Phaser.Scene {
     // Front-facing animations
     this.anims.create({
       key: 'idle-down',
-      frames: [{ key: 'player', frame: 1 }], // Middle frame of first row
+      frames: [{ key: 'player', frame: 55 }], // Middle frame of first row
       frameRate,
     });
 
     this.anims.create({
       key: 'walk-down',
       frames: this.anims.generateFrameNumbers('player', {
-        start: 0,
-        end: 2,
-        first: 0,
+        start: 54,
+        end: 56,
+        first: 54,
       }),
       frameRate: frameRate,
       repeat,
@@ -174,15 +174,15 @@ class BootScene extends Phaser.Scene {
     // Left-facing animations (second row, frames 3-5)
     this.anims.create({
       key: 'idle-left',
-      frames: [{ key: 'player', frame: 4 }], // Middle frame of second row
+      frames: [{ key: 'player', frame: 67 }], // Middle frame of second row
       frameRate: frameRate,
     });
 
     this.anims.create({
       key: 'walk-left',
       frames: this.anims.generateFrameNumbers('player', {
-        start: 3,
-        end: 5,
+        start: 66,
+        end: 68,
       }),
       frameRate: frameRate,
       repeat: repeat,
@@ -191,15 +191,15 @@ class BootScene extends Phaser.Scene {
     // Right-facing animations (third row, frames 6-8)
     this.anims.create({
       key: 'idle-right',
-      frames: [{ key: 'player', frame: 7 }], // Middle frame of third row
+      frames: [{ key: 'player', frame: 79 }], // Middle frame of third row
       frameRate: frameRate,
     });
 
     this.anims.create({
       key: 'walk-right',
       frames: this.anims.generateFrameNumbers('player', {
-        start: 6,
-        end: 8,
+        start: 78,
+        end: 80,
       }),
       frameRate: frameRate,
       repeat: repeat,
@@ -208,15 +208,15 @@ class BootScene extends Phaser.Scene {
     // Back-facing animations (fourth row, frames 9-11)
     this.anims.create({
       key: 'idle-up',
-      frames: [{ key: 'player', frame: 10 }], // Middle frame of fourth row
+      frames: [{ key: 'player', frame: 91 }], // Middle frame of fourth row
       frameRate: frameRate,
     });
 
     this.anims.create({
       key: 'walk-up',
       frames: this.anims.generateFrameNumbers('player', {
-        start: 9,
-        end: 11,
+        start: 90,
+        end: 91,
       }),
       frameRate: frameRate,
       repeat: repeat,
