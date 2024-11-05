@@ -34,6 +34,7 @@ class GameScene extends Phaser.Scene {
     const groundLayer = map.createLayer('floor', tileset, 0, 0);
     const onFloorLayer = map.createLayer('onfloor', tileset, 0, 0);
     const decorationLayer = map.createLayer('decoration', tileset, 0, 0);
+    const overlayLayer = map.createLayer('overlay', tileset, 0, 0);
 
     // Set collision based on the custom property we created
     groundLayer.setCollisionByProperty({ collides: true });
@@ -48,6 +49,8 @@ class GameScene extends Phaser.Scene {
     decorationLayer?.setDepth(2);
     decorationLayer?.setScale(this.SCALE);
 
+    overlayLayer?.setVisible(false);
+
     const offsetX = this.TILE_SIZE / 2;
     const offsetY = this.TILE_SIZE;
     this.player = this.physics.add.sprite(
@@ -58,7 +61,27 @@ class GameScene extends Phaser.Scene {
     );
     this.player.setDepth(2);
     this.player.setScale(this.SCALE);
-    this.player.setOrigin(0.5, 1);
+    // this.player.setOrigin(0.5, 1);
+
+    /**
+     * See the player.png file
+     * Grid engine split the spritesheets into multiple blocks like
+     * [Block 0][Block 1][Block 2][Block 3]
+     * [Block 4][Block 5][Block 6][Block 7]
+     *
+     * Each block contains 4 rows, each row has 3 frames
+     */
+    const gridEngineConfig = {
+      characters: [
+        {
+          id: 'player',
+          sprite: this.player,
+          walkingAnimationMapping: 4, // the zero-based index of block
+          startPosition: { x: 5, y: 14 },
+        },
+      ],
+    };
+    this.gridEngine.create(map, gridEngineConfig);
 
     // this.player.setPosition(
     //   6 * this.TILE_SIZE + offsetX,
@@ -317,38 +340,15 @@ class GameScene extends Phaser.Scene {
   }
 
   handlePlayerMovement() {
-    const speed = 100;
-
-    // Reset velocity
-    this.player.setVelocity(0);
-
-    // Handle movement
-    if (this.cursors.left.isDown) {
-      this.player.setVelocityX(-speed);
-      this.player.anims.play('walk-left', true);
-    } else if (this.cursors.right.isDown) {
-      this.player.setVelocityX(speed);
-      this.player.anims.play('walk-right', true);
-    }
-
-    if (this.cursors.up.isDown) {
-      this.player.setVelocityY(-speed);
-      if (!this.cursors.left.isDown && !this.cursors.right.isDown) {
-        this.player.anims.play('walk-up', true);
-      }
-    } else if (this.cursors.down.isDown) {
-      this.player.setVelocityY(speed);
-      if (!this.cursors.left.isDown && !this.cursors.right.isDown) {
-        this.player.anims.play('walk-down', true);
-      }
-    }
-
-    // Stop animations if not moving
-    if (
-      this.player.body.velocity.x === 0 &&
-      this.player.body.velocity.y === 0
-    ) {
-      this.player.anims.stop();
+    const cursors = this.input.keyboard.createCursorKeys();
+    if (cursors.left.isDown) {
+      this.gridEngine.move('player', 'left');
+    } else if (cursors.right.isDown) {
+      this.gridEngine.move('player', 'right');
+    } else if (cursors.up.isDown) {
+      this.gridEngine.move('player', 'up');
+    } else if (cursors.down.isDown) {
+      this.gridEngine.move('player', 'down');
     }
   }
 }
