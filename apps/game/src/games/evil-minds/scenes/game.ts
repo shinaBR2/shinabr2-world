@@ -89,6 +89,7 @@ class GameScene extends Phaser.Scene {
           startPosition: { x: 5, y: 14 },
         },
       ],
+      numberOfDirections: 8,
     };
     this.gridEngine.create(map, gridEngineConfig);
   }
@@ -126,7 +127,15 @@ class GameScene extends Phaser.Scene {
   }
 
   handlePlayerMovement() {
-    if (this.cursors.left.isDown) {
+    if (this.cursors.left.isDown && this.cursors.up.isDown) {
+      this.gridEngine.move('player', 'up-left');
+    } else if (this.cursors.left.isDown && this.cursors.down.isDown) {
+      this.gridEngine.move('player', 'down-left');
+    } else if (this.cursors.right.isDown && this.cursors.up.isDown) {
+      this.gridEngine.move('player', 'up-right');
+    } else if (this.cursors.right.isDown && this.cursors.down.isDown) {
+      this.gridEngine.move('player', 'down-right');
+    } else if (this.cursors.left.isDown) {
       this.gridEngine.move('player', 'left');
     } else if (this.cursors.right.isDown) {
       this.gridEngine.move('player', 'right');
