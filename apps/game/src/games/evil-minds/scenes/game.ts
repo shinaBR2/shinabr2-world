@@ -1,68 +1,77 @@
+const SCALE = 1.5;
+const TILE_SIZE = SCALE * 16;
+const PLAYER_SCALE = 0.25;
+
 class GameScene extends Phaser.Scene {
+  gridEngine: any;
+  borders!: Phaser.Physics.Arcade.StaticGroup;
+  map!: Phaser.Tilemaps.Tilemap;
+  walls!: Phaser.Physics.Arcade.StaticGroup;
+  blocks!: Phaser.Physics.Arcade.StaticGroup;
+  player!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+  cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
+
   constructor() {
     super({ key: 'GameScene' });
   }
 
-  init() {
-    // Initialize variables
-    this.player = null;
-    this.cursors = null;
-    this.SCALE = 1.5;
-    this.TILE_SIZE = 16 * this.SCALE; // Base tile size
-    this.PLAYER_SCALE = 0.25; // 24x24 (1.5 tiles) for player
-    this.wallPositions = new Set(); // Track wall positions
-  }
+  init() {}
 
   create() {
-    // this.generateMap(15, 13);
-    this.createMap();
-    // this.createPlayer();
-    // this.createAnimations();
+    const map = this.createMap();
+    this.createPlayer();
+    this.initGridEngine(map);
     this.setupCamera();
-    this.cursors = this.input.keyboard.createCursorKeys();
+
+    this.cursors = this.input.keyboard!.createCursorKeys();
   }
 
-  createMap() {
-    // Create the tilemap
-    const map = this.make.tilemap({ key: 'map' });
+  update() {
+    this.handlePlayerMovement();
+  }
 
-    // Add tileset image to the map
-    // Parameters: (tilesetNameInTiled, imageKeyInPhaser)
-    const tileset = map.addTilesetImage('cloud_map', 'map');
+  /**
+   * END OF LIFE CYCLES
+   */
+
+  createMapLayers(map: Phaser.Tilemaps.Tilemap) {
+    /**
+     * addTilesetImage(tileset_name, imageKey)
+     * - tileset_name: name of Tileset in Tile Map Editor
+     * - imageKey: Phaser image key, first params of this.load.image()
+     */
+    const tileset = map.addTilesetImage(
+      'cloud_map',
+      'map'
+    ) as Phaser.Tilemaps.Tileset;
 
     // Create layers (use the layer names from your Tiled map)
-    const groundLayer = map.createLayer('floor', tileset, 0, 0);
-    const onFloorLayer = map.createLayer('onfloor', tileset, 0, 0);
-    const decorationLayer = map.createLayer('decoration', tileset, 0, 0);
-    const overlayLayer = map.createLayer('overlay', tileset, 0, 0);
+    const groundLayer = map.createLayer('floor', tileset);
+    const onFloorLayer = map.createLayer('onfloor', tileset);
+    const decorationLayer = map.createLayer('decoration', tileset);
+    const overlayLayer = map.createLayer('overlay', tileset);
 
     // Set collision based on the custom property we created
-    groundLayer.setCollisionByProperty({ collides: true });
+    groundLayer?.setCollisionByProperty({ collides: true });
     groundLayer?.setDepth(0);
-    groundLayer?.setScale(this.SCALE);
+    groundLayer?.setScale(SCALE);
 
-    onFloorLayer.setCollisionByProperty({ collides: true });
+    onFloorLayer?.setCollisionByProperty({ collides: true });
     onFloorLayer?.setDepth(1);
-    onFloorLayer?.setScale(this.SCALE);
+    onFloorLayer?.setScale(SCALE);
 
-    decorationLayer.setCollisionByProperty({ collides: true });
+    decorationLayer?.setCollisionByProperty({ collides: true });
     decorationLayer?.setDepth(2);
-    decorationLayer?.setScale(this.SCALE);
+    decorationLayer?.setScale(SCALE);
 
     overlayLayer?.setVisible(false);
 
-    const offsetX = this.TILE_SIZE / 2;
-    const offsetY = this.TILE_SIZE;
-    this.player = this.physics.add.sprite(
-      5 * this.TILE_SIZE + offsetX, // Start at 2 tiles from left
-      14 * this.TILE_SIZE + offsetY, // Start at 2 tiles from top
-      'player',
-      55 // frame for the first load
-    );
-    this.player.setDepth(2);
-    this.player.setScale(this.SCALE);
-    // this.player.setOrigin(0.5, 1);
+    const layers = [groundLayer, onFloorLayer, decorationLayer];
 
+    return layers;
+  }
+
+  initGridEngine(map: Phaser.Tilemaps.Tilemap) {
     /**
      * See the player.png file
      * Grid engine split the spritesheets into multiple blocks like
@@ -82,101 +91,28 @@ class GameScene extends Phaser.Scene {
       ],
     };
     this.gridEngine.create(map, gridEngineConfig);
+  }
 
-    // this.player.setPosition(
-    //   6 * this.TILE_SIZE + offsetX,
-    //   6 * this.TILE_SIZE + offsetY
-    // );
-    // this.player.setScale(16 / 96);
-    // this.player.setScale(this.PLAYER_SCALE);
-    // Make hitbox slightly smaller than visual size for better gameplay
-    const playerVisualSize = 24; // 1.5 tiles
-    const bodySize = 28; // Slightly smaller than visual
-    const bodyOffset = (96 * this.PLAYER_SCALE - bodySize) / 2;
+  createMap() {
+    // Create the tilemap
+    const map = this.make.tilemap({ key: 'map' });
 
-    // this.player.body.setSize(bodySize, bodySize);
-    // this.player.body.setOffset(
-    //   (96 - bodySize) / 2, // Center horizontally in the sprite
-    //   (96 - bodySize) / 2 // Center vertically in the sprite
-    // );
+    this.createMapLayers(map);
 
-    // Add collision between player and layer
-    this.physics.add.collider(this.player, groundLayer);
-    this.physics.add.collider(this.player, onFloorLayer);
-    this.physics.add.collider(this.player, decorationLayer);
-
-    // Optional: Debug visualization
-    // This will show collision tiles in a different color
-    const debugGraphics = this.add.graphics().setAlpha(0.75);
-    groundLayer.renderDebug(debugGraphics, {
-      tileColor: null, // Color of non-colliding tiles
-      collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
-      faceColor: new Phaser.Display.Color(40, 39, 37, 255), // Color of colliding face edges
-    });
+    return map;
   }
 
   createPlayer() {
-    // const layer = map.createLayer('player', tileset);
-
-    // If you set collision on layer
-    // layer.setCollisionByProperty({ collides: true });
-
-    // Or if you set collision on specific tiles
-    // layer.setCollisionFromCollisionGroup();
-    this.player = this.physics.add.sprite(400, 300, 'player');
-
-    // this.player.setCollideWorldBounds(true);
-    // this.physics.add.collider(this.player, this.objectLayer);
-
-    // Create static physics group for borders
-    this.borders = this.physics.add.staticGroup();
-
-    // Create invisible rectangles for each border
-    // Top border
-    this.borders.add(
-      this.add
-        .rectangle(0, 0, this.game.config.width, 32, 0x000000, 0)
-        .setOrigin(0, 0)
+    const offsetX = TILE_SIZE / 2;
+    const offsetY = TILE_SIZE;
+    this.player = this.physics.add.sprite(
+      5 * TILE_SIZE + offsetX,
+      14 * TILE_SIZE + offsetY,
+      'player',
+      55 // frame for the first load
     );
-
-    // Bottom border
-    this.borders.add(
-      this.add
-        .rectangle(
-          0,
-          this.game.config.height - 32,
-          this.game.config.width,
-          32,
-          0x000000,
-          0
-        )
-        .setOrigin(0, 0)
-    );
-
-    // Left border
-    this.borders.add(
-      this.add
-        .rectangle(0, 0, 32, this.game.config.height, 0x000000, 0)
-        .setOrigin(0, 0)
-    );
-
-    // Right border
-    this.borders.add(
-      this.add
-        .rectangle(
-          this.game.config.width - 32,
-          0,
-          32,
-          this.game.config.height,
-          0x000000,
-          0
-        )
-        .setOrigin(0, 0)
-    );
-
-    // Add collision between player and borders
-    this.physics.add.collider(this.player, this.borders);
-    this.borders.getChildren().forEach(border => border.setAlpha(0.3));
+    this.player.setDepth(2);
+    this.player.setScale(SCALE);
   }
 
   setupCamera() {
@@ -184,170 +120,19 @@ class GameScene extends Phaser.Scene {
     this.cameras.main.setBounds(
       0,
       0,
-      this.game.config.width,
-      this.game.config.height
+      this.game.config.width as number,
+      this.game.config.height as number
     );
   }
 
-  handleInitialScale(map) {
-    // Calculate proper zoom first
-    const zoom = this.game.config.width / map.widthInPixels;
-
-    // Calculate vertical offset before creating layers
-    const yOffset =
-      (this.game.config.height - map.heightInPixels * zoom) / 2 / zoom;
-
-    // Set camera zoom
-    this.cameras.main.setZoom(zoom);
-  }
-
-  generateMap(width, height) {
-    this.add
-      .rectangle(0, 0, 9 * this.tileSize, 9 * this.tileSize, 0x00ff00)
-      .setOrigin(0);
-    this.map = Array(height)
-      .fill()
-      .map(() => Array(width).fill(0));
-
-    this.add.sprite(0, 0, 'map-tileset').setOrigin(0).setAlpha(0.1);
-
-    // Generate possible positions for walls
-    const possiblePositions = [];
-
-    for (let y = 0; y < 9; y++) {
-      for (let x = 0; x < 9; x++) {
-        // Skip positions in the 3x3 safe zone
-        if (!(x < 3 && y < 3)) {
-          possiblePositions.push({ x, y });
-        }
-      }
-    }
-
-    console.log('Possible positions:', possiblePositions.length);
-
-    // Randomly place walls in about 30% of possible positions
-    const numberOfWalls = Math.floor(possiblePositions.length * 0.3);
-
-    console.log('Number of walls to place:', numberOfWalls);
-
-    // Shuffle array to get random positions
-    for (let i = possiblePositions.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [possiblePositions[i], possiblePositions[j]] = [
-        possiblePositions[j],
-        possiblePositions[i],
-      ];
-    }
-
-    // Place walls
-    for (let i = 0; i < numberOfWalls; i++) {
-      const pos = possiblePositions[i];
-
-      console.log('Placing wall at:', pos.x, pos.y);
-      this.add
-        .sprite(pos.x * this.tileSize, pos.y * this.tileSize, 'solid-tileset')
-        .setOrigin(0);
-
-      // Store wall position for later use
-      this.wallPositions.add(`${pos.x},${pos.y}`);
-    }
-
-    // Now place blocks in remaining positions (except where walls are)
-    for (let y = 0; y < 9; y++) {
-      for (let x = 0; x < 9; x++) {
-        // Skip safe zone and positions with walls
-        if (x < 3 && y < 3) continue;
-        if (this.wallPositions.has(`${x},${y}`)) continue;
-
-        // 50% chance to place a block
-        if (Math.random() < 0.5) {
-          console.log('Placing block at:', x, y);
-          this.add
-            .sprite(x * this.tileSize, y * this.tileSize, 'wall-tileset')
-            .setOrigin(0);
-        }
-      }
-    }
-
-    // OLD CODE BELOW
-
-    // Create map array
-    // this.map = Array(height)
-    //   .fill()
-    //   .map(() => Array(width).fill(0));
-
-    // // Place indestructible walls in grid pattern
-    // for (let y = 0; y < height; y++) {
-    //   for (let x = 0; x < width; x++) {
-    //     if (x % 2 === 0 && y % 2 === 0) {
-    //       this.map[y][x] = 1;
-    //     }
-    //   }
-    // }
-
-    // // Randomly place destructible blocks
-    // for (let y = 0; y < height; y++) {
-    //   for (let x = 0; x < width; x++) {
-    //     // Skip indestructible walls
-    //     if (this.map[y][x] === 1) continue;
-
-    //     // Keep spawn points clear (corners)
-    //     if ((x <= 1 && y <= 1) || (x >= width - 2 && y >= height - 2)) {
-    //       continue;
-    //     }
-
-    //     // 40% chance for destructible block
-    //     if (Math.random() < 0.4) {
-    //       this.map[y][x] = 2;
-    //     }
-    //   }
-    // }
-
-    // Place tiles based on map array
-    // this.placeTiles();
-  }
-
-  placeTiles() {
-    this.walls = this.physics.add.staticGroup();
-    this.blocks = this.physics.add.staticGroup();
-
-    for (let y = 0; y < this.map.length; y++) {
-      for (let x = 0; x < this.map[0].length; x++) {
-        const tileType = this.map[y][x];
-        const xPos = x * 16;
-        const yPos = y * 16;
-
-        switch (tileType) {
-          case 0: // Empty space
-            // Place floor/background tile
-            this.add.sprite(xPos, yPos, 'map-tileset').setOrigin(0);
-            break;
-          case 1: // Indestructible wall
-            this.add.sprite(xPos, yPos, 'map-tileset').setOrigin(0);
-            this.add.sprite(xPos, yPos, 'solid-tileset').setOrigin(0);
-            break;
-          case 2: // Destructible block
-            this.add.sprite(xPos, yPos, 'map-tileset').setOrigin(0);
-            this.add.sprite(xPos, yPos, 'wall-tileset').setOrigin(0);
-            break;
-        }
-      }
-    }
-  }
-
-  update() {
-    this.handlePlayerMovement();
-  }
-
   handlePlayerMovement() {
-    const cursors = this.input.keyboard.createCursorKeys();
-    if (cursors.left.isDown) {
+    if (this.cursors.left.isDown) {
       this.gridEngine.move('player', 'left');
-    } else if (cursors.right.isDown) {
+    } else if (this.cursors.right.isDown) {
       this.gridEngine.move('player', 'right');
-    } else if (cursors.up.isDown) {
+    } else if (this.cursors.up.isDown) {
       this.gridEngine.move('player', 'up');
-    } else if (cursors.down.isDown) {
+    } else if (this.cursors.down.isDown) {
       this.gridEngine.move('player', 'down');
     }
   }

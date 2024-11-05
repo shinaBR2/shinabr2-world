@@ -48,7 +48,7 @@ class BootScene extends Phaser.Scene {
     assetText.setOrigin(0.5);
 
     // Register loading events
-    this.load.on('progress', value => {
+    this.load.on('progress', (value: number) => {
       progressBar.clear();
       progressBar.fillStyle(0xffffff, 1);
       progressBar.fillRect(
@@ -57,10 +57,10 @@ class BootScene extends Phaser.Scene {
         (width / 2 - 20) * value,
         30
       );
-      percentText.setText(`${Number.parseInt(value * 100)}%`);
+      percentText.setText(`${Math.floor(value * 100)}%`);
     });
 
-    this.load.on('fileprogress', file => {
+    this.load.on('fileprogress', (file: { key: string }) => {
       assetText.setText('Loading asset: ' + file.key);
     });
 
@@ -77,40 +77,16 @@ class BootScene extends Phaser.Scene {
   }
 
   loadAssets() {
-    // Load all game assets here
     const basePath = 'assets/evil-minds';
     this.load.tilemapTiledJSON('map', `${basePath}/map.json`);
     // Load ALL tileset images used in the map
     this.load.image('map', `${basePath}/map/tileset.png`);
-
-    console.log('Loading map from:', `${basePath}/map.json`);
-    console.log('Loading tileset from:', `${basePath}/map/tileset.png`);
 
     // Character sprites
     this.load.spritesheet('player', `${basePath}/player.png`, {
       frameWidth: 26,
       frameHeight: 36,
     });
-    // this.load.spritesheet('npc', 'assets/characters/npc.png', {
-    //   frameWidth: 32,
-    //   frameHeight: 48,
-    // });
-
-    // // Tilesets
-    // this.load.image('interior-tileset', 'assets/tilesets/interior.png');
-    // this.load.image('exterior-tileset', 'assets/tilesets/exterior.png');
-
-    // // Maps
-    // this.load.tilemapTiledJSON('house-map', 'assets/maps/house.json');
-    // this.load.tilemapTiledJSON('world-map', 'assets/maps/world.json');
-
-    // // UI elements
-    // this.load.image('dialog-box', 'assets/ui/dialog-box.png');
-    // this.load.image('menu-background', 'assets/ui/menu-bg.png');
-    // this.load.spritesheet('ui-buttons', 'assets/ui/buttons.png', {
-    //   frameWidth: 64,
-    //   frameHeight: 32,
-    // });
 
     // // Audio
     // this.load.audio('bgm-main', 'assets/audio/background-music.mp3');
