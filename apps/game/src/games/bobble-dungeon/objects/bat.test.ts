@@ -1,8 +1,8 @@
-import { describe, beforeEach, jest, test, expect } from "@jest/globals";
-import { mockScene, mockPhysics } from "../../../../test/mocks/phaser";
-import Bat from "./bat";
+import { describe, beforeEach, jest, test, expect } from '@jest/globals';
+import { mockScene, mockPhysics } from '../../../../test/mocks/phaser';
+import Bat from './bat';
 
-describe("Bat", () => {
+describe('Bat', () => {
   let bat: Bat;
   let mockScene: any;
 
@@ -25,8 +25,8 @@ describe("Bat", () => {
     bat = new Bat(mockScene as any, 100, 100);
   });
 
-  test("should initialize with correct properties", () => {
-    expect(bat.label).toBe("bat");
+  test('should initialize with correct properties', () => {
+    expect(bat.label).toBe('bat');
     expect(bat.dead).toBeFalsy();
   });
 });

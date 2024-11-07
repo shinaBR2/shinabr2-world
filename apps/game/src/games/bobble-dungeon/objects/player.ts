@@ -1,6 +1,6 @@
-import { GameScene } from "../scenes/game";
-import Bubble from "./bubble";
-import Dust from "./particle";
+import { GameScene } from '../scenes/game';
+import Bubble from './bubble';
+import Dust from './particle';
 
 export default class Player {
   scene: GameScene;
@@ -26,7 +26,7 @@ export default class Player {
 
   constructor(scene: GameScene, x: number, y: number) {
     this.scene = scene;
-    this.label = "player";
+    this.label = 'player';
     this.moveForce = 0.01;
     this.invincible = true;
     this.isTouching = { left: false, right: false, ground: false };
@@ -45,8 +45,8 @@ export default class Player {
   init(x: number, y: number) {
     // Before Matter's update,
     // reset our record of what surfaces the player is touching.
-    this.scene.matter.world.on("beforeupdate", this.resetTouching, this);
-    this.sprite = this.scene.matter.add.sprite(0, 0, "player", 0);
+    this.scene.matter.world.on('beforeupdate', this.resetTouching, this);
+    this.sprite = this.scene.matter.add.sprite(0, 0, 'player', 0);
 
     // Native Matter modules
     const { Body, Bodies } = Phaser.Physics.Matter.Matter;
@@ -88,20 +88,22 @@ export default class Player {
     We attach this class to the scene events, so we can update the player on every frame. We also add the destroy method to the scene events, so we can clean up the player when the scene is destroyed.
   */
   addEvents() {
-    this.scene.events.on("update", this.update, this);
-    this.scene.events.once("shutdown", this.destroy, this);
-    this.scene.events.once("destroy", this.destroy, this);
+    this.scene.events.on('update', this.update, this);
+    this.scene.events.once('shutdown', this.destroy, this);
+    this.scene.events.once('destroy', this.destroy, this);
   }
 
   /*
     These are the collider events that will be used to control the player. We use the MatterCollision plugin to detect collisions between the player and the walls. We also use the onSensorCollide method to detect collisions with the sensors that we added to the player. This is used to detect collisions with the walls and the ground.
   */
   addColliders() {
+    // @ts-ignore
     this.scene.matterCollision.addOnCollideStart({
       objectA: [this.sensors.bottom, this.sensors.left, this.sensors.right],
       callback: this.onSensorCollide,
       context: this,
     });
+    // @ts-ignore
     this.scene.matterCollision.addOnCollideActive({
       objectA: [this.sensors.bottom, this.sensors.left, this.sensors.right],
       callback: this.onSensorCollide,
@@ -113,8 +115,8 @@ export default class Player {
     These define the different animation states to the player: idle, walking, shooting, etc.
   */
   addAnimations() {
-    this.sprite.anims.play("playeridle", true);
-    this.sprite.on("animationcomplete", this.animationComplete, this);
+    this.sprite.anims.play('playeridle', true);
+    this.sprite.on('animationcomplete', this.animationComplete, this);
   }
 
   /*
@@ -194,19 +196,19 @@ export default class Player {
       this.sprite.setFlipX(true);
       if (!(this.isInAir && this.isTouching.right)) {
         this.step();
-        this.sprite.anims.play("playerwalk", true);
+        this.sprite.anims.play('playerwalk', true);
         this.sprite.setVelocityX(5);
       }
     } else if (this.A.isDown || this.cursor.left.isDown) {
       this.sprite.setFlipX(false);
       if (!(this.isInAir && this.isTouching.left)) {
         this.step();
-        this.sprite.anims.play("playerwalk", true);
+        this.sprite.anims.play('playerwalk', true);
         this.sprite.setVelocityX(-5);
       }
     } else {
-      if (this.sprite.anims.currentAnim.key !== "playershot")
-        this.sprite.anims.play("playeridle", true);
+      if (this.sprite.anims.currentAnim.key !== 'playershot')
+        this.sprite.anims.play('playeridle', true);
     }
 
     if (this.sprite.body.velocity.x > 7) this.sprite.setVelocityX(7);
@@ -225,7 +227,7 @@ export default class Player {
       (this.W.isDown || this.cursor.up.isDown)
     ) {
       this.sprite.setVelocityY(-8);
-      this.scene.playAudio("jump");
+      this.scene.playAudio('jump');
       this.canJump = false;
       this.onWall = false;
       this.jumpCooldownTimer = this.scene.time.addEvent({
@@ -245,8 +247,8 @@ export default class Player {
         Phaser.Input.Keyboard.JustDown(this.W))
     ) {
       const offset = this.sprite.flipX ? 128 : -128;
-      this.sprite.anims.play("playershot", true);
-      this.scene.playAudio("bubble");
+      this.sprite.anims.play('playershot', true);
+      this.scene.playAudio('bubble');
       this.canShoot = false;
       new Bubble(this.scene, this.sprite.x, this.sprite.y, offset);
       this.shootCooldownTimer = this.scene.time.addEvent({
@@ -260,14 +262,14 @@ export default class Player {
     When the player is killed, apart from destroying the sprite, we also remove the events and colliders that we added to it.
   */
   destroy() {
-    this.scene.playAudio("death");
+    this.scene.playAudio('death');
     this.destroyed = true;
 
-    this.scene.events.off("update", this.update, this);
-    this.scene.events.off("shutdown", this.destroy, this);
-    this.scene.events.off("destroy", this.destroy, this);
+    this.scene.events.off('update', this.update, this);
+    this.scene.events.off('shutdown', this.destroy, this);
+    this.scene.events.off('destroy', this.destroy, this);
     if (this.scene.matter.world) {
-      this.scene.matter.world.off("beforeupdate", this.resetTouching, this);
+      this.scene.matter.world.off('beforeupdate', this.resetTouching, this);
     }
 
     const sensors = [
@@ -301,7 +303,7 @@ Every time the player moves, we add a few dust particles to the scene. This is d
   friction() {
     Array(Phaser.Math.Between(2, 4))
       .fill(0)
-      .forEach((i) => {
+      .forEach(i => {
         new Dust(
           this.scene,
           this.sprite.x + Phaser.Math.Between(-8, 8),
@@ -314,7 +316,7 @@ Every time the player moves, we add a few dust particles to the scene. This is d
     if (this.sprite.body.velocity.y < 1) return;
     Array(Phaser.Math.Between(3, 6))
       .fill(0)
-      .forEach((i) => {
+      .forEach(i => {
         new Dust(
           this.scene,
           this.sprite.x + Phaser.Math.Between(-32, 32),
@@ -329,7 +331,7 @@ Every time the player moves, we add a few dust particles to the scene. This is d
   explosion() {
     Array(Phaser.Math.Between(10, 15))
       .fill(0)
-      .forEach((i) => {
+      .forEach(i => {
         new Dust(
           this.scene,
           this.sprite.x + Phaser.Math.Between(-32, 32),
@@ -342,8 +344,8 @@ Every time the player moves, we add a few dust particles to the scene. This is d
     This is called when the player finishes the shooting animation. We use it to play the idle animation again.
   */
   animationComplete(animation: { key: string }) {
-    if (animation.key === "playershot") {
-      this.sprite.anims.play("playeridle", true);
+    if (animation.key === 'playershot') {
+      this.sprite.anims.play('playeridle', true);
     }
   }
 }

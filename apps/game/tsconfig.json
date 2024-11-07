@@ -17,5 +17,5 @@
       "./src/types/*.d.ts"
     ]
   },
-  "include": ["src", "test"],
+  "include": ["src", "src/**/*.d.ts", "test"],
 }

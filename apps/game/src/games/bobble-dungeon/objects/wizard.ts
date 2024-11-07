@@ -1,6 +1,6 @@
-import Fireball from "./fireball";
-import Bubble from "./bubble";
-import { GameScene } from "../scenes/game";
+import Fireball from './fireball';
+import Bubble from './bubble';
+import { GameScene } from '../scenes/game';
 
 export default class Wizard extends Phaser.Physics.Matter.Sprite {
   scene: GameScene;
@@ -12,10 +12,10 @@ export default class Wizard extends Phaser.Physics.Matter.Sprite {
   delayedTurn: Phaser.Time.TimerEvent | undefined;
   fireball: any;
 
-  constructor(scene: GameScene, x: number, y: number, texture = "wizard") {
+  constructor(scene: GameScene, x: number, y: number, texture = 'wizard') {
     super(scene.matter.world, x, y, texture, 0);
     this.scene = scene;
-    this.label = "wizard";
+    this.label = 'wizard';
     this.scene.add.existing(this);
     this.startX = x;
     this.direction = Phaser.Math.RND.pick([-1, 1]);
@@ -30,7 +30,7 @@ This function inits the wizard. It creates the animations and the update event. 
   */
   init() {
     this.anims.play(this.label, true);
-    this.scene.events.on("update", this.update, this);
+    this.scene.events.on('update', this.update, this);
     this.timer = this.scene.time.addEvent({
       delay: 3000,
       callback: this.directShot,
@@ -43,6 +43,7 @@ This function inits the wizard. It creates the animations and the update event. 
 As we did with the player and the bat, we create this callback to handle the collision with the bubble.
   */
   addCollisions() {
+    // @ts-ignore
     this.unsubscribeBatCollide = this.scene.matterCollision.addOnCollideStart({
       objectA: this,
       callback: this.onWizardCollide,
@@ -55,7 +56,7 @@ This will be called when the bubble hits the wizard. We "load" the wizard inside
   */
   onWizardCollide({ gameObjectB }: CollisionData) {
     if (gameObjectB instanceof Bubble) {
-      gameObjectB.load("wizard");
+      gameObjectB.load('wizard');
       this.destroy();
     }
   }
@@ -64,12 +65,13 @@ This will be called when the bubble hits the wizard. We "load" the wizard inside
 The wizard will try to shoot directly at the player. It will shoot a fireball and then turn around.
   */
   directShot() {
-    this.scene.playAudio("fireball");
+    this.scene.playAudio('fireball');
     const distance = Phaser.Math.Distance.BetweenPoints(
+      // @ts-ignore
       this.scene.player,
       this
     );
-    this.anims.play("wizardshot", true);
+    this.anims.play('wizardshot', true);
     const fireball = new Fireball(this.scene, this.x, this.y, this.direction);
     this.delayedTurn = this.scene.time.delayedCall(
       1000,

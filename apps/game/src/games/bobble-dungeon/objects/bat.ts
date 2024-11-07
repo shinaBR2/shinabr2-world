@@ -36,6 +36,7 @@ export default class Bat extends Phaser.Physics.Matter.Sprite {
     We add the collision event to the scene so we can handle the collision with the bat and the bubble.
   */
   addCollisions() {
+    // @ts-ignore
     this.unsubscribeBatCollide = this.scene.matterCollision.addOnCollideStart({
       objectA: this,
       callback: this.onBatCollide,

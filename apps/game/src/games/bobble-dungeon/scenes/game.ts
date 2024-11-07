@@ -1,14 +1,15 @@
-import Player from "../objects/player";
-import DungeonGenerator from "../objects/dungeon_generator";
-import { RESULT_SAVED } from "../events/Events";
-import { EventBus } from "../../../core/EventBus";
+import Player from '../objects/player';
+import DungeonGenerator from '../objects/dungeon_generator';
+import { RESULT_SAVED } from '../events/Events';
+import { EventBus } from '../../../core/EventBus';
 
 export interface GameScene extends Phaser.Scene {
   playAudio: (key: string) => void;
+  player: Player;
 }
 
 export default class Game extends Phaser.Scene {
-  player: null;
+  player!: Player;
   score: number;
   scoreText: null;
   name: any;
@@ -57,22 +58,21 @@ export default class Game extends Phaser.Scene {
   };
 
   constructor() {
-    super({ key: "game" });
-    this.player = null;
+    super({ key: 'game' });
     this.score = 0;
     this.scoreText = null;
   }
 
   init(data) {
-    console.log("game init", data);
+    console.log('game init', data);
     // this.name = data.name;
     this.number = data.number;
   }
 
   preload() {
-    this.registry.set("seconds", 0);
-    this.registry.set("coins", 0);
-    this.registry.set("keys", 0);
+    this.registry.set('seconds', 0);
+    this.registry.set('coins', 0);
+    this.registry.set('keys', 0);
   }
 
   /*
@@ -97,7 +97,7 @@ export default class Game extends Phaser.Scene {
   */
   addMap() {
     this.dungeon = new DungeonGenerator(this);
-    this.input.keyboard?.on("keydown-ENTER", () => this.finishScene(), this);
+    this.input.keyboard?.on('keydown-ENTER', () => this.finishScene(), this);
   }
 
   /*
@@ -105,25 +105,25 @@ export default class Game extends Phaser.Scene {
   */
   addScores() {
     this.add
-      .sprite(62, 26, "coin", 0)
+      .sprite(62, 26, 'coin', 0)
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setScale(0.8);
     this.scoreCoins = this.add
-      .bitmapText(100, 24, "default", "x0", 15)
+      .bitmapText(100, 24, 'default', 'x0', 15)
       .setOrigin(0.5)
       .setScrollFactor(0);
     this.scoreSeconds = this.add
-      .bitmapText(this.center_width, 24, "default", "0", 15)
+      .bitmapText(this.center_width, 24, 'default', '0', 15)
       .setOrigin(0.5)
       .setScrollFactor(0);
     this.add
-      .sprite(this.width - 90, 24, "keys", 0)
+      .sprite(this.width - 90, 24, 'keys', 0)
       .setOrigin(0.5)
       .setScrollFactor(0)
       .setScale(0.8);
     this.scoreKeys = this.add
-      .bitmapText(this.width - 48, 24, "default", "x0", 15)
+      .bitmapText(this.width - 48, 24, 'default', 'x0', 15)
       .setOrigin(0.5)
       .setScrollFactor(0);
     this.timer = this.time.addEvent({
@@ -168,8 +168,8 @@ export default class Game extends Phaser.Scene {
       context: this,
     });
 
-    this.matter.world.on("collisionstart", (event) => {
-      event.pairs.forEach((pair) => {
+    this.matter.world.on('collisionstart', event => {
+      event.pairs.forEach(pair => {
         const bodyA = pair.bodyA;
         const bodyB = pair.bodyB;
       });
@@ -181,11 +181,11 @@ export default class Game extends Phaser.Scene {
   */
   onPlayerCollide({ gameObjectA, gameObjectB }: CollisionData) {
     if (!gameObjectB) return;
-    if (gameObjectB.label === "coin") this.playerPicksCoin(gameObjectB);
-    if (gameObjectB.label === "keys") this.playerPicksKey(gameObjectB);
-    if (gameObjectB.label === "bat") this.playerHitsFoe(gameObjectB);
-    if (gameObjectB.label === "wizard") this.playerHitsFoe(gameObjectB);
-    if (gameObjectB.label === "fireball") this.playerHitsFoe(gameObjectB);
+    if (gameObjectB.label === 'coin') this.playerPicksCoin(gameObjectB);
+    if (gameObjectB.label === 'keys') this.playerPicksKey(gameObjectB);
+    if (gameObjectB.label === 'bat') this.playerHitsFoe(gameObjectB);
+    if (gameObjectB.label === 'wizard') this.playerHitsFoe(gameObjectB);
+    if (gameObjectB.label === 'fireball') this.playerHitsFoe(gameObjectB);
     if (!(gameObjectB instanceof Phaser.Tilemaps.Tile)) return;
 
     const tile = gameObjectB;
@@ -203,7 +203,7 @@ export default class Game extends Phaser.Scene {
     this.showPoints(coin.x, coin.y, 1, this.scoreCoins);
     coin.destroy();
     this.updateCoins();
-    this.playAudio("coin");
+    this.playAudio('coin');
   }
 
   /*
@@ -214,7 +214,7 @@ export default class Game extends Phaser.Scene {
     this.showPoints(
       key.x,
       key.y,
-      this.registry.get("keys") + "/" + this.dungeon.dungeon.rooms.length,
+      this.registry.get('keys') + '/' + this.dungeon.dungeon.rooms.length,
       this.scoreKeys
     );
     key.destroy();
@@ -247,7 +247,7 @@ export default class Game extends Phaser.Scene {
     color = 0xffffff
   ) {
     let text = this.add
-      .bitmapText(x + 20, y - 80, "default", "+" + score, 10)
+      .bitmapText(x + 20, y - 80, 'default', '+' + score, 10)
       .setDropShadow(2, 3, color, 0.7)
       .setOrigin(0.5);
     this.tweens.add({
@@ -287,13 +287,13 @@ export default class Game extends Phaser.Scene {
    */
   loadAudios() {
     this.audios = {
-      jump: this.sound.add("jump"),
-      bubble: this.sound.add("bubble"),
-      trap: this.sound.add("trap"),
-      crash: this.sound.add("crash"),
-      fireball: this.sound.add("fireball"),
-      death: this.sound.add("death"),
-      coin: this.sound.add("start"),
+      jump: this.sound.add('jump'),
+      bubble: this.sound.add('bubble'),
+      trap: this.sound.add('trap'),
+      crash: this.sound.add('crash'),
+      fireball: this.sound.add('fireball'),
+      death: this.sound.add('death'),
+      coin: this.sound.add('start'),
     };
   }
 
@@ -309,7 +309,7 @@ export default class Game extends Phaser.Scene {
     this.player.sprite.visible = false;
     this.cameras.main.shake(100);
     this.cameras.main.fade(250, 0, 0, 0);
-    this.cameras.main.once("camerafadeoutcomplete", () => this.scene.restart());
+    this.cameras.main.once('camerafadeoutcomplete', () => this.scene.restart());
   }
 
   /**
@@ -317,10 +317,10 @@ export default class Game extends Phaser.Scene {
    */
   finishScene() {
     this.cameras.main.fade(250, 0, 0, 0);
-    this.cameras.main.once("camerafadeoutcomplete", () => {
-      this.scene.start("outro", {
-        next: "underwater",
-        name: "STAGE",
+    this.cameras.main.once('camerafadeoutcomplete', () => {
+      this.scene.start('outro', {
+        next: 'underwater',
+        name: 'STAGE',
         number: this.number + 1,
       });
     });
@@ -334,8 +334,8 @@ export default class Game extends Phaser.Scene {
    * time is the most important thing. We could add a scoreboard at the end ordered by time.
    */
   updateSeconds(points = 1) {
-    const seconds = +this.registry.get("seconds") + points;
-    this.registry.set("seconds", seconds);
+    const seconds = +this.registry.get('seconds') + points;
+    this.registry.set('seconds', seconds);
     this.scoreSeconds.setText(seconds.toString());
   }
 
@@ -345,15 +345,15 @@ export default class Game extends Phaser.Scene {
    * In the case of the keys, if the player has collected all the keys, we finish the scene.
    */
   updateCoins(points = 1) {
-    const coins = +this.registry.get("coins") + points;
-    this.registry.set("coins", coins);
-    this.scoreCoins.setText("x" + coins);
+    const coins = +this.registry.get('coins') + points;
+    this.registry.set('coins', coins);
+    this.scoreCoins.setText('x' + coins);
   }
 
   updateKeys(points = 1) {
-    const keys = +this.registry.get("keys") + points;
-    this.registry.set("keys", keys);
-    this.scoreKeys.setText("x" + keys);
+    const keys = +this.registry.get('keys') + points;
+    this.registry.set('keys', keys);
+    this.scoreKeys.setText('x' + keys);
     if (keys === this.dungeon.dungeon.rooms.length) {
       this.finishScene();
     }
@@ -382,9 +382,9 @@ export default class Game extends Phaser.Scene {
 
   storeResult() {
     EventBus.emit(RESULT_SAVED, {
-      seconds: this.registry.get("seconds"),
-      coins: this.registry.get("coins"),
-      keys: this.registry.get("keys"),
+      seconds: this.registry.get('seconds'),
+      coins: this.registry.get('coins'),
+      keys: this.registry.get('keys'),
     });
   }
 }

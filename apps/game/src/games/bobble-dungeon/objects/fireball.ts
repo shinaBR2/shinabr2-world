@@ -1,4 +1,4 @@
-import { GameScene } from "../scenes/game";
+import { GameScene } from '../scenes/game';
 
 export default class Fireball extends Phaser.Physics.Matter.Sprite {
   scene: GameScene;
@@ -7,8 +7,8 @@ export default class Fireball extends Phaser.Physics.Matter.Sprite {
   tween: Phaser.Tweens.Tween | undefined;
 
   constructor(scene: GameScene, x: number, y: number, direction: number) {
-    super(scene.matter.world, x, y, "fireball", 0);
-    this.label = "fireball";
+    super(scene.matter.world, x, y, 'fireball', 0);
+    this.label = 'fireball';
     this.scene = scene;
     this.direction = direction;
     scene.add.existing(this);
@@ -23,7 +23,7 @@ export default class Fireball extends Phaser.Physics.Matter.Sprite {
     We create the animation for the fireball and add the update event to the scene so it will update in this class.
   */
   init() {
-    this.scene.events.on("update", this.update, this);
+    this.scene.events.on('update', this.update, this);
     this.tween = this.scene.tweens.add({
       targets: this,
       duration: 200,
@@ -41,7 +41,7 @@ export default class Fireball extends Phaser.Physics.Matter.Sprite {
   }
 
   update() {
-    if (this.scene?.gameOver) return;
+    // if (this.scene?.gameOver) return;
   }
 
   destroy() {
