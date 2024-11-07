@@ -1,3 +1,4 @@
+import { handlePlayerMovement } from '../../../core/helpers/movement';
 import { checkTileInteraction } from '../../../core/helpers/tileInteraction';
 
 const SCALE = 1.5;
@@ -154,34 +155,12 @@ class GameScene extends Phaser.Scene {
   }
 
   handlePlayerMovement() {
-    if (this.cursors.left.isDown && this.cursors.up.isDown) {
-      this.gridEngine.move('player', 'up-left');
-    } else if (this.cursors.left.isDown && this.cursors.down.isDown) {
-      this.gridEngine.move('player', 'down-left');
-    } else if (this.cursors.right.isDown && this.cursors.up.isDown) {
-      this.gridEngine.move('player', 'up-right');
-    } else if (this.cursors.right.isDown && this.cursors.down.isDown) {
-      this.gridEngine.move('player', 'down-right');
-    } else if (this.cursors.left.isDown) {
-      this.gridEngine.move('player', 'left');
-    } else if (this.cursors.right.isDown) {
-      this.gridEngine.move('player', 'right');
-    } else if (this.cursors.up.isDown) {
-      this.gridEngine.move('player', 'up');
-    } else if (this.cursors.down.isDown) {
-      this.gridEngine.move('player', 'down');
-    }
+    handlePlayerMovement({
+      cursors: this.cursors,
+      gridEngine: this.gridEngine,
+    });
 
-    this.checkNearbyInteractiveTiles();
-
-    // Handle interaction
-    if (Phaser.Input.Keyboard.JustDown(this.interactKey) && this.nearDoor) {
-      this.interactWithDoor();
-    }
-  }
-
-  checkNearbyInteractiveTiles() {
-    const canInteract = checkTileInteraction({
+    checkTileInteraction({
       gridEngine: this.gridEngine,
       layer: this.decorationLayer,
       propertyKey: 'isHouseSign',
