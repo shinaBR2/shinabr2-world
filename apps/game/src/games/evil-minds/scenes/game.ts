@@ -1,3 +1,5 @@
+import { checkTileInteraction } from '../../../core/helpers/tileInteraction';
+
 const SCALE = 1.5;
 const TILE_SIZE = SCALE * 16;
 const PLAYER_SCALE = 0.25;
@@ -10,6 +12,11 @@ class GameScene extends Phaser.Scene {
   blocks!: Phaser.Physics.Arcade.StaticGroup;
   player!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
   cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
+  groundLayer!: Phaser.Tilemaps.TilemapLayer;
+  onFloorLayer!: Phaser.Tilemaps.TilemapLayer;
+  decorationLayer!: Phaser.Tilemaps.TilemapLayer;
+  // coin: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+  // score: number;
 
   constructor() {
     super({ key: 'GameScene' });
@@ -46,27 +53,24 @@ class GameScene extends Phaser.Scene {
     ) as Phaser.Tilemaps.Tileset;
 
     // Create layers (use the layer names from your Tiled map)
-    const groundLayer = map.createLayer('floor', tileset);
-    const onFloorLayer = map.createLayer('onfloor', tileset);
-    const decorationLayer = map.createLayer('decoration', tileset);
+    this.groundLayer = map.createLayer('floor', tileset);
+    this.onFloorLayer = map.createLayer('onfloor', tileset);
+    this.decorationLayer = map.createLayer('decoration', tileset);
     const overlayLayer = map.createLayer('overlay', tileset);
+    // this.interactLayer = map.createLayer('interact', tileset, 0, 0);
 
-    // Set collision based on the custom property we created
-    groundLayer?.setCollisionByProperty({ collides: true });
-    groundLayer?.setDepth(0);
-    groundLayer?.setScale(SCALE);
+    this.groundLayer?.setDepth(0);
+    this.groundLayer?.setScale(SCALE);
 
-    onFloorLayer?.setCollisionByProperty({ collides: true });
-    onFloorLayer?.setDepth(1);
-    onFloorLayer?.setScale(SCALE);
+    this.onFloorLayer?.setDepth(1);
+    this.onFloorLayer?.setScale(SCALE);
 
-    decorationLayer?.setCollisionByProperty({ collides: true });
-    decorationLayer?.setDepth(2);
-    decorationLayer?.setScale(SCALE);
+    this.decorationLayer?.setDepth(2);
+    this.decorationLayer?.setScale(SCALE);
 
     overlayLayer?.setVisible(false);
 
-    const layers = [groundLayer, onFloorLayer, decorationLayer];
+    const layers = [this.groundLayer, this.onFloorLayer, this.decorationLayer];
 
     return layers;
   }
@@ -114,6 +118,29 @@ class GameScene extends Phaser.Scene {
     );
     this.player.setDepth(2);
     this.player.setScale(SCALE);
+
+    this.interactKey = this.input.keyboard.addKey('R');
+
+    this.messageText = this.add.text(400, 500, '', {
+      fontSize: '20px',
+      fill: '#ffffff',
+      backgroundColor: '#000000',
+      padding: { x: 10, y: 5 },
+    });
+    this.messageText.setOrigin(0.5);
+    this.messageText.setVisible(false);
+  }
+
+  collectCoin(player, coin) {
+    // Disable the coin's physics body and hide it
+    coin.disableBody(true, true);
+
+    // Update score
+    this.score += 10;
+    // this.scoreText.setText('Score: ' + this.score);
+
+    // Optional: Play sound effect
+    // this.sound.play('coinSound');
   }
 
   setupCamera() {
@@ -144,6 +171,55 @@ class GameScene extends Phaser.Scene {
     } else if (this.cursors.down.isDown) {
       this.gridEngine.move('player', 'down');
     }
+
+    this.checkNearbyInteractiveTiles();
+
+    // Handle interaction
+    if (Phaser.Input.Keyboard.JustDown(this.interactKey) && this.nearDoor) {
+      this.interactWithDoor();
+    }
+  }
+
+  checkNearbyInteractiveTiles() {
+    const canInteract = checkTileInteraction({
+      gridEngine: this.gridEngine,
+      layer: this.decorationLayer,
+      propertyKey: 'isHouseSign',
+      interactKey: this.interactKey,
+      onInteract: tile => {
+        console.log('tile', tile);
+        this.showMessage('my house');
+      },
+    });
+  }
+
+  handleNearbySign(tile) {
+    // Show prompt if not already shown
+    if (!this.nearSign) {
+      this.nearSign = true;
+      this.promptText.setVisible(true);
+    }
+
+    // Check for interaction
+    if (Phaser.Input.Keyboard.JustDown(this.interactKey)) {
+      this.showMessage('My house');
+    }
+  }
+
+  handleLeaveSign() {
+    this.nearSign = false;
+    this.promptText.setVisible(false);
+    this.messageText.setVisible(false);
+  }
+
+  showMessage(message) {
+    this.messageText.setText(message);
+    this.messageText.setVisible(true);
+
+    // Optional: Hide message after a few seconds
+    this.time.delayedCall(3000, () => {
+      this.messageText.setVisible(false);
+    });
   }
 }
 

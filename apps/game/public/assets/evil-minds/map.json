@@ -13666,6 +13666,11 @@
                          "name":"ge_collide",
                          "type":"bool",
                          "value":true
+                        }, 
+                        {
+                         "name":"isHouseSign",
+                         "type":"bool",
+                         "value":true
                         }]
                 }, 
                 {
@@ -13678,6 +13683,11 @@
                         }, 
                         {
                          "name":"ge_collide",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
+                         "name":"isHouseSign",
                          "type":"bool",
                          "value":true
                         }]
