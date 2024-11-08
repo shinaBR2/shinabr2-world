@@ -1,5 +1,11 @@
+import {
+  DialogueContent,
+  showDialogue,
+  startDialogue,
+} from '../../../core/helpers/dialogues';
 import { handlePlayerMovement } from '../../../core/helpers/movement';
 import { checkTileInteraction } from '../../../core/helpers/tileInteraction';
+import DialogueManager from '../components/dialogueManager';
 
 const SCALE = 1.5;
 const TILE_SIZE = SCALE * 16;
@@ -35,11 +41,155 @@ class GameScene extends Phaser.Scene {
   }
 
   update() {
-    this.handlePlayerMovement();
+    handlePlayerMovement({
+      cursors: this.cursors,
+      gridEngine: this.gridEngine,
+    });
+
+    checkTileInteraction({
+      gridEngine: this.gridEngine,
+      layer: this.decorationLayer,
+      propertyKey: 'isHouseSign',
+      interactKey: this.interactKey,
+      onInteract: tile => {
+        const dialogues: DialogueContent[] = [
+          {
+            speaker: 'Merchant',
+            text: 'Welcome to my shop!',
+          },
+          {
+            speaker: 'Merchant',
+            text: 'Would you like to see my wares?',
+            choices: [
+              {
+                text: 'Yes, show me',
+                callback: () => {},
+              },
+              {
+                text: 'No thanks',
+                nextDialogue: {
+                  speaker: 'Merchant',
+                  text: 'Come back anytime!',
+                },
+              },
+            ],
+          },
+        ];
+
+        // Start the dialogue sequence
+        // queueDialogues(this, this.dialogueElements, dialogues);
+        startDialogue(this, dialogues);
+
+        // console.log('tile', tile);
+        // this.showMessage('my house');
+        // const dialogue = {
+        //   speaker: 'NPC Name',
+        //   text: 'Hello traveler! Would you like to trade?',
+        //   choices: [
+        //     {
+        //       text: 'Yes, show me your wares',
+        //       callback: () => {
+        //         console.log('show me the shop');
+        //       },
+        //     },
+        //     {
+        //       text: 'Not now',
+        //       nextDialogue: {
+        //         speaker: 'NPC Name',
+        //         text: 'Come back anytime!',
+        //       },
+        //     },
+        //   ],
+        // };
+
+        // showDialogue(this, this.dialogueElements, dialogue);
+
+        // const dialogueSequence: DialogueContent[] = [
+        //   {
+        //     speaker: 'Hero',
+        //     text: 'Hello there!',
+        //   },
+        //   {
+        //     speaker: 'Merchant',
+        //     text: 'Welcome to my shop!',
+        //   },
+        // ];
+        // queueDialogues(this, this.dialogueElements, dialogueSequence);
+      },
+    });
   }
 
   /**
    * END OF LIFE CYCLES
+   */
+  createMap() {
+    // Create the tilemap
+    const map = this.make.tilemap({ key: 'map' });
+
+    this.createMapLayers(map);
+
+    return map;
+  }
+
+  createPlayer() {
+    const offsetX = TILE_SIZE / 2;
+    const offsetY = TILE_SIZE;
+    this.player = this.physics.add.sprite(
+      5 * TILE_SIZE + offsetX,
+      14 * TILE_SIZE + offsetY,
+      'player',
+      55 // frame for the first load
+    );
+    this.player.setDepth(2);
+    this.player.setScale(SCALE);
+
+    this.interactKey = this.input.keyboard.addKey('R');
+
+    this.messageText = this.add.text(400, 500, '', {
+      fontSize: '20px',
+      fill: '#ffffff',
+      backgroundColor: '#000000',
+      padding: { x: 10, y: 5 },
+    });
+    this.messageText.setOrigin(0.5);
+    this.messageText.setVisible(false);
+  }
+
+  initGridEngine(map: Phaser.Tilemaps.Tilemap) {
+    /**
+     * See the player.png file
+     * Grid engine split the spritesheets into multiple blocks like
+     * [Block 0][Block 1][Block 2][Block 3]
+     * [Block 4][Block 5][Block 6][Block 7]
+     *
+     * Each block contains 4 rows, each row has 3 frames
+     */
+    const gridEngineConfig = {
+      characters: [
+        {
+          id: 'player',
+          sprite: this.player,
+          walkingAnimationMapping: 4, // the zero-based index of block
+          startPosition: { x: 5, y: 14 },
+        },
+      ],
+      numberOfDirections: 8,
+    };
+    this.gridEngine.create(map, gridEngineConfig);
+  }
+
+  setupCamera() {
+    this.cameras.main.startFollow(this.player);
+    this.cameras.main.setBounds(
+      0,
+      0,
+      this.game.config.width as number,
+      this.game.config.height as number
+    );
+  }
+
+  /**
+   * HELPERS
    */
 
   createMapLayers(map: Phaser.Tilemaps.Tilemap) {
@@ -74,102 +224,6 @@ class GameScene extends Phaser.Scene {
     const layers = [this.groundLayer, this.onFloorLayer, this.decorationLayer];
 
     return layers;
-  }
-
-  initGridEngine(map: Phaser.Tilemaps.Tilemap) {
-    /**
-     * See the player.png file
-     * Grid engine split the spritesheets into multiple blocks like
-     * [Block 0][Block 1][Block 2][Block 3]
-     * [Block 4][Block 5][Block 6][Block 7]
-     *
-     * Each block contains 4 rows, each row has 3 frames
-     */
-    const gridEngineConfig = {
-      characters: [
-        {
-          id: 'player',
-          sprite: this.player,
-          walkingAnimationMapping: 4, // the zero-based index of block
-          startPosition: { x: 5, y: 14 },
-        },
-      ],
-      numberOfDirections: 8,
-    };
-    this.gridEngine.create(map, gridEngineConfig);
-  }
-
-  createMap() {
-    // Create the tilemap
-    const map = this.make.tilemap({ key: 'map' });
-
-    this.createMapLayers(map);
-
-    return map;
-  }
-
-  createPlayer() {
-    const offsetX = TILE_SIZE / 2;
-    const offsetY = TILE_SIZE;
-    this.player = this.physics.add.sprite(
-      5 * TILE_SIZE + offsetX,
-      14 * TILE_SIZE + offsetY,
-      'player',
-      55 // frame for the first load
-    );
-    this.player.setDepth(2);
-    this.player.setScale(SCALE);
-
-    this.interactKey = this.input.keyboard.addKey('R');
-
-    this.messageText = this.add.text(400, 500, '', {
-      fontSize: '20px',
-      fill: '#ffffff',
-      backgroundColor: '#000000',
-      padding: { x: 10, y: 5 },
-    });
-    this.messageText.setOrigin(0.5);
-    this.messageText.setVisible(false);
-  }
-
-  collectCoin(player, coin) {
-    // Disable the coin's physics body and hide it
-    coin.disableBody(true, true);
-
-    // Update score
-    this.score += 10;
-    // this.scoreText.setText('Score: ' + this.score);
-
-    // Optional: Play sound effect
-    // this.sound.play('coinSound');
-  }
-
-  setupCamera() {
-    this.cameras.main.startFollow(this.player);
-    this.cameras.main.setBounds(
-      0,
-      0,
-      this.game.config.width as number,
-      this.game.config.height as number
-    );
-  }
-
-  handlePlayerMovement() {
-    handlePlayerMovement({
-      cursors: this.cursors,
-      gridEngine: this.gridEngine,
-    });
-
-    checkTileInteraction({
-      gridEngine: this.gridEngine,
-      layer: this.decorationLayer,
-      propertyKey: 'isHouseSign',
-      interactKey: this.interactKey,
-      onInteract: tile => {
-        console.log('tile', tile);
-        this.showMessage('my house');
-      },
-    });
   }
 
   handleNearbySign(tile) {
