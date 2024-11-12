@@ -11,7 +11,6 @@ interface CheckTileInteractionParams {
 }
 
 const checkTileInteraction = (params: CheckTileInteractionParams): boolean => {
-  console.log('checkTileInteraction called');
   const {
     gridEngine,
     layer,
