@@ -5,11 +5,21 @@ import {
 } from '../../../core/helpers/dialogues';
 import { handlePlayerMovement } from '../../../core/helpers/movement';
 import { checkTileInteraction } from '../../../core/helpers/tileInteraction';
-import DialogueManager from '../components/dialogueManager';
 
 const SCALE = 1.5;
 const TILE_SIZE = SCALE * 16;
-const PLAYER_SCALE = 0.25;
+
+interface GameStates {
+  isDialogueOpen: boolean;
+  isPaused: boolean;
+  isInventoryOpen: boolean;
+}
+
+const INITIAL_STATES: GameStates = {
+  isDialogueOpen: false,
+  isPaused: false,
+  isInventoryOpen: false,
+};
 
 class GameScene extends Phaser.Scene {
   gridEngine: any;
@@ -22,8 +32,8 @@ class GameScene extends Phaser.Scene {
   groundLayer!: Phaser.Tilemaps.TilemapLayer;
   onFloorLayer!: Phaser.Tilemaps.TilemapLayer;
   decorationLayer!: Phaser.Tilemaps.TilemapLayer;
-  // coin: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
-  // score: number;
+  interactKey!: Phaser.Input.Keyboard.Key;
+  states: GameStates = { ...INITIAL_STATES };
 
   constructor() {
     super({ key: 'GameScene' });
@@ -36,92 +46,61 @@ class GameScene extends Phaser.Scene {
     this.createPlayer();
     this.initGridEngine(map);
     this.setupCamera();
-
-    this.cursors = this.input.keyboard!.createCursorKeys();
+    this.setupKeyboard();
   }
 
   update() {
-    handlePlayerMovement({
-      cursors: this.cursors,
-      gridEngine: this.gridEngine,
-    });
+    if (this.canPlayerMove()) {
+      handlePlayerMovement({
+        cursors: this.cursors,
+        gridEngine: this.gridEngine,
+      });
 
-    checkTileInteraction({
-      gridEngine: this.gridEngine,
-      layer: this.decorationLayer,
-      propertyKey: 'isHouseSign',
-      interactKey: this.interactKey,
-      onInteract: tile => {
-        const dialogues: DialogueContent[] = [
-          {
-            speaker: 'Merchant',
-            text: 'Welcome to my shop!',
-          },
-          {
-            speaker: 'Merchant',
-            text: 'Would you like to see my wares?',
-            choices: [
-              {
-                text: 'Yes, show me',
-                callback: () => {},
-              },
-              {
-                text: 'No thanks',
-                nextDialogue: {
-                  speaker: 'Merchant',
-                  text: 'Come back anytime!',
+      checkTileInteraction({
+        gridEngine: this.gridEngine,
+        layer: this.decorationLayer,
+        propertyKey: 'isHouseSign',
+        interactKey: this.interactKey,
+        onInteract: tile => {
+          const dialogues: DialogueContent[] = [
+            {
+              speaker: 'Merchant',
+              text: 'Welcome to my shop!',
+            },
+            {
+              speaker: 'Merchant',
+              text: 'Would you like to see my wares?',
+              choices: [
+                {
+                  text: 'Yes, show me',
+                  callback: () => {},
                 },
-              },
-            ],
-          },
-        ];
+                {
+                  text: 'No thanks',
+                  nextDialogue: {
+                    speaker: 'Merchant',
+                    text: 'Come back anytime!',
+                  },
+                },
+              ],
+            },
+          ];
 
-        // Start the dialogue sequence
-        // queueDialogues(this, this.dialogueElements, dialogues);
-        startDialogue(this, dialogues);
-
-        // console.log('tile', tile);
-        // this.showMessage('my house');
-        // const dialogue = {
-        //   speaker: 'NPC Name',
-        //   text: 'Hello traveler! Would you like to trade?',
-        //   choices: [
-        //     {
-        //       text: 'Yes, show me your wares',
-        //       callback: () => {
-        //         console.log('show me the shop');
-        //       },
-        //     },
-        //     {
-        //       text: 'Not now',
-        //       nextDialogue: {
-        //         speaker: 'NPC Name',
-        //         text: 'Come back anytime!',
-        //       },
-        //     },
-        //   ],
-        // };
-
-        // showDialogue(this, this.dialogueElements, dialogue);
-
-        // const dialogueSequence: DialogueContent[] = [
-        //   {
-        //     speaker: 'Hero',
-        //     text: 'Hello there!',
-        //   },
-        //   {
-        //     speaker: 'Merchant',
-        //     text: 'Welcome to my shop!',
-        //   },
-        // ];
-        // queueDialogues(this, this.dialogueElements, dialogueSequence);
-      },
-    });
+          // Start the dialogue sequence
+          // queueDialogues(this, this.dialogueElements, dialogues);
+          startDialogue(this, dialogues);
+        },
+      });
+    }
   }
 
   /**
    * END OF LIFE CYCLES
    */
+  canPlayerMove() {
+    return !this.states.isDialogueOpen;
+  }
+
   createMap() {
     // Create the tilemap
     const map = this.make.tilemap({ key: 'map' });
@@ -142,17 +121,6 @@ class GameScene extends Phaser.Scene {
     );
     this.player.setDepth(2);
     this.player.setScale(SCALE);
-
-    this.interactKey = this.input.keyboard.addKey('R');
-
-    this.messageText = this.add.text(400, 500, '', {
-      fontSize: '20px',
-      fill: '#ffffff',
-      backgroundColor: '#000000',
-      padding: { x: 10, y: 5 },
-    });
-    this.messageText.setOrigin(0.5);
-    this.messageText.setVisible(false);
   }
 
   initGridEngine(map: Phaser.Tilemaps.Tilemap) {
@@ -186,6 +154,11 @@ class GameScene extends Phaser.Scene {
       this.game.config.width as number,
       this.game.config.height as number
     );
+  }
+
+  setupKeyboard() {
+    this.cursors = this.input.keyboard!.createCursorKeys();
+    this.interactKey = this.input.keyboard!.addKey('R');
   }
 
   /**
@@ -224,35 +197,6 @@ class GameScene extends Phaser.Scene {
     const layers = [this.groundLayer, this.onFloorLayer, this.decorationLayer];
 
     return layers;
-  }
-
-  handleNearbySign(tile) {
-    // Show prompt if not already shown
-    if (!this.nearSign) {
-      this.nearSign = true;
-      this.promptText.setVisible(true);
-    }
-
-    // Check for interaction
-    if (Phaser.Input.Keyboard.JustDown(this.interactKey)) {
-      this.showMessage('My house');
-    }
-  }
-
-  handleLeaveSign() {
-    this.nearSign = false;
-    this.promptText.setVisible(false);
-    this.messageText.setVisible(false);
-  }
-
-  showMessage(message) {
-    this.messageText.setText(message);
-    this.messageText.setVisible(true);
-
-    // Optional: Hide message after a few seconds
-    this.time.delayedCall(3000, () => {
-      this.messageText.setVisible(false);
-    });
   }
 }
 
