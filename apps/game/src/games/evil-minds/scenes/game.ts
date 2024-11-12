@@ -39,17 +39,17 @@ class GameScene extends Phaser.Scene {
     super({ key: 'GameScene' });
   }
 
-  init() {}
+  init = () => {};
 
-  create() {
+  create = () => {
     const map = this.createMap();
     this.createPlayer();
     this.initGridEngine(map);
     this.setupCamera();
     this.setupKeyboard();
-  }
+  };
 
-  update() {
+  update = () => {
     if (this.canPlayerMove()) {
       handlePlayerMovement({
         cursors: this.cursors,
@@ -61,56 +61,28 @@ class GameScene extends Phaser.Scene {
         layer: this.decorationLayer,
         propertyKey: 'isHouseSign',
         interactKey: this.interactKey,
-        onInteract: tile => {
-          const dialogues: DialogueContent[] = [
-            {
-              speaker: 'Merchant',
-              text: 'Welcome to my shop!',
-            },
-            {
-              speaker: 'Merchant',
-              text: 'Would you like to see my wares?',
-              choices: [
-                {
-                  text: 'Yes, show me',
-                  callback: () => {},
-                },
-                {
-                  text: 'No thanks',
-                  nextDialogue: {
-                    speaker: 'Merchant',
-                    text: 'Come back anytime!',
-                  },
-                },
-              ],
-            },
-          ];
-
-          // Start the dialogue sequence
-          // queueDialogues(this, this.dialogueElements, dialogues);
-          startDialogue(this, dialogues);
-        },
+        onInteract: this.onInteractWithHouseSign,
       });
     }
-  }
+  };
 
   /**
    * END OF LIFE CYCLES
    */
-  canPlayerMove() {
+  canPlayerMove = () => {
     return !this.states.isDialogueOpen;
-  }
+  };
 
-  createMap() {
+  createMap = () => {
     // Create the tilemap
     const map = this.make.tilemap({ key: 'map' });
 
     this.createMapLayers(map);
 
     return map;
-  }
+  };
 
-  createPlayer() {
+  createPlayer = () => {
     const offsetX = TILE_SIZE / 2;
     const offsetY = TILE_SIZE;
     this.player = this.physics.add.sprite(
@@ -121,9 +93,9 @@ class GameScene extends Phaser.Scene {
     );
     this.player.setDepth(2);
     this.player.setScale(SCALE);
-  }
+  };
 
-  initGridEngine(map: Phaser.Tilemaps.Tilemap) {
+  initGridEngine = (map: Phaser.Tilemaps.Tilemap) => {
     /**
      * See the player.png file
      * Grid engine split the spritesheets into multiple blocks like
@@ -144,9 +116,9 @@ class GameScene extends Phaser.Scene {
       numberOfDirections: 8,
     };
     this.gridEngine.create(map, gridEngineConfig);
-  }
+  };
 
-  setupCamera() {
+  setupCamera = () => {
     this.cameras.main.startFollow(this.player);
     this.cameras.main.setBounds(
       0,
@@ -154,18 +126,18 @@ class GameScene extends Phaser.Scene {
       this.game.config.width as number,
       this.game.config.height as number
     );
-  }
+  };
 
-  setupKeyboard() {
+  setupKeyboard = () => {
     this.cursors = this.input.keyboard!.createCursorKeys();
     this.interactKey = this.input.keyboard!.addKey('R');
-  }
+  };
 
   /**
    * HELPERS
    */
 
-  createMapLayers(map: Phaser.Tilemaps.Tilemap) {
+  createMapLayers = (map: Phaser.Tilemaps.Tilemap) => {
     /**
      * addTilesetImage(tileset_name, imageKey)
      * - tileset_name: name of Tileset in Tile Map Editor
@@ -197,7 +169,41 @@ class GameScene extends Phaser.Scene {
     const layers = [this.groundLayer, this.onFloorLayer, this.decorationLayer];
 
     return layers;
-  }
+  };
+
+  /**
+   * HANDLERS
+   */
+  onInteractWithHouseSign = tile => {
+    const dialogues: DialogueContent[] = [
+      {
+        speaker: 'Merchant',
+        text: 'Welcome to my shop!',
+      },
+      {
+        speaker: 'Merchant',
+        text: 'Would you like to see my wares?',
+        choices: [
+          {
+            text: 'Yes, show me',
+            callback: () => {},
+          },
+          {
+            text: 'No thanks',
+            nextDialogue: {
+              speaker: 'Merchant',
+              text: 'Come back anytime!',
+            },
+          },
+        ],
+      },
+    ];
+
+    // Start the dialogue sequence
+    // queueDialogues(this, this.dialogueElements, dialogues);
+    startDialogue(this, dialogues);
+    this.states.isDialogueOpen = true;
+  };
 }
 
 export default GameScene;
