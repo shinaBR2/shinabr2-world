@@ -12,20 +12,22 @@ const { Dialogs, Containers } = GameUI.Minimalism;
 const { GameDialogue } = Dialogs;
 
 const dialogue: GameUI.Dialog.DialogueContent = {
-  speaker: 'Merchant',
-  text: 'Would you like to see my wares?',
+  speaker: 'Elder Sage',
+  text: `Welcome, young adventurer. Our village has been plagued by mysterious creatures emerging from the ancient ruins to the north. Many of our bravest warriors have ventured forth to investigate, but none have returned. The situation grows dire with each passing day, and our resources dwindle as we struggle to defend our homes. We desperately need someone with your skills and courage to help us uncover the source of these attacks and put an end to them. Will you assist us in our time of need?`,
   choices: [
     {
-      text: 'Yes, show me',
-      callback: () => {
-        console.log('SHow med');
+      text: 'I will help you',
+      nextDialogue: {
+        speaker: 'Elder Sage',
+        text: 'Thank you, brave one! Let me tell you what we know about the ruins and the creatures that emerge from them...',
+        // More nested dialogue
       },
     },
     {
-      text: 'No thanks',
+      text: 'Tell me more about the rewards',
       nextDialogue: {
-        speaker: 'Merchant',
-        text: 'Come back anytime!',
+        speaker: 'Elder Sage',
+        text: 'Of course, I understand your interest. The village council has gathered a substantial reward...',
       },
     },
   ],

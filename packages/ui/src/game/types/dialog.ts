@@ -15,4 +15,5 @@ export interface GameDialogProps {
   onClose: () => void;
   dialogue: DialogueContent;
   typewriterSpeed?: number;
+  charsPerPage?: number;
 }
