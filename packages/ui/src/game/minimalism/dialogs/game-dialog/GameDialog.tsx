@@ -243,7 +243,7 @@ const GameDialog = ({
     }, typewriterSpeed);
 
     return () => clearInterval(interval);
-  }, [isOpen, state.currentDialogue, typewriterSpeed]);
+  }, [isOpen, state.currentPageIndex, typewriterSpeed]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -304,7 +304,13 @@ const GameDialog = ({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, state.isTyping, state.currentChoices, state.selectedChoiceIndex]);
+  }, [
+    isOpen,
+    state.isTyping,
+    state.showContinuePrompt,
+    state.currentChoices,
+    state.selectedChoiceIndex,
+  ]);
 
   return (
     <Dialog
