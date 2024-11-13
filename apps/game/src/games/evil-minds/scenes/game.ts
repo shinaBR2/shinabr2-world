@@ -1,10 +1,11 @@
-import {
-  DialogueContent,
-  showDialogue,
-  startDialogue,
-} from '../../../core/helpers/dialogues';
+import { Tilemaps } from 'phaser';
 import { handlePlayerMovement } from '../../../core/helpers/movement';
 import { checkTileInteraction } from '../../../core/helpers/tileInteraction';
+import { EventBus } from '../../../core/EventBus';
+import {
+  PLAYER_DONE_READ_HOUSE_SIGN,
+  PLAYER_READ_HOUSE_SIGN,
+} from '../events/playerEvents';
 
 const SCALE = 1.5;
 const TILE_SIZE = SCALE * 16;
@@ -47,6 +48,7 @@ class GameScene extends Phaser.Scene {
     this.initGridEngine(map);
     this.setupCamera();
     this.setupKeyboard();
+    this.setupEvents();
   };
 
   update = () => {
@@ -133,6 +135,12 @@ class GameScene extends Phaser.Scene {
     this.interactKey = this.input.keyboard!.addKey('R');
   };
 
+  setupEvents = () => {
+    EventBus.on(PLAYER_DONE_READ_HOUSE_SIGN, () => {
+      this.states.isDialogueOpen = false;
+    });
+  };
+
   /**
    * HELPERS
    */
@@ -174,34 +182,9 @@ class GameScene extends Phaser.Scene {
   /**
    * HANDLERS
    */
-  onInteractWithHouseSign = tile => {
-    const dialogues: DialogueContent[] = [
-      {
-        speaker: 'Merchant',
-        text: 'Welcome to my shop!',
-      },
-      {
-        speaker: 'Merchant',
-        text: 'Would you like to see my wares?',
-        choices: [
-          {
-            text: 'Yes, show me',
-            callback: () => {},
-          },
-          {
-            text: 'No thanks',
-            nextDialogue: {
-              speaker: 'Merchant',
-              text: 'Come back anytime!',
-            },
-          },
-        ],
-      },
-    ];
+  onInteractWithHouseSign = (_tile: Tilemaps.Tile) => {
+    EventBus.emit(PLAYER_READ_HOUSE_SIGN);
 
-    // Start the dialogue sequence
-    // queueDialogues(this, this.dialogueElements, dialogues);
-    startDialogue(this, dialogues);
     this.states.isDialogueOpen = true;
   };
 }
