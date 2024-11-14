@@ -18,7 +18,7 @@ const dialogue: GameUI.Dialog.DialogueContent = {
     {
       text: 'I will help you',
       nextDialogue: {
-        speaker: 'Elder Sage',
+        speaker: 'Elder Sage 3',
         text: 'Thank you, brave one! Let me tell you what we know about the ruins and the creatures that emerge from them...',
         // More nested dialogue
       },
@@ -26,7 +26,7 @@ const dialogue: GameUI.Dialog.DialogueContent = {
     {
       text: 'Tell me more about the rewards',
       nextDialogue: {
-        speaker: 'Elder Sage',
+        speaker: 'Elder Sage 2',
         text: 'Of course, I understand your interest. The village council has gathered a substantial reward...',
       },
     },

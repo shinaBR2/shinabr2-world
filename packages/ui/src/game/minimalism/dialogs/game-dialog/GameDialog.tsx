@@ -15,7 +15,6 @@ import {
 } from '../../../types/dialog';
 
 type DialogueState = {
-  speaker: string;
   displayedText: string;
   isTyping: boolean;
   selectedChoiceIndex: number;
@@ -29,11 +28,9 @@ type DialogueState = {
 };
 
 type DialogueAction =
-  | { type: 'START_TYPING'; payload: { text: string; pages: string[] } }
   | { type: 'TYPE_CHAR'; payload: { char: string } }
   | { type: 'COMPLETE_TYPING' }
-  | { type: 'SET_SPEAKER'; payload: { speaker: string } }
-  | { type: 'SET_CHOICES'; payload: { choices: DialogueChoice[] } }
+  | { type: 'FORCE_COMPLETE_TYPING'; payload: { text: string } }
   | { type: 'SELECT_CHOICE'; payload: { index: number } }
   | { type: 'SET_NEXT_DIALOGUE'; payload: { dialogue: DialogueContent } }
   | { type: 'NEXT_PAGE' }
@@ -46,7 +43,6 @@ const initialState = (
   const pages = splitTextIntoPages(dialogue.text, charsPerPage);
 
   return {
-    speaker: '',
     displayedText: '',
     isTyping: true,
     selectedChoiceIndex: 0,
@@ -90,18 +86,6 @@ const dialogueReducer = (
   let isLastPage;
 
   switch (action.type) {
-    case 'START_TYPING':
-      return {
-        ...state,
-        displayedText: '',
-        isTyping: true,
-        selectedChoiceIndex: 0,
-        currentChoices: [],
-        textPages: action.payload.pages,
-        currentPageIndex: 0,
-        showContinuePrompt: false,
-      };
-
     case 'TYPE_CHAR':
       return {
         ...state,
@@ -119,12 +103,15 @@ const dialogueReducer = (
         isLastPage,
       };
 
-    case 'SET_CHOICES':
+    case 'FORCE_COMPLETE_TYPING':
+      isLastPage = state.currentPageIndex === state.textPages.length - 1;
       return {
         ...state,
-        currentChoices: action.payload.choices,
-        selectedChoiceIndex: 0,
-        showContinuePrompt: false,
+        isTyping: false,
+        displayedText: action.payload.text,
+        showContinuePrompt: !isLastPage,
+        currentChoices: isLastPage ? state.currentDialogue.choices || [] : [],
+        isLastPage,
       };
 
     case 'SELECT_CHOICE':
@@ -173,18 +160,41 @@ const dialogueReducer = (
   }
 };
 
-const GameDialog = ({
-  isOpen,
-  onClose,
-  dialogue,
-  typewriterSpeed = 50,
-  charsPerPage = 50,
-}: GameDialogProps) => {
+const GameDialog = (props: GameDialogProps) => {
+  const {
+    isOpen,
+    onClose,
+    dialogue,
+    typewriterSpeed = 50,
+    charsPerPage = 100,
+  } = props;
   const [state, dispatch] = useReducer(
     dialogueReducer,
     { charsPerPage, dialogue },
     () => initialState(dialogue, charsPerPage)
   );
+
+  const hasChoices = state.currentChoices.length > 0;
+  const isEndOfText = !state.isTyping && state.isLastPage;
+  /**
+   * End of conversation, no more choices, no more dialogues
+   * The only action now is closing the dialog
+   */
+  const isConversationEnd = isEndOfText && !hasChoices;
+
+  /**
+   * Only show choices when text is finish typing
+   */
+  const shouldShowChoice = isEndOfText && hasChoices;
+
+  /**
+   * Should show action button to either:
+   * - Move to the next page of text
+   * - Close dialog when no more actionable
+   */
+  const canGoNextTextPage = state.showContinuePrompt && !state.isTyping;
+  const shouldShowAction = canGoNextTextPage || isConversationEnd;
+  const actionLabel = canGoNextTextPage ? 'Next' : 'Close';
 
   const handleChoiceSelect = (choice: DialogueChoice) => {
     if (choice.nextDialogue) {
@@ -201,19 +211,14 @@ const GameDialog = ({
   };
 
   const handleInteraction = () => {
-    console.log(state);
     if (state.isTyping) {
       // Complete current page immediately
-      dispatch({ type: 'COMPLETE_TYPING' });
-      // if (
-      //   state.currentDialogue.choices &&
-      //   state.currentPageIndex === state.textPages.length - 1
-      // ) {
-      //   dispatch({
-      //     type: 'SET_CHOICES',
-      //     payload: { choices: state.currentDialogue.choices },
-      //   });
-      // }
+      dispatch({
+        type: 'FORCE_COMPLETE_TYPING',
+        payload: {
+          text: state.textPages[state.currentPageIndex],
+        },
+      });
     } else if (state.showContinuePrompt) {
       // Move to next page
       dispatch({ type: 'NEXT_PAGE' });
@@ -222,6 +227,73 @@ const GameDialog = ({
       handleChoiceSelect(state.currentChoices[state.selectedChoiceIndex]);
     } else if (state.isLastPage && state.currentChoices.length === 0) {
       // Close dialog
+      onClose();
+    }
+  };
+
+  const handleActionButton = () => {
+    if (isConversationEnd) {
+      onClose();
+      return;
+    }
+
+    handleInteraction();
+  };
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (['Enter', ' ', 'ArrowUp', 'ArrowDown'].indexOf(e.key) > -1) {
+      e.preventDefault();
+    }
+
+    // If typing, pressing any key should complete the typing
+    if (state.isTyping) {
+      handleInteraction();
+      return;
+    }
+
+    // If there's more text (show continue prompt), handle navigation
+    if (state.showContinuePrompt) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        handleInteraction();
+      }
+      return;
+    }
+
+    // If we have choices and we're on the last page, handle choice navigation
+    if (shouldShowChoice) {
+      const { currentChoices, selectedChoiceIndex } = state;
+      const numberOfChoices = currentChoices.length;
+
+      switch (e.key) {
+        case 'ArrowUp':
+          dispatch({
+            type: 'SELECT_CHOICE',
+            payload: {
+              index:
+                (selectedChoiceIndex - 1 + numberOfChoices) % numberOfChoices,
+            },
+          });
+          break;
+
+        case 'ArrowDown':
+          dispatch({
+            type: 'SELECT_CHOICE',
+            payload: {
+              index: (selectedChoiceIndex + 1) % numberOfChoices,
+            },
+          });
+          break;
+
+        case 'Enter':
+        case ' ':
+          handleChoiceSelect(currentChoices[selectedChoiceIndex]);
+          break;
+      }
+      return;
+    }
+
+    // If we're on the last page with no choices, Enter/Space should close
+    if (state.isLastPage && (e.key === 'Enter' || e.key === ' ')) {
       onClose();
     }
   };
@@ -235,101 +307,32 @@ const GameDialog = ({
 
     const currentPageText = state.textPages[state.currentPageIndex];
 
-    // dispatch({
-    //   type: 'SET_SPEAKER',
-    //   payload: { speaker: state.currentDialogue.speaker },
-    // });
-    // dispatch({
-    //   type: 'START_TYPING',
-    //   payload: { text: currentPageText, pages: state.textPages },
-    // });
-
     let index = 0;
+    let timeoutId: number | undefined;
 
-    const interval = setInterval(() => {
+    const typeNextChar = () => {
       if (index < currentPageText.length) {
         dispatch({
           type: 'TYPE_CHAR',
           payload: { char: currentPageText[index] },
         });
         index++;
+        timeoutId = setTimeout(typeNextChar, typewriterSpeed);
       } else {
         dispatch({ type: 'COMPLETE_TYPING' });
-        // if (!state.showContinuePrompt && state.currentDialogue.choices) {
-        //   dispatch({
-        //     type: 'SET_CHOICES',
-        //     payload: { choices: state.currentDialogue.choices },
-        //   });
-        // }
-        clearInterval(interval);
       }
-    }, typewriterSpeed);
+    };
 
-    return () => clearInterval(interval);
+    typeNextChar();
+
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
   }, [isOpen, state.currentPageIndex, typewriterSpeed]);
 
   // Keyboard navigation
   useEffect(() => {
     if (!isOpen) return;
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (['Enter', ' ', 'ArrowUp', 'ArrowDown'].indexOf(e.key) > -1) {
-        e.preventDefault();
-      }
-
-      // If typing, pressing any key should complete the typing
-      if (state.isTyping) {
-        handleInteraction();
-        return;
-      }
-
-      // If there's more text (show continue prompt), handle navigation
-      if (state.showContinuePrompt) {
-        if (e.key === 'Enter' || e.key === ' ') {
-          handleInteraction();
-        }
-        return;
-      }
-
-      // If we have choices and we're on the last page, handle choice navigation
-      if (state.currentChoices.length > 0 && state.isLastPage) {
-        switch (e.key) {
-          case 'ArrowUp':
-            dispatch({
-              type: 'SELECT_CHOICE',
-              payload: {
-                index:
-                  (state.selectedChoiceIndex -
-                    1 +
-                    state.currentChoices.length) %
-                  state.currentChoices.length,
-              },
-            });
-            break;
-
-          case 'ArrowDown':
-            dispatch({
-              type: 'SELECT_CHOICE',
-              payload: {
-                index:
-                  (state.selectedChoiceIndex + 1) % state.currentChoices.length,
-              },
-            });
-            break;
-
-          case 'Enter':
-          case ' ':
-            handleChoiceSelect(state.currentChoices[state.selectedChoiceIndex]);
-            break;
-        }
-        return;
-      }
-
-      // If we're on the last page with no choices, Enter/Space should close
-      if (state.isLastPage && (e.key === 'Enter' || e.key === ' ')) {
-        onClose();
-      }
-    };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
@@ -356,25 +359,15 @@ const GameDialog = ({
         <Typography className="text-white py-4">
           {state.displayedText}
         </Typography>
-        {state.showContinuePrompt && !state.isTyping && (
-          <div className="absolute bottom-0 right-0 animate-bounce">
-            a{/* <ChevronDown className="text-white" size={24} /> */}
-          </div>
-        )}
-
-        {state.isLastPage &&
-          !state.isTyping &&
-          state.currentChoices.length > 0 && (
-            <Stack spacing={1} className="mt-4">
-              {state.currentChoices.map((choice, index) => (
-                <Button
-                  key={index}
-                  variant={
-                    state.selectedChoiceIndex === index
-                      ? 'contained'
-                      : 'outlined'
-                  }
-                  className={`
+        {shouldShowChoice && (
+          <Stack spacing={1} className="mt-4">
+            {state.currentChoices.map((choice, index) => (
+              <Button
+                key={index}
+                variant={
+                  state.selectedChoiceIndex === index ? 'contained' : 'outlined'
+                }
+                className={`
                   text-left px-4 py-2
                   ${
                     state.selectedChoiceIndex === index
@@ -382,17 +375,17 @@ const GameDialog = ({
                       : 'border-blue-400 text-blue-400'
                   }
                 `}
-                >
-                  {choice.text}
-                </Button>
-              ))}
-            </Stack>
-          )}
+              >
+                {choice.text}
+              </Button>
+            ))}
+          </Stack>
+        )}
       </DialogContent>
-      {!state.currentChoices.length && !state.isTyping && state.isLastPage && (
+      {shouldShowAction && (
         <DialogActions className="bg-gray-800">
-          <Button onClick={onClose} className="text-blue-400">
-            Close
+          <Button onClick={handleActionButton} className="text-blue-400">
+            {actionLabel}
           </Button>
         </DialogActions>
       )}
