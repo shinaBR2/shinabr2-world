@@ -24,7 +24,7 @@ type DialogueState = {
   currentPageIndex: number;
   showContinuePrompt: boolean;
   charsPerPage: number;
-  isLastPage: boolean; // Add this flag
+  isLastPage: boolean;
 };
 
 type DialogueAction =
