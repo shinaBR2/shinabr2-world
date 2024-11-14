@@ -144,7 +144,7 @@ const initialState = (
     currentPageIndex: 0,
     showContinuePrompt: false,
     charsPerPage,
-    isLastPage: pages.length === 1,
+    isLastPage: pages.length <= 1,
   };
 };
 
