@@ -36,6 +36,8 @@ type DialogueAction =
   | { type: 'NEXT_PAGE' }
   | { type: 'RESET'; payload: { dialogue: DialogueContent } };
 
+const DEFAULT_CHARACTERS_PER_PAGE = 100;
+
 const initialState = (
   dialogue: DialogueContent,
   charsPerPage: number
@@ -153,7 +155,7 @@ const dialogueReducer = (
       };
 
     case 'RESET':
-      return initialState(action.payload.dialogue, 100);
+      return initialState(action.payload.dialogue, DEFAULT_CHARACTERS_PER_PAGE);
 
     default:
       return state;
@@ -166,7 +168,7 @@ const GameDialog = (props: GameDialogProps) => {
     onClose,
     dialogue,
     typewriterSpeed = 50,
-    charsPerPage = 100,
+    charsPerPage = DEFAULT_CHARACTERS_PER_PAGE,
   } = props;
   const [state, dispatch] = useReducer(
     dialogueReducer,
