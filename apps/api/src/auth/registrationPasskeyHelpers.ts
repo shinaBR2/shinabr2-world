@@ -1,10 +1,4 @@
-import type {
-  AuthenticatorTransportFuture,
-  CredentialDeviceType,
-  Base64URLString,
-  PublicKeyCredentialCreationOptionsJSON,
-} from '@simplewebauthn/types';
-import crypto from 'crypto';
+import type { PublicKeyCredentialCreationOptionsJSON } from '@simplewebauthn/types';
 import { webcrypto } from 'crypto';
 import {
   generateRegistrationOptions,
@@ -12,80 +6,12 @@ import {
   verifyRegistrationResponse,
 } from '@simplewebauthn/server';
 import { dbAddDoc, dbRead, dbUpdateDoc } from '../singleton/db';
+import { getUser, getUserPasskeys } from './userHelpers';
+import { Passkey, UserModel } from './types';
+import { ORIGIN, RP_ID, RP_NAME } from './config';
 
-type UserModel = {
-  id: string;
-  username: string;
-  passkeyOptions: PublicKeyCredentialCreationOptionsJSON;
-};
-
-/**
- * It is strongly advised that credentials get their own DB
- * table, ideally with a foreign key somewhere connecting it
- * to a specific UserModel.
- *
- * "SQL" tags below are suggestions for column data types and
- * how best to store data received during registration for use
- * in subsequent authentications.
- */
-type Passkey = {
-  // SQL: Store as `TEXT`. Index this column
-  id: Base64URLString;
-  // SQL: Store raw bytes as `BYTEA`/`BLOB`/etc...
-  //      Caution: Node ORM's may map this to a Buffer on retrieval,
-  //      convert to Uint8Array as necessary
-  publicKey: Uint8Array;
-  // SQL: Foreign Key to an instance of your internal user model
-  user: UserModel;
-  // SQL: Store as `TEXT`. Index this column. A UNIQUE constraint on
-  //      (webAuthnUserID + user) also achieves maximum user privacy
-  webAuthnUserID: Base64URLString;
-  // SQL: Consider `BIGINT` since some authenticators return atomic timestamps as counters
-  counter: number;
-  // SQL: `VARCHAR(32)` or similar, longest possible value is currently 12 characters
-  // Ex: 'singleDevice' | 'multiDevice'
-  deviceType: CredentialDeviceType;
-  // SQL: `BOOL` or whatever similar type is supported
-  backedUp: boolean;
-  // SQL: `VARCHAR(255)` and store string array as a CSV string
-  // Ex: ['ble' | 'cable' | 'hybrid' | 'internal' | 'nfc' | 'smart-card' | 'usb']
-  transports?: AuthenticatorTransportFuture[];
-};
-
-/**
- * Human-readable title for your website
- */
-const rpName = 'SWorld';
-/**
- * A unique identifier for your website. 'localhost' is okay for
- * local dev
- */
-const rpID = 'localhost';
-/**
- * The URL at which registrations and authentications should occur.
- * 'http://localhost' and 'http://localhost:PORT' are also valid.
- * Do NOT include any trailing /
- */
-const origin = `http://${rpID}`;
 // @ts-ignore
 if (!global.crypto) global.crypto = webcrypto;
-
-const getUserPasskeys = async (userId: string): Promise<Passkey[]> => {
-  const existingPasskeysSnapshot = await dbRead(`passkeys/${userId}/items`);
-
-  // @ts-ignore
-  if (!existingPasskeysSnapshot.exists) {
-    return [];
-  }
-  // @ts-ignore
-  const existingPasskeys = existingPasskeysSnapshot.data();
-
-  return existingPasskeys;
-};
-
-const getUser = async (userId: string) => {
-  return await dbRead(`users/${userId}`);
-};
 
 const setCurrentRegistrationOptions = async (
   userId: string,
@@ -113,12 +39,12 @@ const generateOptions = async (userId: string) => {
   // const user: UserModel = getUserFromDB(loggedInUserId);
   // (Pseudocode) Retrieve any of the user's previously-
   // registered authenticators
-  const userPasskeys: Passkey[] = await getUserPasskeys(userId);
+  const userPasskeys = await getUserPasskeys(userId);
   console.log('userPasskeys', userPasskeys);
 
   const options = await generateRegistrationOptions({
-    rpName,
-    rpID,
+    rpName: RP_NAME,
+    rpID: RP_ID,
     userName: user.username,
     // Don't prompt users for additional information about the authenticator
     // (Recommended for smoother UX)
@@ -166,8 +92,8 @@ const verify = async (userId: string, credential: any) => {
     verification = await verifyRegistrationResponse({
       response: credential,
       expectedChallenge: currentOptions.challenge,
-      expectedOrigin: [origin, `${origin}:3003`],
-      expectedRPID: [rpID, `${rpID}:3003`],
+      expectedOrigin: [ORIGIN, `${ORIGIN}:3003`],
+      expectedRPID: [RP_ID, `${RP_ID}:3003`],
     });
   } catch (error) {
     console.error(error);
