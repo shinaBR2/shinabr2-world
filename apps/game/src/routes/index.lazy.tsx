@@ -8,23 +8,16 @@ import {
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { Auth } from 'core';
 import { GameUI } from 'ui';
+import pw from 'a-promise-wrapper';
 import { useState } from 'react';
+import {
+  PublicKeyCredentialCreationOptionsJSON,
+  PublicKeyCredentialRequestOptionsJSON,
+} from '@simplewebauthn/types';
+import { callable } from '../firebase';
 
-const { Dialogs, Containers } = GameUI.Minimalism;
+const { Containers } = GameUI.Minimalism;
 const { HomeContainer } = Containers;
-
-const arrayBufferToBase64 = buffer => {
-  return btoa(String.fromCharCode(...new Uint8Array(buffer)));
-};
-
-const base64ToArrayBuffer = (base64: string) => {
-  const binary = atob(base64);
-  const bytes = new Uint8Array(binary.length);
-  for (let i = 0; i < binary.length; i++) {
-    bytes[i] = binary.charCodeAt(i);
-  }
-  return bytes.buffer;
-};
 
 const isWebAuthnSupported = () => {
   return window?.PublicKeyCredential !== undefined;
@@ -32,6 +25,7 @@ const isWebAuthnSupported = () => {
 
 const Home = () => {
   const authContext = Auth.useAuthContext();
+  const { signOut } = authContext;
 
   console.log('auth context', authContext);
   const [status, setStatus] = useState('');
@@ -57,74 +51,53 @@ const Home = () => {
 
   const { mutateAsync: registerMutate } = useMutation({
     mutationFn: async ({ userId }: { userId: string }) => {
-      const url =
-        'http://127.0.0.1:5001/my-world-dev/asia-south1/auth-generatePasskeyRegistrationOptions';
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+      const { data: response, error } = await pw(
+        callable('auth-generatePasskeyRegistrationOptions', {
           userId,
-        }),
-      });
-      console.log('request called');
+        })
+      );
 
-      if (!response.ok) {
+      console.log('registerMutate', response, error);
+
+      if (error) {
         throw new Error('Network response was not ok');
       }
-      return response.json();
+      return response.data as PublicKeyCredentialCreationOptionsJSON;
     },
   });
-  const { mutateAsync: verifyRegisterMutate, data: verifiedData } = useMutation(
-    {
-      mutationFn: async ({
-        userId,
-        credential,
-      }: {
-        userId: string;
-        credential: any;
-      }) => {
-        const url =
-          'http://127.0.0.1:5001/my-world-dev/asia-south1/auth-verifyPasskeyRegistration';
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            userId,
-            credential,
-          }),
-        });
-        console.log('request verify called');
-
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      },
-    }
-  );
-  const { mutateAsync: authenMutate } = useMutation({
-    mutationFn: async ({ userId }: { userId: string }) => {
-      const url =
-        'http://127.0.0.1:5001/my-world-dev/asia-south1/auth-generatePasskeyAuthenticationOptions';
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+  const { mutateAsync: verifyRegisterMutate } = useMutation({
+    mutationFn: async ({
+      userId,
+      credential,
+    }: {
+      userId: string;
+      credential: any;
+    }) => {
+      const { data: response, error } = await pw(
+        callable('auth-verifyPasskeyRegistration', {
           userId,
-        }),
-      });
-      console.log('request called');
+          credential,
+        })
+      );
 
-      if (!response.ok) {
+      if (error) {
         throw new Error('Network response was not ok');
       }
-      return response.json();
+      return response.data;
+    },
+  });
+  const { mutateAsync: authenMutate } = useMutation({
+    mutationFn: async ({ userId }: { userId: string }) => {
+      const { data: response, error } = await pw(
+        callable('auth-generatePasskeyAuthenticationOptions', {
+          userId,
+        })
+      );
+
+      if (error) {
+        throw new Error('Network response was not ok');
+      }
+      return response.data as PublicKeyCredentialRequestOptionsJSON;
     },
   });
   const { mutateAsync: verifyAuthenMutate } = useMutation({
@@ -135,24 +108,17 @@ const Home = () => {
       userId: string;
       credential: any;
     }) => {
-      const url =
-        'http://127.0.0.1:5001/my-world-dev/asia-south1/auth-verifyPasskeyAuthentication';
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+      const { data: response, error } = await pw(
+        callable('auth-verifyPasskeyAuthentication', {
           userId,
           credential,
-        }),
-      });
-      console.log('request verify called');
+        })
+      );
 
-      if (!response.ok) {
+      if (error) {
         throw new Error('Network response was not ok');
       }
-      return response.json();
+      return response.data;
     },
   });
 
@@ -169,13 +135,6 @@ const Home = () => {
         attResp = await startRegistration({ optionsJSON: resp });
       } catch (error) {
         console.log('error', error);
-        // Some basic error handling
-        if (error.name === 'InvalidStateError') {
-          elemError.innerText =
-            'Error: Authenticator was probably already registered by user';
-        } else {
-          elemError.innerText = error;
-        }
 
         throw error;
       }
@@ -207,13 +166,6 @@ const Home = () => {
         attResp = await startAuthentication({ optionsJSON: resp });
       } catch (error) {
         console.log('error', error);
-        // Some basic error handling
-        if (error.name === 'InvalidStateError') {
-          elemError.innerText =
-            'Error: Authenticator was probably already registered by user';
-        } else {
-          elemError.innerText = error;
-        }
 
         throw error;
       }
@@ -251,6 +203,9 @@ const Home = () => {
             className="w-full"
           >
             Authenticate with Passkey
+          </button>
+          <button onClick={signOut} className="w-full">
+            Sign out
           </button>
         </div>
       </div>
