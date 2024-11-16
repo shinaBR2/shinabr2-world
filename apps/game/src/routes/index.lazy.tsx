@@ -6,6 +6,7 @@ import {
 } from '@simplewebauthn/browser';
 // @ts-ignore
 import { createLazyFileRoute } from '@tanstack/react-router';
+import { Auth } from 'core';
 import { GameUI } from 'ui';
 import { useState } from 'react';
 
@@ -30,6 +31,9 @@ const isWebAuthnSupported = () => {
 };
 
 const Home = () => {
+  const authContext = Auth.useAuthContext();
+
+  console.log('auth context', authContext);
   const [status, setStatus] = useState('');
   const [error, setError] = useState('');
   const gameList = [

@@ -1,5 +1,5 @@
-import React, { FC, useContext, useMemo, useState } from "react";
-import { FirebaseOptions, initializeApp } from "firebase/app";
+import React, { FC, useContext, useMemo, useState } from 'react';
+import { FirebaseOptions, initializeApp } from 'firebase/app';
 import {
   getAuth,
   onAuthStateChanged,
@@ -7,7 +7,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   signOut as gSignOut,
-} from "firebase/auth";
+} from 'firebase/auth';
 
 const provider = new GoogleAuthProvider();
 
@@ -43,14 +43,18 @@ const AuthProvider: FC<Props> = ({ firebaseConfig, children }) => {
   const firebaseApp = initializeApp(firebaseConfig);
   const auth = getAuth(firebaseApp);
 
-  onAuthStateChanged(auth, async (user) => {
+  onAuthStateChanged(auth, async user => {
     if (user) {
       // User is signed in, see docs for a list of available properties
       // https://firebase.google.com/docs/reference/js/firebase.User
       const uid = user.uid;
 
+      console.log('uid', uid);
+
       if (auth.currentUser) {
         const tokenResult = await auth.currentUser.getIdTokenResult();
+
+        console.log('token', tokenResult);
 
         if (!!tokenResult.claims.admin) {
           setIsAdmin(true);

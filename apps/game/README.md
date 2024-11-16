@@ -13,6 +13,8 @@
 - https://doc.mapeditor.org/en/stable/manual/terrain/
 - https://github.com/mikewesthad/phaser-matter-collision-plugin?tab=readme-ov-file
 - https://play.definya.com/auth/character
+- https://tkdodo.eu/blog/practical-react-query
+- https://profy.dev/article/react-architecture-api-layer
 
 # Development
 
