@@ -1,20 +1,9 @@
-import crypto from 'crypto';
-import { verifyRegistrationResponse } from '@simplewebauthn/server';
-
-import pw from 'a-promise-wrapper';
 import { onRequestWithCors } from '../singleton';
 import {
-  dbAddDoc,
-  dbGetRef,
-  dbRead,
-  dbUpdateDoc,
-  deleteDoc,
-} from '../singleton/db';
-import { DocumentData, DocumentSnapshot } from 'firebase-admin/firestore';
-import { generateOptions, saveNewPasskey, verify } from './registrationPasskeyHelpers';
-
-const ORIGIN = 'http://localhost:3003';
-const DOMAIN = 'localhost';
+  generateOptions,
+  saveNewPasskey,
+  verify,
+} from './registrationPasskeyHelpers';
 
 // @ts-ignore
 const generatePasskeyOptions = onRequestWithCors(async (req, res) => {
