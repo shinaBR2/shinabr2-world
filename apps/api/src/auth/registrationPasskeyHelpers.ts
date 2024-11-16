@@ -6,21 +6,16 @@ import {
   verifyRegistrationResponse,
 } from '@simplewebauthn/server';
 import { dbAddDoc, dbRead, dbUpdateDoc } from '../singleton/db';
-import { getUser, getUserPasskeys } from './userHelpers';
+import {
+  getUser,
+  getUserPasskeys,
+  setCurrentRegistrationOptions,
+} from './userHelpers';
 import { Passkey, UserModel } from './types';
 import { ORIGIN, RP_ID, RP_NAME } from './config';
 
 // @ts-ignore
 if (!global.crypto) global.crypto = webcrypto;
-
-const setCurrentRegistrationOptions = async (
-  userId: string,
-  options: PublicKeyCredentialCreationOptionsJSON
-) => {
-  await dbUpdateDoc(`users/${userId}`, {
-    passkeyRegistrationOptions: options,
-  });
-};
 
 const generateOptions = async (userId: string) => {
   // (Pseudocode) Retrieve the user from the database
@@ -66,7 +61,7 @@ const generateOptions = async (userId: string) => {
   });
 
   // (Pseudocode) Remember these options for the user
-  setCurrentRegistrationOptions(userId, options);
+  await setCurrentRegistrationOptions(userId, options);
 
   return options;
 };
@@ -109,43 +104,4 @@ const verify = async (userId: string, credential: any) => {
   };
 };
 
-const saveNewPasskey = async (
-  firebaseUserId: string,
-  user: UserModel,
-  verification: VerifiedRegistrationResponse
-) => {
-  const { passkeyRegistrationOptions } = user;
-  const { registrationInfo } = verification;
-
-  const {
-    // @ts-ignore
-    credential,
-    // @ts-ignore
-    credentialDeviceType: deviceType,
-    // @ts-ignore
-    credentialBackedUp: backedUp,
-  } = registrationInfo;
-
-  const newPasskey: Passkey = {
-    // `user` here is from Step 2
-    user,
-    // Created by `generateRegistrationOptions()` in Step 1
-    webAuthnUserID: passkeyRegistrationOptions.user.id,
-    // A unique identifier for the credential
-    id: credential.id,
-    // The public key bytes, used for subsequent authentication signature verification
-    publicKey: credential.publicKey,
-    // The number of times the authenticator has been used on this site so far
-    counter: credential.counter,
-    // How the browser can talk with this credential's authenticator
-    transports: credential.transports,
-    // Whether the passkey is single-device or multi-device
-    deviceType,
-    // Whether the passkey has been backed up in some way
-    backedUp,
-  };
-
-  await dbAddDoc(`passkeys/${firebaseUserId}/items`, newPasskey);
-};
-
-export { generateOptions, verify, saveNewPasskey };
+export { generateOptions, verify };

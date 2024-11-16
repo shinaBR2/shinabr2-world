@@ -46,6 +46,17 @@ const dbAddDoc = async (
   return { id: res.id };
 };
 
+const dbAddDocWithId = async (
+  pathStr: string,
+  id: string,
+  data: FirebaseFirestore.DocumentData
+) => {
+  const p = sanitizePath(pathStr);
+  const res = await db.collection(p).doc(id).set(data);
+
+  return res;
+};
+
 const dbUpdateDoc = async (
   pathStr: string,
   data: FirebaseFirestore.DocumentData
@@ -80,6 +91,14 @@ const dbBatchWrite = () => {
   };
 };
 
-export { dbGetRef, dbRead, dbAddDoc, dbUpdateDoc, deleteDoc, dbBatchWrite };
+export {
+  dbGetRef,
+  dbRead,
+  dbAddDoc,
+  dbAddDocWithId,
+  dbUpdateDoc,
+  deleteDoc,
+  dbBatchWrite,
+};
 
 export default db;

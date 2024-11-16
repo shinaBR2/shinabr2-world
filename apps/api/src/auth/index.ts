@@ -1,3 +1,13 @@
-import { generatePasskeyOptions, verifyRegistration } from './auth';
+import {
+  generatePasskeyRegistrationOptions,
+  verifyPasskeyRegistration,
+  generatePasskeyAuthenticationOptions,
+  verifyPasskeyAuthentication,
+} from './auth';
 
-export default { generatePasskeyOptions, verifyRegistration };
+export default {
+  generatePasskeyRegistrationOptions,
+  verifyPasskeyRegistration,
+  generatePasskeyAuthenticationOptions,
+  verifyPasskeyAuthentication,
+};
