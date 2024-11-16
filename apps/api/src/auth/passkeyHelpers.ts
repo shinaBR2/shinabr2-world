@@ -66,7 +66,9 @@ const rpID = 'localhost';
  * 'http://localhost' and 'http://localhost:PORT' are also valid.
  * Do NOT include any trailing /
  */
-const origin = `https://${rpID}`;
+const origin = `http://${rpID}`;
+// @ts-ignore
+if (!global.crypto) global.crypto = webcrypto;
 
 const getUserPasskeys = async (userId: string): Promise<Passkey[]> => {
   const existingPasskeysSnapshot = await dbRead(`passkeys/${userId}/items`);
@@ -96,8 +98,6 @@ const setCurrentRegistrationOptions = async (
 };
 
 const generateOptions = async (userId: string) => {
-  // @ts-ignore
-  if (!global.crypto) global.crypto = webcrypto;
   // (Pseudocode) Retrieve the user from the database
   // after they've logged in
   const userSnapshot = await dbRead(`users/${userId}`);
@@ -150,11 +150,6 @@ const verify = async (userId: string, credential: any) => {
   let isVerified = false;
   const userSnapshot = await getUser(userId);
 
-  console.log('userSnapshot', userSnapshot);
-
-  // @ts-ignore
-  console.log('userSnapshot data', userSnapshot.data());
-
   // @ts-ignore
   if (!userSnapshot.exists) {
     return {
@@ -164,6 +159,7 @@ const verify = async (userId: string, credential: any) => {
 
   // @ts-ignore
   const user = userSnapshot.data();
+  console.log('user data', user);
   const { passkeyOptions: currentOptions } = user;
 
   let verification;
@@ -171,8 +167,8 @@ const verify = async (userId: string, credential: any) => {
     verification = await verifyRegistrationResponse({
       response: credential,
       expectedChallenge: currentOptions.challenge,
-      expectedOrigin: origin,
-      expectedRPID: rpID,
+      expectedOrigin: [origin, `${origin}:3003`],
+      expectedRPID: [rpID, `${rpID}:3003`],
     });
   } catch (error) {
     console.error(error);
@@ -182,13 +178,14 @@ const verify = async (userId: string, credential: any) => {
   }
 
   return {
-    isVerified,
+    isVerified: verification.verified,
     verification,
     user,
   };
 };
 
 const saveNewPasskey = async (
+  firebaseUserId: string,
   user: UserModel,
   verification: VerifiedRegistrationResponse
 ) => {
@@ -223,7 +220,7 @@ const saveNewPasskey = async (
     backedUp,
   };
 
-  await dbAddDoc(`passkeys/${user.id}`, newPasskey);
+  await dbAddDoc(`passkeys/${firebaseUserId}/items`, newPasskey);
 };
 
 export { generateOptions, verify, saveNewPasskey };

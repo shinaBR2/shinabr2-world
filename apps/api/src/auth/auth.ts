@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import { verifyRegistrationResponse } from '@simplewebauthn/server';
 
 import pw from 'a-promise-wrapper';
-import { onRequest } from '../singleton';
+import { onRequestWithCors } from '../singleton';
 import {
   dbAddDoc,
   dbGetRef,
@@ -13,11 +13,11 @@ import {
 import { DocumentData, DocumentSnapshot } from 'firebase-admin/firestore';
 import { generateOptions, saveNewPasskey, verify } from './passkeyHelpers';
 
-const ORIGIN = 'http://localhost';
+const ORIGIN = 'http://localhost:3003';
 const DOMAIN = 'localhost';
 
 // @ts-ignore
-const generatePasskeyOptions = onRequest(async (req, res) => {
+const generatePasskeyOptions = onRequestWithCors(async (req, res) => {
   try {
     const { userId } = req.body;
     const options = await generateOptions(userId);
@@ -35,27 +35,31 @@ const generatePasskeyOptions = onRequest(async (req, res) => {
 });
 
 // @ts-ignore
-const verifyRegistration = onRequest(async (req, res) => {
+const verifyRegistration = onRequestWithCors(async (req, res) => {
   try {
-    const { userId, credential: userCredential } = req.body;
+    // @ts-ignore
+    const { userId: firebaseUserId, credential: userCredential } = req.body;
     const { isVerified, verification, user } = await verify(
-      userId,
+      firebaseUserId,
       userCredential
     );
 
     if (!isVerified) {
+      // @ts-ignore
       return res.status(400).json({ error: 'Verification failed' });
     }
 
     // @ts-ignore
-    await saveNewPasskey(user, verification);
+    await saveNewPasskey(firebaseUserId, user, verification);
 
+    // @ts-ignore
     return res.json({
       success: true,
       message: 'Registration successful',
     });
   } catch (error) {
     console.error('Error in registration verification:', error);
+    // @ts-ignore
     return res.status(500).json({ error: 'Internal server error' });
   }
 });
