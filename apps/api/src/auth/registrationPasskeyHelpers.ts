@@ -18,7 +18,7 @@ const setCurrentRegistrationOptions = async (
   options: PublicKeyCredentialCreationOptionsJSON
 ) => {
   await dbUpdateDoc(`users/${userId}`, {
-    passkeyOptions: options,
+    passkeyRegistrationOptions: options,
   });
 };
 
@@ -85,7 +85,7 @@ const verify = async (userId: string, credential: any) => {
   // @ts-ignore
   const user = userSnapshot.data();
   console.log('user data', user);
-  const { passkeyOptions: currentOptions } = user;
+  const { passkeyRegistrationOptions: currentOptions } = user;
 
   let verification;
   try {
@@ -114,7 +114,7 @@ const saveNewPasskey = async (
   user: UserModel,
   verification: VerifiedRegistrationResponse
 ) => {
-  const { passkeyOptions } = user;
+  const { passkeyRegistrationOptions } = user;
   const { registrationInfo } = verification;
 
   const {
@@ -130,7 +130,7 @@ const saveNewPasskey = async (
     // `user` here is from Step 2
     user,
     // Created by `generateRegistrationOptions()` in Step 1
-    webAuthnUserID: passkeyOptions.user.id,
+    webAuthnUserID: passkeyRegistrationOptions.user.id,
     // A unique identifier for the credential
     id: credential.id,
     // The public key bytes, used for subsequent authentication signature verification
