@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { startRegistration } from '@simplewebauthn/browser';
 // @ts-ignore
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { GameUI } from 'ui';
@@ -46,54 +48,91 @@ const Home = () => {
     },
   ];
 
+  const { mutateAsync: registerMutate, data: registerOptions } = useMutation({
+    mutationFn: async ({ userId }: { userId: string }) => {
+      const url =
+        'http://127.0.0.1:5001/my-world-dev/asia-south1/auth-generatePasskeyOptions';
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId,
+        }),
+      });
+      console.log('request called');
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    },
+  });
+  const { mutateAsync: verifyMutate, data: verifiedData } = useMutation({
+    mutationFn: async ({
+      userId,
+      credential,
+    }: {
+      userId: string;
+      credential: any;
+    }) => {
+      const url =
+        'http://127.0.0.1:5001/my-world-dev/asia-south1/auth-verifyRegistration';
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId,
+          credential,
+        }),
+      });
+      console.log('request verify called');
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    },
+  });
+
+  console.log('registration data', registerOptions);
+
   const registerPasskey = async () => {
     try {
       setStatus('Starting registration...');
       setError('');
+      const resp = await registerMutate({ userId: 'master' });
+      console.log('resp', resp);
 
-      // 1. Get challenge from server (in real implementation)
-      // This would normally come from your backend
-      const challenge = new Uint8Array(32);
-      window.crypto.getRandomValues(challenge);
+      let attResp;
+      try {
+        // Pass the options to the authenticator and wait for a response
+        attResp = await startRegistration({ optionsJSON: resp });
+      } catch (error) {
+        console.log('error', error);
+        // Some basic error handling
+        if (error.name === 'InvalidStateError') {
+          elemError.innerText =
+            'Error: Authenticator was probably already registered by user';
+        } else {
+          elemError.innerText = error;
+        }
 
-      // 2. Create credential options
-      const publicKeyCredentialCreationOptions = {
-        challenge,
-        rp: {
-          name: 'Your App Name',
-          id: window.location.hostname,
-        },
-        user: {
-          id: Uint8Array.from('USERID123', c => c.charCodeAt(0)),
-          name: 'user@example.com',
-          displayName: 'John Doe',
-        },
-        pubKeyCredParams: [
-          { type: 'public-key', alg: -7 }, // ES256
-          { type: 'public-key', alg: -257 }, // RS256
-        ],
-        authenticatorSelection: {
-          authenticatorAttachment: 'platform',
-          userVerification: 'required',
-        },
-        timeout: 60000,
-      };
+        throw error;
+      }
+      console.log('attResp', attResp);
 
-      // 3. Create credentials
-      const credential = await navigator.credentials.create({
-        publicKey: publicKeyCredentialCreationOptions,
+      const verifyResp = await verifyMutate({
+        userId: 'master',
+        credential: attResp,
       });
 
-      // 4. Format credential for sending to server
-      const credentialId = arrayBufferToBase64(credential.rawId);
-      const clientDataJSON = arrayBufferToBase64(
-        credential.response.clientDataJSON
-      );
-      const attestationObject = arrayBufferToBase64(
-        credential.response.attestationObject
-      );
+      console.log('verifyResp', verifyResp);
 
-      localStorage.setItem('savedCredentials', JSON.stringify(credential));
+      // localStorage.setItem('savedCredentials', JSON.stringify(registerOptions));
 
       // 5. Send to server (in real implementation)
       // await fetch('/api/register-passkey', {
@@ -181,6 +220,9 @@ const Home = () => {
             Authenticate with Passkey
           </button>
         </div>
+      </div>
+      <div>
+        <div>Status: {status}</div>
       </div>
     </>
   );
