@@ -14,8 +14,7 @@ import useResponsive from "../hooks/useResponsive";
 import Logo from "../components/logo";
 import Iconify from "../components/iconify";
 // sections
-import { useAuthContext } from "../providers/auth";
-import { useNavigate, Navigate, useLocation } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { Auth } from 'core';
 
 // ----------------------------------------------------------------------
@@ -51,7 +50,6 @@ const StyledContent = styled("div")(({ theme }) => ({
 export default function LoginPage() {
   const mdUp = useResponsive("up", "md");
   const authContext = Auth.useAuthContext();
-  // const { signIn, isSignedIn, isLoading } = useAuthContext();
   const { signIn, isSignedIn, isAdmin, isLoading } = authContext;
   const location = useLocation();
 
