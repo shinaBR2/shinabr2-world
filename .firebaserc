@@ -1,6 +1,6 @@
 {
   "projects": {
-    "dev": "my-world-dev",
+    "dev": "sworld-dev",
     "prod": "sworld-prod"
   },
   "targets": {},
