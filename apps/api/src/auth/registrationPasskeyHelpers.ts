@@ -2,16 +2,14 @@ import type { PublicKeyCredentialCreationOptionsJSON } from '@simplewebauthn/typ
 import { webcrypto } from 'crypto';
 import {
   generateRegistrationOptions,
-  VerifiedRegistrationResponse,
   verifyRegistrationResponse,
 } from '@simplewebauthn/server';
-import { dbAddDoc, dbRead, dbUpdateDoc } from '../singleton/db';
+import { dbRead } from '../singleton/db';
 import {
   getUser,
   getUserPasskeys,
   setCurrentRegistrationOptions,
 } from './userHelpers';
-import { Passkey, UserModel } from './types';
 import { ORIGIN, RP_ID, RP_NAME } from './config';
 
 // @ts-ignore
