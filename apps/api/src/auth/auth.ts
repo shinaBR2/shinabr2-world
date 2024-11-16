@@ -11,7 +11,7 @@ import {
   deleteDoc,
 } from '../singleton/db';
 import { DocumentData, DocumentSnapshot } from 'firebase-admin/firestore';
-import { generateOptions, saveNewPasskey, verify } from './passkeyHelpers';
+import { generateOptions, saveNewPasskey, verify } from './registrationPasskeyHelpers';
 
 const ORIGIN = 'http://localhost:3003';
 const DOMAIN = 'localhost';

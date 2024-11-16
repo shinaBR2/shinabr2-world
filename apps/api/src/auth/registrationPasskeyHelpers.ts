@@ -80,7 +80,6 @@ const getUserPasskeys = async (userId: string): Promise<Passkey[]> => {
   // @ts-ignore
   const existingPasskeys = existingPasskeysSnapshot.data();
 
-  console.log('existingPasskeys', existingPasskeys);
   return existingPasskeys;
 };
 
