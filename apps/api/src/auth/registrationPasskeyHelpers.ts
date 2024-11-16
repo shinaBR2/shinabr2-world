@@ -10,7 +10,7 @@ import {
   getUserPasskeys,
   setCurrentRegistrationOptions,
 } from './userHelpers';
-import { ORIGIN, RP_ID, RP_NAME } from './config';
+import { EXPECTED_ORIGINS, EXPECTED_RP_IDS, RP_ID, RP_NAME } from './config';
 
 // @ts-ignore
 if (!global.crypto) global.crypto = webcrypto;
@@ -85,8 +85,8 @@ const verify = async (userId: string, credential: any) => {
     verification = await verifyRegistrationResponse({
       response: credential,
       expectedChallenge: currentOptions.challenge,
-      expectedOrigin: [ORIGIN, `${ORIGIN}:3003`],
-      expectedRPID: [RP_ID, `${RP_ID}:3003`],
+      expectedOrigin: EXPECTED_ORIGINS,
+      expectedRPID: EXPECTED_RP_IDS,
     });
   } catch (error) {
     console.error(error);

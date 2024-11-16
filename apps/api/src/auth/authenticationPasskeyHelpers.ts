@@ -9,7 +9,7 @@ import {
   generateAuthenticationOptions,
   verifyAuthenticationResponse,
 } from '@simplewebauthn/server';
-import { ORIGIN, RP_ID } from './config';
+import { EXPECTED_ORIGINS, EXPECTED_RP_IDS, RP_ID } from './config';
 
 const generateOptions = async (userId: string) => {
   const userPasskeys = await getUserPasskeys(userId);
@@ -59,8 +59,8 @@ const verify = async (userId: string, credential: any) => {
     verification = await verifyAuthenticationResponse({
       response: credential,
       expectedChallenge: currentOptions.challenge,
-      expectedOrigin: [ORIGIN, `${ORIGIN}:3003`],
-      expectedRPID: [RP_ID, `${RP_ID}:3003`],
+      expectedOrigin: EXPECTED_ORIGINS,
+      expectedRPID: EXPECTED_RP_IDS,
       credential: {
         id: passkey.id,
         publicKey: passkey.publicKey,
