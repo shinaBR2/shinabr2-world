@@ -13,6 +13,7 @@ const provider = new GoogleAuthProvider();
 
 interface ContextProps {
   user: User | null | undefined;
+  isAdmin: boolean;
   isLoading: boolean;
   isSignedIn: boolean;
   signIn: () => void;
@@ -28,6 +29,7 @@ interface Props {
 
 const AuthContext = React.createContext<ContextProps>({
   user: undefined,
+  isAdmin: false,
   isLoading: true,
   isSignedIn: false,
   signIn: () => {},
@@ -55,8 +57,10 @@ const AuthProvider: FC<Props> = ({ firebaseConfig, children }) => {
         const tokenResult = await auth.currentUser.getIdTokenResult();
 
         console.log('token', tokenResult);
+        const { admin, email } = tokenResult.claims;
+        const isAmin = !!admin || email == 'admin@shinabr2.com';
 
-        if (!!tokenResult.claims.admin) {
+        if (isAmin) {
           setIsAdmin(true);
         }
       }
@@ -79,7 +83,8 @@ const AuthProvider: FC<Props> = ({ firebaseConfig, children }) => {
     () => ({
       user,
       isLoading,
-      isSignedIn: !isLoading && !!user && isAdmin,
+      isSignedIn: !isLoading && !!user,
+      isAdmin,
       signIn,
       signOut,
     }),

@@ -16,6 +16,7 @@ import Iconify from "../components/iconify";
 // sections
 import { useAuthContext } from "../providers/auth";
 import { useNavigate, Navigate, useLocation } from "react-router-dom";
+import { Auth } from 'core';
 
 // ----------------------------------------------------------------------
 
@@ -49,10 +50,12 @@ const StyledContent = styled("div")(({ theme }) => ({
 
 export default function LoginPage() {
   const mdUp = useResponsive("up", "md");
-  const { signIn, isSignedIn, isLoading } = useAuthContext();
+  const authContext = Auth.useAuthContext();
+  // const { signIn, isSignedIn, isLoading } = useAuthContext();
+  const { signIn, isSignedIn, isAdmin, isLoading } = authContext;
   const location = useLocation();
 
-  if (isSignedIn) {
+  if (isSignedIn && isAdmin) {
     const origin = location.state?.from?.pathname || "/dashboard";
     return <Navigate to={origin} replace state={{ from: location }} />;
   }
