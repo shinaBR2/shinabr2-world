@@ -29,6 +29,10 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
+      - name: Copy .firebaserc file
+        run: cp .firebaserc apps/admin/.firebaserc
+      - name: Copy firebase.json file
+        run: cp firebase.json apps/admin/firebase.json
       - name: Build
         run: pnpm build
         env:
