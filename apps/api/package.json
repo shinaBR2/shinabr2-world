@@ -13,7 +13,7 @@
     "dev-old": "tsup src/index.ts --format cjs --watch --onSuccess \"node dist/index.js\"",
     "dev": "cross-env NODE_ENV=development firebase emulators:start --only functions,firestore",
     "prepare-deploy": "tsc scripts/prepare-deploy.ts && node scripts/prepare-deploy.js",
-    "deploy:dev": "pnpm build && pnpm prepare-deploy && cd dist && npm install && npx firebase use my-world-dev && npx firebase deploy --only functions",
+    "deploy:dev": "pnpm build && pnpm prepare-deploy && cd dist && npm install && npm install -g firebase-tools && firebase use my-world-dev && firebase deploy --only functions",
     "deploy:prod": "firebase use sworld-prod && firebase deploy --only functions",
     "lint": "tsc --noEmit && TIMING=1 eslint \"src/**/*.ts*\"",
     "start": "node dist/index.js"
