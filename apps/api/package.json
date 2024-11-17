@@ -38,6 +38,7 @@
     "cross-env": "^7.0.3",
     "eslint": "^7.32.0",
     "eslint-config-custom-server": "workspace:*",
+    "firebase-tools-with-isolate": "^13.16.0",
     "supertest": "^6.2.4",
     "tsconfig": "workspace:*",
     "tsup": "^6.2.3",
