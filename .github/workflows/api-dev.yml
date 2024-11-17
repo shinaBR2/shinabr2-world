@@ -9,7 +9,7 @@ name: Dev - Deploy API
       - '.github/**'
       - 'turbo.json'
       - 'package.json'
-      - 'fireabse.json'
+      - 'firebase.json'
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
