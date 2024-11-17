@@ -15,7 +15,7 @@
   "hosting": [
     {
       "target": "listen",
-      "public": "apps/listen/dist",
+      "public": "dist",
       "ignore": [
         "firebase.json",
         "**/.*",
@@ -24,7 +24,7 @@
     },
     {
       "target": "admin",
-      "public": "apps/admin/dist",
+      "public": "dist",
       "ignore": [
         "firebase.json",
         "**/.*",
@@ -33,7 +33,7 @@
     },
     {
       "target": "game",
-      "public": "apps/game/dist",
+      "public": "dist",
       "ignore": [
         "firebase.json",
         "**/.*",
