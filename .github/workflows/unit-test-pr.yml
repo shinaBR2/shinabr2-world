@@ -2,7 +2,7 @@ name: Unit Test on PR
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   test:
@@ -18,8 +18,6 @@ jobs:
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4.0.0
-        with:
-          version: 8
 
       - name: Get pnpm store directory
         shell: bash
