@@ -47,10 +47,6 @@ jobs:
           NODE_ENV: production
         run: pnpm build --filter api
 
-      - id: Trick
-        name: trick pnpm-lock.yaml
-        run: rm pnpm-lock.yaml
-
       - id: authentication
         name: Authentication
         uses: 'google-github-actions/auth@v2'
