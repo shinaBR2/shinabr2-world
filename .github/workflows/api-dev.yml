@@ -45,10 +45,6 @@ jobs:
           NODE_ENV: production
         run: pnpm build --filter api
 
-      - id: select_project
-        name: Select project
-        run: firebase use my-world-dev
-
       - id: deploy
         name: Deploy
         run: pnpm deploy:api:dev
