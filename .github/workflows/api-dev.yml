@@ -51,7 +51,7 @@ jobs:
 
       - id: deploy
         name: Deploy
-        run: firebase deploy --only functions
+        run: pnpm deploy:api:dev
 
       # - id: deploy
       #   name: Deploy

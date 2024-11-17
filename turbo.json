@@ -34,7 +34,6 @@
     },
     "clean": {
       "cache": false
-    },
-    "deploy": {}
+    }
   }
 }
