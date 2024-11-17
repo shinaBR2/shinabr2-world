@@ -46,9 +46,11 @@ jobs:
           NODE_ENV: production
         run: pnpm build --filter api
 
-      - uses: 'google-github-actions/auth@v2'
-          with:
-            credentials_json: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MY_WORLD_DEV }}'
+      - id: authentication
+        name: Authentication
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MY_WORLD_DEV }}'
 
       - id: deploy
         name: Deploy
