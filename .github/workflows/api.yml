@@ -1,15 +1,15 @@
-name: Dev - Deploy API
+name: PRODUCTION - Deploy API
 'on':
   push:
     branches:
-      - api-dev
+      - api
     paths:
       - 'apps/api/**'
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     environment:
-      name: prod
+      name: dev
     # env:
     # SLACK_WEBHOOK_URL: '${{ secrets.SLACK_NOTIFICATION_WEBHOOK }}'
     steps:
@@ -65,8 +65,8 @@ jobs:
         uses: w9jds/firebase-action@master
         with:
           args: >
-            use my-world-dev
+            use sworld-prod
             && firebase deploy --only functions
         env:
-          GCP_SA_KEY: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MY_WORLD_DEV }}'
-          PROJECT_ID: my-world-dev
+          GCP_SA_KEY: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_SWORLD_PROD }}'
+          PROJECT_ID: sworld-prod
