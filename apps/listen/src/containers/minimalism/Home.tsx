@@ -1,30 +1,37 @@
-import React from "react";
-import { ListenUI, SUI } from "ui";
-import { ListenCore } from "core";
-import db from "../../providers/firestore";
+import React from 'react';
+import { ListenUI, UniversalUI } from 'ui';
+import { ListenCore } from 'core';
+import db from '../../providers/firestore';
 
-const { SBackdrop } = SUI;
-const { AppBar, HomeContainer } = ListenUI.Minimalism;
-const { useListenHomeAudioList } = ListenCore;
-
-console.log(db);
+const { LoadingBackdrop } = UniversalUI;
+const { AppBar, Logo, HomeContainer } = ListenUI.Minimalism;
+const { useListenHomeAudioList, useListenHomeFeelingList } = ListenCore;
 
 const Home = () => {
-  const { values: audioList, loading } = useListenHomeAudioList(db);
+  const { values: audioList, loading: loadingAudios } =
+    useListenHomeAudioList(db);
+  const { values: feelingList, loading: loadingFeelings } =
+    useListenHomeFeelingList(db);
+  const isLoadig = loadingAudios || loadingFeelings;
+  const hasAudio = !!audioList && !!audioList?.length;
+  const hasFeeling = !!feelingList && !!feelingList?.length;
+  const hasFullData = hasAudio && hasFeeling;
 
-  if (loading) {
-    return (
-      <SBackdrop open={true} loading={loading}>
-        {" "}
-      </SBackdrop>
-    );
+  if (isLoadig) {
+    return <LoadingBackdrop message="Valuable things deserve waiting" />;
   }
 
   return (
-    <main>
-      <AppBar />
-      {!!audioList && <HomeContainer audioList={audioList} />}
-    </main>
+    <>
+      <AppBar>
+        <Logo />
+      </AppBar>
+      <main>
+        {hasFullData && (
+          <HomeContainer feelingList={feelingList} audioList={audioList} />
+        )}
+      </main>
+    </>
   );
 };
 
