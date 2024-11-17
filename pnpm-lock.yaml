@@ -551,9 +551,9 @@ importers:
 
   packages/jest-dom-preset:
     dependencies:
-      '@types/jest':
-        specifier: ^29.5.11
-        version: 29.5.14
+      '@jest/globals':
+        specifier: ^29.7.0
+        version: 29.7.0
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@18.19.39)(babel-plugin-macros@3.1.0)(node-notifier@8.0.2)
@@ -3823,9 +3823,6 @@ packages:
 
   '@types/jest@26.0.24':
     resolution: {integrity: sha512-E/X5Vib8BWqZNRlDxj9vYXhsDwPYbPINqKF9BsnSoon4RQ0D9moEuLD8txgyypFLH7J4+Lho9Nr/c8H0Fi+17w==}
-
-  '@types/jest@29.5.14':
-    resolution: {integrity: sha512-ZN+4sdnLUbo8EVvVc2ao0GFW6oVrQRPn4K2lglySj7APvSrgzxHiNNK99us4WDMi57xxA2yggblIAMNhXOotLQ==}
 
   '@types/jsdom@20.0.1':
     resolution: {integrity: sha512-d0r18sZPmMQr1eG35u12FZfhIXNrnsPU/g5wvRKCUf/tOGilKKwYMYGqh33BNR6ba+2gkHw1EUiHoN3mn7E5IQ==}
@@ -17770,11 +17767,6 @@ snapshots:
     dependencies:
       jest-diff: 26.6.2
       pretty-format: 26.6.2
-
-  '@types/jest@29.5.14':
-    dependencies:
-      expect: 29.7.0
-      pretty-format: 29.7.0
 
   '@types/jsdom@20.0.1':
     dependencies:

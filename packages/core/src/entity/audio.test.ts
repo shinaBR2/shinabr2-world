@@ -1,3 +1,4 @@
+import { describe, expect, it, jest, beforeEach } from '@jest/globals';
 import { Firestore } from 'firebase/firestore';
 import {
   useAddDoc,
@@ -12,6 +13,10 @@ import {
   useUpdateEntity,
   useDeleteEntity,
 } from './audio';
+import {
+  AddDocInputs,
+  BaseFirestoreInputs,
+} from '../universal/dbQuery/interfaces';
 
 // Mock the custom hooks
 jest.mock('../universal/dbQuery', () => ({
@@ -100,7 +105,9 @@ describe('Audio Hooks', () => {
   describe('useAddEntity', () => {
     it('should add an entity and return its ID', async () => {
       const mockId = '123';
-      const mockAddDoc = jest.fn().mockResolvedValue(mockId);
+      const mockAddDoc = jest
+        .fn<(inputs: AddDocInputs) => Promise<string>>()
+        .mockResolvedValue(mockId);
       (useAddDoc as jest.Mock).mockReturnValue(mockAddDoc);
 
       const addEntity = useAddEntity(mockDb);
@@ -127,7 +134,9 @@ describe('Audio Hooks', () => {
 
   describe('useUpdateEntity', () => {
     it('should update an entity', async () => {
-      const mockUpdateDoc = jest.fn().mockResolvedValue(undefined);
+      const mockUpdateDoc = jest
+        .fn<(inputs: AddDocInputs) => Promise<void>>()
+        .mockResolvedValue();
       (useUpdateDoc as jest.Mock).mockReturnValue(mockUpdateDoc);
 
       const updateEntity = useUpdateEntity(mockDb);
@@ -153,7 +162,9 @@ describe('Audio Hooks', () => {
 
   describe('useDeleteEntity', () => {
     it('should delete an entity', async () => {
-      const mockDeleteDoc = jest.fn().mockResolvedValue(undefined);
+      const mockDeleteDoc = jest
+        .fn<(inputs: BaseFirestoreInputs) => Promise<void>>()
+        .mockResolvedValue();
       (useDeleteDoc as jest.Mock).mockReturnValue(mockDeleteDoc);
 
       const deleteEntity = useDeleteEntity(mockDb);
