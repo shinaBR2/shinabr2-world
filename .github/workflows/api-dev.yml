@@ -49,7 +49,7 @@ jobs:
 
       - id: Trick
         name: trick pnpm-lock.yaml
-        run: rm apps/api/pnpm-lock.yaml
+        run: rm pnpm-lock.yaml
 
       - id: authentication
         name: Authentication
