@@ -2,7 +2,6 @@
   "functions": {
     "source": ".",
     "runtime": "nodejs18",
-    "isolate": true,
     "ignore": [
       "node_modules",
       ".git",
