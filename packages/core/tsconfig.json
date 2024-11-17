@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
     "declaration": true,
+    "types": ["jest", "node"],
+    "esModuleInterop": true,
     "lib": ["dom", "ES2015"]
   },
   "extends": "tsconfig/react-library.json",

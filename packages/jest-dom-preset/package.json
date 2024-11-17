@@ -1,0 +1,15 @@
+{
+  "name": "@sworld/jest-dom-preset",
+  "version": "0.0.0",
+  "private": true,
+  "main": "index.js",
+  "bin": {
+    "jest": "./node_modules/.bin/jest"
+  },
+  "dependencies": {
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "@types/jest": "^29.5.11",
+    "jest-environment-jsdom": "^29.7.0"
+  }
+}
