@@ -28,9 +28,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Copy .firebaserc file
-        run: cp .firebaserc apps/admin/.firebaserc
+        run: cp .firebaserc apps/listen/.firebaserc
       - name: Copy firebase.json file
-        run: cp firebase.json apps/admin/firebase.json
+        run: cp firebase.json apps/listen/firebase.json
       - name: Build
         run: pnpm run build --filter listen
         env:
@@ -70,9 +70,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Copy .firebaserc file
-        run: cp .firebaserc apps/admin/.firebaserc
+        run: cp .firebaserc apps/listen/.firebaserc
       - name: Copy firebase.json file
-        run: cp firebase.json apps/admin/firebase.json
+        run: cp firebase.json apps/listen/firebase.json
       - name: Build
         run: pnpm run build --filter listen
         env:
