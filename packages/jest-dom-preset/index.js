@@ -1,4 +1,3 @@
-// packages/config/jest-config/index.js
 /** @type {import('jest').Config} */
 module.exports = {
   preset: 'ts-jest',
