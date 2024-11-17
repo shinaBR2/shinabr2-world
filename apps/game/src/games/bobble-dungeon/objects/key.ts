@@ -1,4 +1,4 @@
-import { GameScene } from "../scenes/game";
+import { GameScene } from '../scenes/game';
 
 export default class key extends Phaser.Physics.Matter.Sprite {
   scene: GameScene;
@@ -9,7 +9,7 @@ export default class key extends Phaser.Physics.Matter.Sprite {
     scene: GameScene,
     x: number,
     y: number,
-    texture = "keys",
+    texture = 'keys',
     options = { isStatic: true }
   ) {
     super(
@@ -21,7 +21,7 @@ export default class key extends Phaser.Physics.Matter.Sprite {
       options
     );
     this.scene = scene;
-    this.label = "keys";
+    this.label = 'keys';
     scene.add.existing(this);
 
     this.init();
@@ -34,7 +34,7 @@ export default class key extends Phaser.Physics.Matter.Sprite {
     this.tween = this.scene.tweens.add({
       targets: this,
       duration: 300,
-      y: "-=5",
+      y: '-=5',
       repeat: -1,
       yoyo: true,
     });

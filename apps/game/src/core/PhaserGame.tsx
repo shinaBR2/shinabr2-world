@@ -1,5 +1,5 @@
-import React, { forwardRef, useEffect, useLayoutEffect, useRef } from "react";
-import { EventBus, SCENE_READY } from "./EventBus";
+import React, { forwardRef, useEffect, useLayoutEffect, useRef } from 'react';
+import { EventBus, SCENE_READY } from './EventBus';
 
 export interface IRefPhaserGame {
   game: Phaser.Game | null;
@@ -19,7 +19,7 @@ export const PhaserGame = forwardRef<IRefPhaserGame, IProps>(
       if (game.current === null) {
         game.current = new Phaser.Game(config);
 
-        if (typeof ref === "function") {
+        if (typeof ref === 'function') {
           ref({ game: game.current, scene: null });
         } else if (ref) {
           ref.current = { game: game.current, scene: null };
@@ -38,11 +38,11 @@ export const PhaserGame = forwardRef<IRefPhaserGame, IProps>(
 
     useEffect(() => {
       EventBus.on(SCENE_READY, (scene_instance: Phaser.Scene) => {
-        if (currentActiveScene && typeof currentActiveScene === "function") {
+        if (currentActiveScene && typeof currentActiveScene === 'function') {
           currentActiveScene(scene_instance);
         }
 
-        if (typeof ref === "function") {
+        if (typeof ref === 'function') {
           ref({ game: game.current, scene: scene_instance });
         } else if (ref) {
           ref.current = { game: game.current, scene: scene_instance };

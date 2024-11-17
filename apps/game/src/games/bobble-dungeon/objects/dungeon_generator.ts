@@ -1,10 +1,10 @@
-import Dungeon, { Point, Room } from "@mikewesthad/dungeon";
-import Coin from "./coin";
-import Key from "./key";
-import Bat from "./bat";
-import Wizard from "./wizard";
-import SeeSaw from "./seesaw";
-import { GameScene } from "../scenes/game";
+import Dungeon, { Point, Room } from '@mikewesthad/dungeon';
+import Coin from './coin';
+import Key from './key';
+import Bat from './bat';
+import Wizard from './wizard';
+import SeeSaw from './seesaw';
+import { GameScene } from '../scenes/game';
 
 export default class DungeonGenerator {
   scene: GameScene;
@@ -27,7 +27,7 @@ export default class DungeonGenerator {
     // Watch the player and layer for collisions, for the duration of the scene:
     //this.physics.add.collider(this.player.sprite, layer);
 
-    this.dungeon?.rooms.forEach((room) => {
+    this.dungeon?.rooms.forEach(room => {
       // These room properties are all in grid units (not pixels units)
       const { x, y, width, height } = room;
       // Fill the room (minus the walls) with mostly clean floor tiles (90% of the time), but
@@ -81,9 +81,9 @@ export default class DungeonGenerator {
       width: this.dungeon?.width,
       height: this.dungeon?.height,
     });
-    const tileset = this.map.addTilesetImage("tiles", null, 48, 48, 0, 0); // 1px margin, 2px spacing
-    this.groundLayer = this.map.createBlankLayer("Layer 1", tileset);
-    this.stuffLayer = this.map.createBlankLayer("Stuff", tileset);
+    const tileset = this.map.addTilesetImage('tiles', null, 48, 48, 0, 0); // 1px margin, 2px spacing
+    this.groundLayer = this.map.createBlankLayer('Layer 1', tileset);
+    this.stuffLayer = this.map.createBlankLayer('Stuff', tileset);
 
     // Get a 2D array of tile indices (using -1 to not render empty tiles) and place them into the
     // blank layer
@@ -211,26 +211,26 @@ export default class DungeonGenerator {
   */
   addCoins(room: Room) {
     const where = Phaser.Math.RND.pick([
-      "top",
-      "bottom",
-      "left",
-      "right",
-      "none",
+      'top',
+      'bottom',
+      'left',
+      'right',
+      'none',
     ]);
     const width = Math.floor(room.width / 3) - Phaser.Math.Between(1, 2);
     const height = Math.floor(room.height / 3) - Phaser.Math.Between(1, 2);
 
     switch (where) {
-      case "top":
+      case 'top':
         this.addCoinsTop(room, width, height);
         break;
-      case "bottom":
+      case 'bottom':
         this.addCoinsdBottom(room, width, height);
         break;
-      case "left":
+      case 'left':
         this.addCoinsdLeft(room, width, height);
         break;
-      case "right":
+      case 'right':
         this.addCoinsdRight(room, width, height);
         break;
       default:

@@ -1,5 +1,5 @@
-import React from "react";
-import { useLoadGame } from "./hooks/useLoadGame";
+import React from 'react';
+import { useLoadGame } from './hooks/useLoadGame';
 
 const GameWrapper = () => {
   const Component = useLoadGame() as React.ElementType;

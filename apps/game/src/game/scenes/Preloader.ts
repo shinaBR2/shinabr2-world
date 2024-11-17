@@ -1,14 +1,14 @@
-import { Scene } from "phaser";
+import { Scene } from 'phaser';
 
 export class Preloader extends Scene {
   constructor() {
-    super("Preloader");
+    super('Preloader');
   }
 
   init() {
-    this.cameras.main.setBackgroundColor("transparent"); // Make sure new scenes don't cover it
+    this.cameras.main.setBackgroundColor('transparent'); // Make sure new scenes don't cover it
     //  We loaded this image in our Boot Scene, so we can display it here
-    const bg = this.add.image(0, 0, "background");
+    const bg = this.add.image(0, 0, 'background');
     bg.setOrigin(0, 0);
 
     // Calculate scale to cover the screen
@@ -28,8 +28,8 @@ export class Preloader extends Scene {
     const bar = this.add.rectangle(512 - 230, 384, 4, 28, 0xffffff);
 
     //  Use the 'progress' event emitted by the LoaderPlugin to update the loading bar
-    this.load.on("progress", (progress: number) => {
-      console.log("progress: ", progress);
+    this.load.on('progress', (progress: number) => {
+      console.log('progress: ', progress);
       //  Update the progress bar (our bar is 464px wide, so 100% = 464px)
       bar.width = 4 + 460 * progress;
     });
@@ -37,12 +37,12 @@ export class Preloader extends Scene {
 
   preload() {
     //  Load the assets for the game - Replace with your own assets
-    this.load.setPath("assets");
+    this.load.setPath('assets');
 
-    this.load.image("logo", "logo.png");
-    this.load.image("star", "star.png");
-    this.load.image("male-character", "male.png");
-    this.load.image("female-character", "female.png");
+    this.load.image('logo', 'logo.png');
+    this.load.image('star', 'star.png');
+    this.load.image('male-character', 'male.png');
+    this.load.image('female-character', 'female.png');
   }
 
   create() {
@@ -50,7 +50,7 @@ export class Preloader extends Scene {
     //  For example, you can define global animations here, so we can use them in other scenes.
     //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
     // setTimeout(() => {
-    this.scene.start("VirtualHouse");
+    this.scene.start('VirtualHouse');
     // }, 3000);
   }
 }

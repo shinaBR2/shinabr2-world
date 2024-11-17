@@ -1,15 +1,15 @@
-import react from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
-import { viteCommonjs } from "@originjs/vite-plugin-commonjs";
+import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
+import { viteCommonjs } from '@originjs/vite-plugin-commonjs';
 // import { visualizer } from "rollup-plugin-visualizer";
-import { VitePWA } from "vite-plugin-pwa";
-import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
+import { VitePWA } from 'vite-plugin-pwa';
+import { TanStackRouterVite } from '@tanstack/router-plugin/vite';
 
 // https://github.com/vitejs/vite/issues/5308#issuecomment-1010652389
 export default defineConfig({
   server: {
     port: 3003,
-    host: "localhost",
+    host: 'localhost',
   },
   plugins: [
     viteCommonjs(),

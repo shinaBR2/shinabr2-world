@@ -1,4 +1,4 @@
-import { GameScene } from "../scenes/game";
+import { GameScene } from '../scenes/game';
 
 export default class Dust extends Phaser.GameObjects.Sprite {
   scene: GameScene;
@@ -7,7 +7,7 @@ export default class Dust extends Phaser.GameObjects.Sprite {
     scene: GameScene,
     x: number,
     y: number,
-    name = "dust",
+    name = 'dust',
     tween = false
   ) {
     super(scene, x, y, name);
@@ -33,7 +33,7 @@ export default class Dust extends Phaser.GameObjects.Sprite {
       });
     }
 
-    this.on("animationcomplete", this.animationComplete, this);
+    this.on('animationcomplete', this.animationComplete, this);
     this.anims.play(this.name, true);
   }
 

@@ -1,5 +1,5 @@
-import { GameScene } from "../scenes/game";
-import Bubble from "./bubble";
+import { GameScene } from '../scenes/game';
+import Bubble from './bubble';
 
 export default class Bat extends Phaser.Physics.Matter.Sprite {
   scene: GameScene;
@@ -9,9 +9,9 @@ export default class Bat extends Phaser.Physics.Matter.Sprite {
   unsubscribeBatCollide: any;
   dead: boolean = false;
 
-  constructor(scene: GameScene, x: number, y: number, texture = "bat") {
+  constructor(scene: GameScene, x: number, y: number, texture = 'bat') {
     super(scene.matter.world, x, y, texture, 0);
-    this.label = "bat";
+    this.label = 'bat';
     this.scene = scene;
     this.scene.add.existing(this);
     this.startX = x;
@@ -27,9 +27,9 @@ export default class Bat extends Phaser.Physics.Matter.Sprite {
   */
   init() {
     this.anims.play(this.label, true);
-    this.on("animationcomplete", this.animationComplete, this);
+    this.on('animationcomplete', this.animationComplete, this);
     this.setVelocityX(this.direction * 5);
-    this.scene.events.on("update", this.update, this);
+    this.scene.events.on('update', this.update, this);
   }
 
   /*
@@ -46,7 +46,7 @@ export default class Bat extends Phaser.Physics.Matter.Sprite {
 
   onBatCollide({ gameObjectB }: CollisionData) {
     if (gameObjectB instanceof Bubble) {
-      gameObjectB.load("bat");
+      gameObjectB.load('bat');
       this.destroy();
     }
   }
@@ -74,14 +74,14 @@ export default class Bat extends Phaser.Physics.Matter.Sprite {
   */
   death() {
     this.dead = true;
-    this.anims.play(this.label + "death");
+    this.anims.play(this.label + 'death');
   }
 
   /*
     This destroys the bat after the death animation is complete.
   */
   animationComplete(animation: { key: string }) {
-    if (animation.key === this.label + "death") {
+    if (animation.key === this.label + 'death') {
       this.destroy();
     }
   }

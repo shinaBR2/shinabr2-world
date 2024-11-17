@@ -1,6 +1,6 @@
-import { GameScene } from "../scenes/game";
-import Bat from "./bat";
-import Wizard from "./wizard";
+import { GameScene } from '../scenes/game';
+import Bat from './bat';
+import Wizard from './wizard';
 
 export default class Bubble extends Phaser.Physics.Matter.Sprite {
   scene: GameScene;
@@ -18,7 +18,7 @@ export default class Bubble extends Phaser.Physics.Matter.Sprite {
     offset: any,
     options = { isStatic: true }
   ) {
-    super(scene.matter.world, x + offset, y, "bubble", 0, options);
+    super(scene.matter.world, x + offset, y, 'bubble', 0, options);
     this.offset = offset;
     this.setFriction(1, 0, Infinity);
     this.startX = x;
@@ -26,14 +26,14 @@ export default class Bubble extends Phaser.Physics.Matter.Sprite {
     this.scene = scene;
     scene.add.existing(this);
     this.moveVertically();
-    this.scene.events.on("update", this.update, this);
+    this.scene.events.on('update', this.update, this);
   }
 
   /*
     This function loads the sprite that will be inside the bubble. It also creates a tween to make it rotate.
   */
   load(sprite: string) {
-    this.scene.playAudio("trap");
+    this.scene.playAudio('trap');
     this.loaded = this.scene.add
       .sprite(this.x, this.y, sprite)
       .setOrigin(0.5)
@@ -41,7 +41,7 @@ export default class Bubble extends Phaser.Physics.Matter.Sprite {
     this.loaded.name = sprite;
     this.loadedTween = this.scene.tweens.add({
       targets: this.loaded,
-      rotation: "+=5",
+      rotation: '+=5',
       yoyo: true,
       repeat: -1,
     });
@@ -123,9 +123,9 @@ export default class Bubble extends Phaser.Physics.Matter.Sprite {
   */
   respawn() {
     this.loadedTween.destroy();
-    if (this.loaded?.name === "wizard") {
+    if (this.loaded?.name === 'wizard') {
       new Wizard(this.scene, this.x, this.y);
-    } else if (this.loaded?.name === "bat") {
+    } else if (this.loaded?.name === 'bat') {
       new Bat(this.scene, this.x, this.y);
     }
     this.loaded?.destroy();
@@ -148,7 +148,7 @@ export default class Bubble extends Phaser.Physics.Matter.Sprite {
   */
   destroy() {
     if (!this.scene) return;
-    this.scene.playAudio("crash");
+    this.scene.playAudio('crash');
     if (this.loaded) this.respawn();
     super.destroy();
   }

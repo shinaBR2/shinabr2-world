@@ -1,4 +1,4 @@
-import { GameScene } from "../scenes/game";
+import { GameScene } from '../scenes/game';
 
 export default class SeeSaw {
   constructor(scene: GameScene, x: any, y: any, numTiles = 5) {
@@ -7,7 +7,7 @@ export default class SeeSaw {
       y,
       (32 * numTiles) / 2,
       18,
-      "seesaw"
+      'seesaw'
     );
     scene.matter.add.gameObject(platform, {
       restitution: 0, // No bounciness

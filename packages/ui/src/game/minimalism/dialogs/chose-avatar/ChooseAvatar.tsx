@@ -1,9 +1,9 @@
-import * as React from "react";
-import Button from "@mui/material/Button";
-import DialogTitle from "@mui/material/DialogTitle";
-import Dialog from "@mui/material/Dialog";
-import { DialogActions, DialogContent, Stack } from "@mui/material";
-import { StyledAvatar } from "./Styled";
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from '@mui/material/Dialog';
+import { DialogActions, DialogContent, Stack } from '@mui/material';
+import { StyledAvatar } from './Styled';
 
 export interface ChooseAvatarProps {
   open: boolean;
@@ -12,7 +12,7 @@ export interface ChooseAvatarProps {
 
 const ChooseAvatar = (props: ChooseAvatarProps) => {
   const { open, onSubmit } = props;
-  const [selectedAvatar, setSelectedAvatar] = React.useState("");
+  const [selectedAvatar, setSelectedAvatar] = React.useState('');
 
   const handleSelect = (gender: string) => {
     setSelectedAvatar(gender);
@@ -31,14 +31,14 @@ const ChooseAvatar = (props: ChooseAvatarProps) => {
 
         <Stack direction="row" spacing={2}>
           <StyledAvatar
-            isActive={selectedAvatar == "male"}
-            onClick={() => handleSelect("male")}
+            isActive={selectedAvatar == 'male'}
+            onClick={() => handleSelect('male')}
           >
             <img src="/assets/male.png" alt="Male" />
           </StyledAvatar>
           <StyledAvatar
-            isActive={selectedAvatar == "female"}
-            onClick={() => handleSelect("female")}
+            isActive={selectedAvatar == 'female'}
+            onClick={() => handleSelect('female')}
           >
             <img src="/assets/female.png" alt="Female" />
           </StyledAvatar>

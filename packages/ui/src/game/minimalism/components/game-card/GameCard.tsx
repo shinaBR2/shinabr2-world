@@ -1,6 +1,6 @@
-import { Link } from "@tanstack/react-router";
-import { CardActionArea, CardMedia } from "@mui/material";
-import { StyledCard } from "./Styled";
+import { Link } from '@tanstack/react-router';
+import { CardActionArea, CardMedia } from '@mui/material';
+import { StyledCard } from './Styled';
 
 interface GameCardProps {
   id: string;

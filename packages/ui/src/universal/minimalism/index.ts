@@ -1,3 +1,3 @@
-import UniversalMinimalismThemeProvider from "./ThemeProvider";
+import UniversalMinimalismThemeProvider from './ThemeProvider';
 
 export { UniversalMinimalismThemeProvider };

@@ -11,7 +11,7 @@ export default class Outro extends Phaser.Scene {
   player!: Phaser.GameObjects.Sprite;
 
   constructor() {
-    super({ key: "outro" });
+    super({ key: 'outro' });
   }
 
   /*
@@ -23,13 +23,13 @@ First, we add all elements to the scene: player image, score, text, and the inpu
     this.center_width = this.width / 2;
     this.center_height = this.height / 2;
     this.showPlayer();
-    this.sound.add("win").play();
+    this.sound.add('win').play();
     this.scoreCoins = this.add
       .bitmapText(
         this.center_width,
         50,
-        "default",
-        "Coins: " + this.registry.get("coins"),
+        'default',
+        'Coins: ' + this.registry.get('coins'),
         25
       )
       .setOrigin(0.5)
@@ -38,8 +38,8 @@ First, we add all elements to the scene: player image, score, text, and the inpu
       .bitmapText(
         this.center_width,
         100,
-        "default",
-        "Time: " + this.registry.get("seconds"),
+        'default',
+        'Time: ' + this.registry.get('seconds'),
         25
       )
       .setOrigin(0.5)
@@ -48,8 +48,8 @@ First, we add all elements to the scene: player image, score, text, and the inpu
       .bitmapText(
         this.center_width,
         this.center_height - 20,
-        "default",
-        "YOU DID IT!!",
+        'default',
+        'YOU DID IT!!',
         40
       )
       .setOrigin(0.5);
@@ -57,17 +57,17 @@ First, we add all elements to the scene: player image, score, text, and the inpu
       .bitmapText(
         this.center_width,
         this.center_height + 40,
-        "default",
-        "Press space to restart",
+        'default',
+        'Press space to restart',
         25
       )
       .setOrigin(0.5);
-    this.input.keyboard?.on("keydown-ENTER", () => this.loadNext(), this);
-    this.input.keyboard?.on("keydown-SPACE", () => this.loadNext(), this);
+    this.input.keyboard?.on('keydown-ENTER', () => this.loadNext(), this);
+    this.input.keyboard?.on('keydown-SPACE', () => this.loadNext(), this);
   }
 
   loadNext() {
-    this.scene.start("splash");
+    this.scene.start('splash');
   }
 
   /*
@@ -75,10 +75,10 @@ First, we add all elements to the scene: player image, score, text, and the inpu
   */
   showPlayer() {
     this.player = this.add
-      .sprite(this.center_width, this.center_height - 120, "player")
+      .sprite(this.center_width, this.center_height - 120, 'player')
       .setOrigin(0.5)
       .setScale(3);
 
-    this.player.anims.play("playeridle");
+    this.player.anims.play('playeridle');
   }
 }

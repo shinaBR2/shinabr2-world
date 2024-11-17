@@ -7,8 +7,8 @@ import {
   CardMedia,
   CardMediaProps,
   CardProps,
-} from "@mui/material";
-import { styled } from "@mui/material/styles";
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 const StyledCard = styled(Card)<CardProps>(({ theme }) => {
   return {

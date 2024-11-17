@@ -1,8 +1,8 @@
-import { ThemeProviderProps } from "@emotion/react";
-import { CssBaseline, ThemeProvider } from "@mui/material";
-import theme from "./theme";
+import { ThemeProviderProps } from '@emotion/react';
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import theme from './theme';
 
-const MinimalismThemeProvider = (props: Omit<ThemeProviderProps, "theme">) => {
+const MinimalismThemeProvider = (props: Omit<ThemeProviderProps, 'theme'>) => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />

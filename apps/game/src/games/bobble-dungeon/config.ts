@@ -1,11 +1,11 @@
-import Phaser from "phaser";
-import Bootloader from "./scenes/bootloader";
-import Outro from "./scenes/outro";
-import Splash from "./scenes/splash";
-import Transition from "./scenes/transition";
-import Game from "./scenes/game";
-import PhaserMatterCollisionPlugin from "phaser-matter-collision-plugin";
-import { MatterGravityFixPlugin } from "./plugins/matter_gravity_fix";
+import Phaser from 'phaser';
+import Bootloader from './scenes/bootloader';
+import Outro from './scenes/outro';
+import Splash from './scenes/splash';
+import Transition from './scenes/transition';
+import Game from './scenes/game';
+import PhaserMatterCollisionPlugin from 'phaser-matter-collision-plugin';
+import { MatterGravityFixPlugin } from './plugins/matter_gravity_fix';
 
 const config = {
   width: 600,
@@ -15,9 +15,9 @@ const config = {
     autoCenter: Phaser.Scale.CENTER_BOTH,
   },
   autoRound: false,
-  parent: "game-container",
+  parent: 'game-container',
   physics: {
-    default: "matter",
+    default: 'matter',
     matter: {
       debug: false,
     },
@@ -26,13 +26,13 @@ const config = {
     scene: [
       {
         plugin: PhaserMatterCollisionPlugin, // The plugin class
-        key: "matterCollision", // Where to store in Scene.Systems, e.g. scene.sys.matterCollision
-        mapping: "matterCollision", // Where to store in the Scene, e.g. scene.matterCollision
+        key: 'matterCollision', // Where to store in Scene.Systems, e.g. scene.sys.matterCollision
+        mapping: 'matterCollision', // Where to store in the Scene, e.g. scene.matterCollision
       },
       {
-        key: "MatterGravityFixPlugin",
+        key: 'MatterGravityFixPlugin',
         plugin: MatterGravityFixPlugin,
-        mapping: "matterGravityFix",
+        mapping: 'matterGravityFix',
         start: true,
       },
     ],
