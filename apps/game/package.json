@@ -29,6 +29,7 @@
   "devDependencies": {
     "@jest/globals": "^29.7.0",
     "@originjs/vite-plugin-commonjs": "^1.0.3",
+    "@sworld/jest-dom-preset": "workspace:*",
     "@tanstack/eslint-plugin-query": "^5.60.1",
     "@tanstack/router-devtools": "^1.78.2",
     "@tanstack/router-plugin": "^1.78.2",
@@ -38,7 +39,6 @@
     "@vitejs/plugin-react": "^2.1.0",
     "eslint": "^7.32.0",
     "eslint-config-custom": "workspace:*",
-    "@sworld/jest-dom-preset": "workspace:*",
     "phaser3-docs": "github:photonstorm/phaser3-docs",
     "prettier": "^2.7.1",
     "tsconfig": "workspace:*",
