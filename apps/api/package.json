@@ -2,7 +2,7 @@
   "name": "api",
   "version": "0.0.0",
   "private": true,
-  "main": "dist/index.js",
+  "main": "index.js",
   "engines": {
     "node": "18"
   },
@@ -13,7 +13,7 @@
     "dev-old": "tsup src/index.ts --format cjs --watch --onSuccess \"node dist/index.js\"",
     "dev": "cross-env NODE_ENV=development firebase emulators:start --only functions,firestore",
     "prepare-deploy": "tsc scripts/prepare-deploy.ts && node scripts/prepare-deploy.js",
-    "deploy:dev": "pnpm run build && pnpm run prepare-deploy && firebase use my-world-dev && firebase deploy --only functions",
+    "deploy:dev": "pnpm build && pnpm prepare-deploy && cd dist && npm install && firebase use my-world-dev && firebase deploy --only functions",
     "deploy:prod": "firebase use sworld-prod && firebase deploy --only functions",
     "lint": "tsc --noEmit && TIMING=1 eslint \"src/**/*.ts*\"",
     "start": "node dist/index.js"
@@ -40,7 +40,6 @@
     "cross-env": "^7.0.3",
     "eslint": "^7.32.0",
     "eslint-config-custom-server": "workspace:*",
-    "firebase-tools-with-isolate": "^13.16.0",
     "supertest": "^6.2.4",
     "tsconfig": "workspace:*",
     "tsup": "^6.2.3",

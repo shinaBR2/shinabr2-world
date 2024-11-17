@@ -55,7 +55,7 @@ jobs:
 
       - id: deploy
         name: Deploy
-        run: pnpm deploy:api:dev
+        run: pnpm --filter=api deploy:dev
 
       # - id: deploy
       #   name: Deploy
