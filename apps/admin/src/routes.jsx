@@ -11,8 +11,7 @@ import ListenHomeConfigAudioList from "./pages/listen/HomeConfigAudioList";
 import ListenHomeConfigFeelingList from "./pages/listen/HomeConfigFeelingList";
 import EntityFeelingPage from "./pages/entity/feeling/";
 import EntityAudioPage from "./pages/entity/audio";
-
-// ----------------------------------------------------------------------
+import FeatureFlags from "./pages/featureFlags";
 
 export default function Router() {
   const routes = useRoutes([
@@ -21,6 +20,7 @@ export default function Router() {
       element: <DashboardLayout />,
       children: [
         { element: <Navigate to="/dashboard/app" />, index: true },
+        { path: "feature-flag", element: <FeatureFlags /> },
         { path: "app", element: <DashboardAppPage /> },
         {
           path: "listen",

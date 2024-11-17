@@ -4,20 +4,18 @@ import {
   QueryDocumentSnapshot,
   SnapshotOptions,
   WithFieldValue,
-} from "firebase/firestore";
+} from 'firebase/firestore';
 import {
   useAddDoc,
   useDeleteDoc,
   useGetCollectionOn,
   useUpdateDoc,
-} from "../universal/dbQuery";
-import { BaseFirestoreInputs } from "../universal/dbQuery/interfaces";
-import { AudioItem } from "./interfaces";
+} from '../universal/dbQuery';
+import { PathConfigs } from '../universal/dbQuery/interfaces';
+import { AudioItem } from './interfaces';
 
-const basePath = "/audios";
-const basePathSegments: string[] = [""];
-
-type PathConfigs = Omit<BaseFirestoreInputs, "db">;
+const basePath = '/audios';
+const basePathSegments: string[] = [''];
 
 const audioConverter: FirestoreDataConverter<AudioItem> = {
   toFirestore: (data: WithFieldValue<AudioItem>) => {
@@ -37,6 +35,7 @@ const audioConverter: FirestoreDataConverter<AudioItem> = {
       name: data.name,
       artistName: data.artistName,
       image: data.thumbnailUrl,
+      feelingMap: data.feelingMap,
       uploaderId: data.uploaderId,
       editorId: data.editorId,
       createdAt: data.createdAt,

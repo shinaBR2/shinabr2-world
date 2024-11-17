@@ -1,4 +1,4 @@
-import { PlayArrowRounded } from "@mui/icons-material";
+import { PlayArrowRounded } from '@mui/icons-material';
 import {
   Divider,
   Box,
@@ -6,14 +6,14 @@ import {
   MenuItem,
   ListItemText,
   Typography,
-} from "@mui/material";
-import { SAudioPlayerAudioItem } from "core";
-import { forwardRef, Ref } from "react";
-import { StyledPlayingList } from "./Styled";
+} from '@mui/material';
+import { SAudioPlayerAudioItem } from 'core';
+import { forwardRef, Ref } from 'react';
+import { StyledPlayingList } from './Styled';
 
 interface PlayingListProps {
   audioList: SAudioPlayerAudioItem[];
-  isSelected: (id: string) => boolean;
+  currentId: string;
   onSelect: (id: string) => () => void;
 }
 
@@ -22,15 +22,16 @@ const PlayingList = (
   props: PlayingListProps,
   ref: Ref<unknown> | undefined
 ) => {
-  const { audioList, onSelect, isSelected } = props;
+  const { audioList, onSelect, currentId } = props;
 
   return (
     <StyledPlayingList ref={ref}>
       <Divider />
-      <Box height="100%" pb={2}>
+      <Box height="100%" pb={2} mb={2}>
         <MenuList>
-          {audioList.map((a) => {
-            const selected = isSelected(a.id);
+          {audioList.map(a => {
+            const selected = a.id === currentId;
+
             return (
               <MenuItem key={a.id} onClick={onSelect(a.id)} selected={selected}>
                 <ListItemText>{a.name}</ListItemText>

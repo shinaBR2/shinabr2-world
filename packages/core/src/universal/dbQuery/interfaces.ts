@@ -1,4 +1,4 @@
-import { Firestore, FirestoreDataConverter } from "firebase/firestore";
+import { Firestore, FirestoreDataConverter } from 'firebase/firestore';
 
 export interface BaseFirestoreInputs {
   db: Firestore;
@@ -13,3 +13,5 @@ export interface CollectionInputs<T> extends BaseFirestoreInputs {
 export interface AddDocInputs<T = {}> extends BaseFirestoreInputs {
   data: T;
 }
+
+export type PathConfigs = Omit<BaseFirestoreInputs, 'db'>;
