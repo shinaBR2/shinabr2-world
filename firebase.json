@@ -1,6 +1,6 @@
 {
   "functions": {
-    "source": ".",
+    "source": "./isolate",
     "runtime": "nodejs18",
     "isolate": true,
     "ignore": [
