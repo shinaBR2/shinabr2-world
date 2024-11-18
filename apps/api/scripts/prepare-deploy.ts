@@ -62,6 +62,9 @@ writeFileSync(
 
 // Copy firebase.json to dist
 console.log('Copying firebase.json...');
-cpSync(resolve(ROOT_DIR, 'firebase.json'), join(DIST_DIR, 'firebase.json'));
+cpSync(
+  resolve(API_DIR, 'firebase-for-deploy.json'),
+  join(DIST_DIR, 'firebase.json')
+);
 
 console.log('Deployment preparation completed!');
