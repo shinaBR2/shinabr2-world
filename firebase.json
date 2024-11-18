@@ -1,6 +1,6 @@
 {
   "functions": {
-    "source": ".",
+    "source": "apps/api/dist",
     "runtime": "nodejs18",
     "ignore": [
       "node_modules",
