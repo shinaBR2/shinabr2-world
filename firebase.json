@@ -64,8 +64,5 @@
       "port": 8080
     },
     "singleProjectMode": true
-  },
-  "storage": {
-    "rules": "storage.rules"
   }
 }

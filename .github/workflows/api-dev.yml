@@ -3,18 +3,13 @@ name: Dev - Deploy API
   push:
     branches:
       - api-dev
-      - deploy-cloud-functions-again
     paths:
       - 'apps/api/**'
-      - '.github/**'
-      - 'turbo.json'
-      - 'package.json'
-      - 'firebase.json'
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     environment:
-      name: prod
+      name: dev
     # env:
     # SLACK_WEBHOOK_URL: '${{ secrets.SLACK_NOTIFICATION_WEBHOOK }}'
     steps:
@@ -56,14 +51,3 @@ jobs:
       - id: deploy
         name: Deploy
         run: pnpm --filter=api deploy:dev
-
-      # - id: deploy
-      #   name: Deploy
-      #   uses: w9jds/firebase-action@master
-      #   with:
-      #     args: >
-      #       use my-world-dev
-      #       && firebase deploy --only functions
-      #   env:
-      #     GCP_SA_KEY: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MY_WORLD_DEV }}'
-      #     PROJECT_ID: my-world-dev
