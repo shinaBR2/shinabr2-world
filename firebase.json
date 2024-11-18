@@ -1,7 +1,7 @@
 {
   "functions": {
     "source": "apps/api/dist",
-    "runtime": "nodejs18",
+    "runtime": "nodejs20",
     "ignore": [
       "node_modules",
       ".git",
