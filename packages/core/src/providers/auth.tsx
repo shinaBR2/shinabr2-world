@@ -1,4 +1,4 @@
-import React, { FC, useContext, useMemo, useState } from 'react';
+import React, { FC, useContext, useEffect, useMemo, useState } from 'react';
 import { FirebaseOptions, initializeApp } from 'firebase/app';
 import {
   getAuth,
@@ -7,6 +7,8 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   signOut as gSignOut,
+  setPersistence,
+  browserLocalPersistence,
 } from 'firebase/auth';
 
 const provider = new GoogleAuthProvider();
@@ -40,36 +42,92 @@ const useAuthContext = () => useContext(AuthContext);
 
 const AuthProvider: FC<Props> = ({ firebaseConfig, children }) => {
   const [user, setUser] = useState<User | null>();
+  const [error, setError] = useState<Error | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const isLoading = user === undefined;
   const firebaseApp = initializeApp(firebaseConfig);
   const auth = getAuth(firebaseApp);
 
-  onAuthStateChanged(auth, async user => {
-    if (user) {
-      // User is signed in, see docs for a list of available properties
-      // https://firebase.google.com/docs/reference/js/firebase.User
-      const uid = user.uid;
+  // onAuthStateChanged(auth, async user => {
+  //   if (user) {
+  //     // User is signed in, see docs for a list of available properties
+  //     // https://firebase.google.com/docs/reference/js/firebase.User
+  //     const uid = user.uid;
 
-      console.log('uid', uid);
+  //     console.log('uid', uid);
 
-      if (auth.currentUser) {
-        const tokenResult = await auth.currentUser.getIdTokenResult();
+  //     if (auth.currentUser) {
+  //       const tokenResult = await auth.currentUser.getIdTokenResult();
 
-        console.log('token', tokenResult);
-        const { admin, email } = tokenResult.claims;
-        const isAmin = !!admin || email == 'admin@shinabr2.com';
+  //       console.log('token', tokenResult);
+  //       const { admin, email } = tokenResult.claims;
+  //       const isAmin = !!admin || email == 'admin@shinabr2.com';
 
-        if (isAmin) {
-          setIsAdmin(true);
-        }
+  //       if (isAmin) {
+  //         setIsAdmin(true);
+  //       }
+  //     }
+
+  //     setUser(user);
+  //   } else {
+  //     setUser(null);
+  //   }
+  // });
+
+  useEffect(() => {
+    let unsubscribe: () => void;
+
+    const initializeAuth = async () => {
+      try {
+        // Set persistence once during initialization
+        await setPersistence(auth, browserLocalPersistence);
+
+        // Set up the auth state listener
+        unsubscribe = onAuthStateChanged(
+          auth,
+          async user => {
+            if (user) {
+              // User is signed in, see docs for a list of available properties
+              // https://firebase.google.com/docs/reference/js/firebase.User
+              const uid = user.uid;
+
+              if (auth.currentUser) {
+                const tokenResult = await auth.currentUser.getIdTokenResult();
+
+                console.log('token', tokenResult);
+                const { admin, email } = tokenResult.claims;
+                const isAmin = !!admin || email == 'admin@shinabr2.com';
+
+                if (isAmin) {
+                  setIsAdmin(true);
+                }
+              }
+
+              setUser(user);
+            } else {
+              setUser(null);
+            }
+          },
+          error => {
+            setError(error);
+          }
+        );
+      } catch (error) {
+        setError(
+          error instanceof Error ? error : new Error('Authentication error')
+        );
       }
+    };
 
-      setUser(user);
-    } else {
-      setUser(null);
-    }
-  });
+    initializeAuth();
+
+    // Cleanup subscription
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
+  }, []);
 
   const signIn = async () => {
     await signInWithPopup(auth, provider);
