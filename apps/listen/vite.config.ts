@@ -1,3 +1,5 @@
+import fs from 'fs';
+import path from 'path';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import { viteCommonjs } from '@originjs/vite-plugin-commonjs';
@@ -48,4 +50,12 @@ export default defineConfig({
       },
     }),
   ],
+  server: {
+    host: 'listen.local.shinabr2.com',
+    port: 3002,
+    https: {
+      key: fs.readFileSync(path.resolve(__dirname, '../../certs/key.pem')),
+      cert: fs.readFileSync(path.resolve(__dirname, '../../certs/cert.pem')),
+    },
+  },
 });

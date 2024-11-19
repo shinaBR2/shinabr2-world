@@ -1,3 +1,5 @@
+import fs from 'fs';
+import path from 'path';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import { viteCommonjs } from '@originjs/vite-plugin-commonjs';
@@ -8,8 +10,12 @@ import { TanStackRouterVite } from '@tanstack/router-plugin/vite';
 // https://github.com/vitejs/vite/issues/5308#issuecomment-1010652389
 export default defineConfig({
   server: {
+    host: 'game.local.shinabr2.com',
     port: 3003,
-    host: 'localhost',
+    https: {
+      key: fs.readFileSync(path.resolve(__dirname, '../../certs/key.pem')),
+      cert: fs.readFileSync(path.resolve(__dirname, '../../certs/cert.pem')),
+    },
   },
   plugins: [
     viteCommonjs(),
