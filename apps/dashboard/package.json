@@ -1,9 +1,9 @@
 {
   "name": "dashboard",
   "scripts": {
-    "build": "vite build",
-    "serve": "vite preview",
-    "dev": "vite",
+    "dev": "refine dev",
+    "build": "refine build",
+    "serve": "refine serve",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist && rm -f .env*",
     "test": "jest",
     "test:watch": "jest --watch",
