@@ -8,5 +8,9 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
+  },
+  "dependencies": {
+    "@refinedev/cli": "^2.16.40",
+    "@refinedev/core": "^4.56.0"
   }
 }
