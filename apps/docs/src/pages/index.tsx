@@ -65,9 +65,12 @@ function HomepageHeader() {
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
         {/* Logo can be added here */}
-        <div className={styles.logo}>
-          <img src="/img/logo.png" alt={siteConfig.title} />
-        </div>
+        {/* <div className={styles.logo}>
+          <img
+            src="https://res.cloudinary.com/shinabr2/image/upload/v1670251329/Public/Images/sworld-logo-72x72.png"
+            alt={siteConfig.title}
+          />
+        </div> */}
         <h1 className="hero__title">{siteConfig.title}</h1>
         <p className="hero__subtitle">
           Building Modern Web Applications with Enterprise-Grade Architecture
