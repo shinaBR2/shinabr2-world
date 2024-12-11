@@ -20,6 +20,8 @@ const auth0Config = {
   redirectUri: window.location.origin,
 };
 
+// test PR
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Auth.AuthProvider config={auth0Config}>
