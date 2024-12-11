@@ -22,7 +22,6 @@ const generatePasskeyRegistrationOptions = onCall(async ({ data }) => {
 
 const verifyPasskeyRegistration = onCall(async request => {
   try {
-    console.log(`dataadasdsad`, request);
     const { userId: firebaseUserId, credential: userCredential } = request.data;
     const { isVerified, verification, user } = await registrationHelpers.verify(
       firebaseUserId,
