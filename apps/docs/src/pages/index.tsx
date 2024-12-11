@@ -76,11 +76,8 @@ function HomepageHeader() {
           Building Modern Web Applications with Enterprise-Grade Architecture
         </p>
         <div className={styles.buttons}>
-          <Link
-            className="button button--secondary button--lg"
-            to="/blog/architecture-overview"
-          >
-            Explore My Tech Stack Journey 🚀
+          <Link className="button button--secondary button--lg" to="/blog">
+            Explore My Journey 🚀
           </Link>
         </div>
       </div>
