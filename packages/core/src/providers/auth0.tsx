@@ -129,13 +129,6 @@ const AuthContextProvider: FC<{ children: React.ReactNode }> = ({
     }
   }, [claims]);
 
-  // Log any errors in development
-  useEffect(() => {
-    if (error && process.env.NODE_ENV === 'development') {
-      console.error('Auth claims error:', error);
-    }
-  }, [error]);
-
   const handleSignOut = useCallback(() => {
     logout({
       logoutParams: {
