@@ -25,7 +25,7 @@ const isWebAuthnSupported = () => {
 
 const Home = () => {
   const authContext = Auth.useAuthContext();
-  const { signIn, signOut, getAccessToken } = authContext;
+  const { signIn, signOut } = authContext;
 
   console.log('auth context', authContext);
   const [status, setStatus] = useState('');
@@ -183,18 +183,6 @@ const Home = () => {
       setError(`Registration failed: ${err.message}`);
     }
   };
-
-  React.useEffect(() => {
-    const getToken = async () => {
-      const token = await getAccessToken();
-      console.log(`token retrieved`, token);
-
-      return token;
-    };
-
-    getToken();
-    // console.log(`token retrived`, token);
-  }, []);
 
   return (
     <>
