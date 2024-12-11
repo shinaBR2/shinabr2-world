@@ -60,7 +60,7 @@ const config = {
         title: 'SWorld Docs',
         logo: {
           alt: 'My Site Logo',
-          src: 'img/logo.svg',
+          src: 'https://res.cloudinary.com/shinabr2/image/upload/v1670251329/Public/Images/sworld-logo-72x72.png',
         },
         items: [
           {
