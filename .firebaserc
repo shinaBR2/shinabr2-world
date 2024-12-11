@@ -37,6 +37,9 @@
         ],
         "docs": [
           "sworld-prod-docs"
+        ],
+        "main": [
+          "sworld-prod"
         ]
       }
     }
