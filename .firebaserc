@@ -18,6 +18,9 @@
         ],
         "docs": [
           "shinabr2-docs-dev"
+        ],
+        "main": [
+          "my-world-dev"
         ]
       }
     },
