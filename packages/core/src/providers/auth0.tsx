@@ -87,8 +87,10 @@ const AuthContextProvider: FC<{ children: React.ReactNode }> = ({
       }
     };
 
-    fetchClaims();
-  }, []);
+    if (isSignedIn && !isLoading) {
+      fetchClaims();
+    }
+  }, [isSignedIn, isLoading]);
 
   const contextValue: AuthContextValue = {
     isSignedIn,
