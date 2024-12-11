@@ -21,11 +21,9 @@ const onRequestWithCors = (
   return onRequest({ cors: true }, handler);
 };
 const onAdminCall = (handler: (data: any) => void) => {
-  // @ts-ignore
-  return onCall((data, context) => {
+  return onCall((request, context) => {
     // Check context
-    // @ts-ignore
-    const { auth } = context;
+    const { auth } = request;
 
     if (!auth) {
       throw AppError('Require sign in');
@@ -40,7 +38,7 @@ const onAdminCall = (handler: (data: any) => void) => {
       throw AppError('Require admin privilege');
     }
 
-    return handler(data);
+    return handler(request.data);
   });
 };
 
