@@ -4,13 +4,28 @@ import React, {
   useContext,
   useEffect,
   useState,
+  useCallback,
 } from 'react';
 import { Auth0Provider, useAuth0, User } from '@auth0/auth0-react';
+
+interface CustomUser {
+  id: string;
+  email?: string | undefined;
+  name?: string | undefined;
+  picture?: string | undefined;
+}
+
+// Define what claims we expect from Auth0
+interface HasuraClaims {
+  'x-hasura-default-role': string;
+  'x-hasura-allowed-roles': string[];
+  'x-hasura-user-id': string;
+}
 
 interface AuthContextValue {
   isSignedIn: boolean;
   isLoading: boolean;
-  user: User | null;
+  user: CustomUser | null;
   isAdmin: boolean;
   signIn: () => void;
   signOut: () => void;
@@ -29,7 +44,59 @@ interface Props {
   children: React.ReactNode;
 }
 
-const AuthContext = createContext<AuthContextValue | null>(null);
+// Create context with a default value that matches our type
+const AuthContext = createContext<AuthContextValue>({} as AuthContextValue);
+
+/**
+ * Custom hook to decode and extract claims from a JWT token
+ * @param getToken Function to retrieve the access token
+ * @returns Object containing the decoded claims and any error
+ */
+const useTokenClaims = (getToken: () => Promise<string>) => {
+  const [claims, setClaims] = useState<HasuraClaims | null>(null);
+  const [error, setError] = useState<Error | null>(null);
+
+  const fetchClaims = useCallback(async () => {
+    try {
+      const token = await getToken();
+      const tokenPayload = JSON.parse(atob(token.split('.')[1]));
+      const namespace = 'https://hasura.io/jwt/claims';
+
+      if (tokenPayload[namespace]) {
+        setClaims(tokenPayload[namespace] as HasuraClaims);
+        setError(null);
+      } else {
+        throw new Error('No Hasura claims found in token');
+      }
+    } catch (err) {
+      setError(
+        err instanceof Error ? err : new Error('Failed to fetch claims')
+      );
+      setClaims(null);
+    }
+  }, [getToken]);
+
+  return { claims, error, fetchClaims };
+};
+
+/**
+ * Transforms Auth0 user object into our custom user format
+ * @param auth0User The user object from Auth0
+ * @returns CustomUser object
+ */
+const transformUser = (
+  id: string,
+  auth0User: User | undefined
+): CustomUser | null => {
+  if (!auth0User?.sub) return null;
+
+  return {
+    id,
+    email: auth0User.email,
+    name: auth0User.name,
+    picture: auth0User.picture,
+  };
+};
 
 const AuthContextProvider: FC<{ children: React.ReactNode }> = ({
   children,
@@ -42,71 +109,48 @@ const AuthContextProvider: FC<{ children: React.ReactNode }> = ({
     user: auth0User,
     getAccessTokenSilently,
   } = useAuth0();
+
   const [isAdmin, setIsAdmin] = useState(false);
+  const [userId, setUserId] = useState('');
+  const { claims, error, fetchClaims } = useTokenClaims(getAccessTokenSilently);
 
-  const user: User | null = auth0User
-    ? {
-        id: auth0User.sub!,
-        email: auth0User.email,
-        name: auth0User.name,
-        picture: auth0User.picture,
-      }
-    : null;
-
+  // Effect to handle role-based authentication
   useEffect(() => {
-    const getCustomClaims = async () => {
-      try {
-        // Get the access token
-        const token = await getAccessTokenSilently();
-
-        // Decode the JWT token
-        // Note: This is safe because JWTs are meant to be decoded client-side
-        const tokenPayload = JSON.parse(atob(token.split('.')[1]));
-
-        // Access your custom claims
-        // Replace 'https://your-api.com' with your actual audience URL
-        const namespace = 'https://hasura.io/jwt/claims';
-
-        const role = tokenPayload[namespace]['x-hasura-default-role'];
-
-        return { role };
-      } catch (error) {
-        console.error('Error getting token claims:', error);
-        return null;
-      }
-    };
-
-    const fetchClaims = async () => {
-      const claims = await getCustomClaims();
-      if (claims) {
-        console.log('User role:', claims.role);
-        if (claims.role == 'admin') {
-          setIsAdmin(true);
-        } else {
-          setIsAdmin(false);
-        }
-      }
-    };
-
-    console.log(`isSignedIn`, isSignedIn);
-    console.log(`isLoading`, isLoading);
     if (isSignedIn && !isLoading) {
       fetchClaims();
     }
-  }, [isSignedIn, isLoading]);
+  }, [isSignedIn, isLoading, fetchClaims]);
+
+  // Effect to update admin status based on claims
+  useEffect(() => {
+    if (claims) {
+      setIsAdmin(claims['x-hasura-default-role'] === 'admin');
+      setUserId(claims['x-hasura-user-id']);
+    }
+  }, [claims]);
+
+  // Log any errors in development
+  useEffect(() => {
+    if (error && process.env.NODE_ENV === 'development') {
+      console.error('Auth claims error:', error);
+    }
+  }, [error]);
+
+  const handleSignOut = useCallback(() => {
+    logout({
+      logoutParams: {
+        returnTo: window.location.origin,
+      },
+    });
+  }, [logout]);
 
   const contextValue: AuthContextValue = {
     isSignedIn,
     isLoading,
-    user,
+    user: transformUser(userId, auth0User),
     isAdmin,
     signIn: loginWithRedirect,
-    signOut: () =>
-      logout({
-        logoutParams: {
-          returnTo: window.location.origin,
-        },
-      }),
+    signOut: handleSignOut,
     getAccessToken: getAccessTokenSilently,
   };
 
@@ -130,11 +174,18 @@ const AuthProvider: FC<Props> = ({ config, children }) => {
   );
 };
 
-const useAuthContext = () => {
+/**
+ * Custom hook to access authentication context
+ * @throws Error if used outside of AuthProvider
+ * @returns AuthContextValue
+ */
+const useAuthContext = (): AuthContextValue => {
   const context = useContext(AuthContext);
+
   if (!context) {
     throw new Error('useAuthContext must be used within an AuthProvider');
   }
+
   return context;
 };
 
