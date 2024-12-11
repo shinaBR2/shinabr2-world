@@ -39,7 +39,7 @@ CREATE TABLE users (
 This design provides several advantages:
 
 1. Our database maintains its own identity system
-2. You can switch authentication providers without restructuring our database
+2. We can switch authentication providers without restructuring our database
 3. Our primary keys remain consistent in format and generation method
 4. Related tables maintain cleaner foreign key relationships
 
@@ -100,9 +100,9 @@ This approach solves several problems:
 
 This design choice provides several long-term benefits:
 
-1. Your database schema remains clean and provider-agnostic
+1. Our database schema remains clean and provider-agnostic
 2. Foreign key relationships use consistent, internal IDs
-3. You can change authentication providers without restructuring your database
+3. We can change authentication providers without restructuring our database
 4. Permissions work consistently across all related tables
 
 Well, while this approach requires a bit more initial setup than the standard approach, it provides much more flexibility and maintainability in the long run.
