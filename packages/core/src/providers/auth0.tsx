@@ -21,6 +21,7 @@ interface Auth0Config {
   domain: string;
   clientId: string;
   audience: string;
+  redirectUri: string;
 }
 
 interface Props {
@@ -87,6 +88,8 @@ const AuthContextProvider: FC<{ children: React.ReactNode }> = ({
       }
     };
 
+    console.log(`isSignedIn`, isSignedIn);
+    console.log(`isLoading`, isLoading);
     if (isSignedIn && !isLoading) {
       fetchClaims();
     }
@@ -119,7 +122,7 @@ const AuthProvider: FC<Props> = ({ config, children }) => {
       clientId={config.clientId}
       authorizationParams={{
         audience: config.audience,
-        redirect_uri: window.location.origin,
+        redirect_uri: config.redirectUri,
       }}
     >
       <AuthContextProvider>{children}</AuthContextProvider>

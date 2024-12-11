@@ -37,6 +37,8 @@ export default function AccountPopover() {
   const [open, setOpen] = useState(null);
   const { user, signOut } = Auth.useAuthContext();
 
+
+
   const {name: displayName, email, picture: photoURL } = user;
 
 
