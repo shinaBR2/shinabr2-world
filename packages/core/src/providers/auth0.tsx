@@ -10,6 +10,16 @@ interface AuthContextValue {
   getAccessToken: () => Promise<string>;
 }
 
+interface Auth0Config {
+  domain: string;
+  clientId: string;
+}
+
+interface Props {
+  config: Auth0Config;
+  children: React.ReactNode;
+}
+
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 const AuthContextProvider: FC<{ children: React.ReactNode }> = ({
@@ -52,7 +62,7 @@ const AuthContextProvider: FC<{ children: React.ReactNode }> = ({
   );
 };
 
-const AuthProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
+const AuthProvider: FC<Props> = ({ config, children }) => {
   return (
     <Auth0Provider
       domain="shinabr2.auth0.com"
