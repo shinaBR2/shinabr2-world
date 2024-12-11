@@ -11,38 +11,101 @@ When integrating Auth0 with Hasura in a monorepo structure, what seems straightf
 
 ## The Challenge
 
-While Hasura's official documentation provides a solid starting point, I encountered several challenges that required deeper understanding and customization:
+Hasura's documentation suggests using Auth0's user ID as the primary key in our database's users table. While this approach simplifies permissions at first glance, it creates a tight coupling between our database schema and our authentication provider. Let's explore why this might be problematic and how we can design a more flexible solution.
 
-1. Our `users` table structure differed from the standard guide, requiring careful consideration of how to handle user identification.
-2. The monorepo architecture added complexity but ultimately led to better modularity.
-3. The integration between Auth0 and Hasura needed careful attention to detail, particularly regarding JWT tokens and custom claims.
+### Standard Approach vs. My Design
 
-## Rethinking User Authentication Design
-
-### The Traditional Approach
-
-Hasura's default guide suggests using permissions like this:
+The standard approach suggested by Hasura looks like this:
 
 ```sql
-{"id": {"_eq": "X-Hasura-User-Id"}}
+CREATE TABLE users (
+  id TEXT PRIMARY KEY,  -- This would be the Auth0 user ID
+  name TEXT,
+  email TEXT
+);
 ```
 
-This approach directly maps the database's primary key to Auth0's user ID. While simple, it creates a tight coupling between our database and authentication provider.
-
-### A More Flexible Solution
-
-Instead, I advocate for a more flexible approach:
+Instead, I've chosen this structure:
 
 ```sql
-{"auth0_id": {"_eq": "X-Hasura-User-Id"}}
+CREATE TABLE users (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),  -- Our internal identifier
+  auth0_id TEXT UNIQUE,  -- Store Auth0 ID as a separate field
+  name TEXT,
+  email TEXT
+);
 ```
 
-This design follows an important principle: our database structure should be independent of external services. Here's why this matters:
+This design provides several advantages:
 
-1. Our database maintains its own identity system via primary keys
-2. Authentication provider details become attributes of our user records
-3. Switching providers (e.g., from Auth0 to Okta) only requires adding a new identifier field
-4. Our application's core data model remains stable regardless of authentication changes
+1. Our database maintains its own identity system
+2. You can switch authentication providers without restructuring our database
+3. Our primary keys remain consistent in format and generation method
+4. Related tables maintain cleaner foreign key relationships
+
+## The Permission Challenge
+
+I encounter an interesting challenge with Hasura permissions. Consider a posts table with a foreign key relationship to users:
+
+```sql
+CREATE TABLE posts (
+  id UUID PRIMARY KEY,
+  user_id UUID REFERENCES users(id),  -- References our internal user ID
+  content TEXT
+);
+```
+
+If we were to follow Hasura's standard approach, permissions would look like this:
+
+```json
+{
+  "user_id": {
+    "_eq": "X-Hasura-User-Id"
+  }
+}
+```
+
+The challenge arises because initially, we might think to use Auth0's user ID in the `X-Hasura-User-Id` claim. However, this wouldn't match our internal user IDs used in foreign key relationships.
+
+## The Solution: Synchronized Authentication Flow
+
+The key insight is that we need to synchronize user creation with claim generation. Instead of having two separate Auth0 actions, we combine them into a single, ordered process:
+
+1. First, ensure the user exists in our database
+2. Then, use our internal user ID in the custom claims
+
+Here's how we implement this in a single Auth0 action:
+
+```javascript
+exports.onExecutePostLogin = async (event, api) => {
+  // First: Synchronize user with our database
+  const result = await upsertUser();
+
+  // Then: Set claims using our internal ID
+  api.accessToken.setCustomClaim('hasura_namespace', {
+    'x-hasura-user-id': result.user.id, // Using our internal UUID
+    // other headers
+  });
+};
+```
+
+This approach solves several problems:
+
+1. It ensures users exist in our database before setting claims
+2. It uses our internal IDs for permissions, maintaining consistency
+3. It works seamlessly for both new and existing users
+4. It keeps our database schema independent of Auth0
+
+## Why This Matters
+
+This design choice provides several long-term benefits:
+
+1. Your database schema remains clean and provider-agnostic
+2. Foreign key relationships use consistent, internal IDs
+3. You can change authentication providers without restructuring your database
+4. Permissions work consistently across all related tables
+
+Well, while this approach requires a bit more initial setup than the standard approach, it provides much more flexibility and maintainability in the long run.
 
 ## Implementing Provider-Agnostic Authentication in a Monorepo
 
