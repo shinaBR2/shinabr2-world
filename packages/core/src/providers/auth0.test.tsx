@@ -1,7 +1,7 @@
 import { describe, expect, test, jest, beforeEach } from '@jest/globals';
-import { render, renderHook, act } from '@testing-library/react';
+import { renderHook, act } from '@testing-library/react';
 import React from 'react';
-import { Auth0Provider, useAuth0, User } from '@auth0/auth0-react';
+import { User } from '@auth0/auth0-react';
 import { AuthProvider, useAuthContext } from './auth0';
 
 // First, let's define our Auth0 context types more precisely
