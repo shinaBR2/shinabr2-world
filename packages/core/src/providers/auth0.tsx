@@ -13,6 +13,7 @@ interface AuthContextValue {
 interface Auth0Config {
   domain: string;
   clientId: string;
+  audience: string;
 }
 
 interface Props {
@@ -65,9 +66,10 @@ const AuthContextProvider: FC<{ children: React.ReactNode }> = ({
 const AuthProvider: FC<Props> = ({ config, children }) => {
   return (
     <Auth0Provider
-      domain="shinabr2.auth0.com"
-      clientId="bre1WKbhAHHtaaxOm1OsK62QLN2Zr968"
+      domain={config.domain}
+      clientId={config.clientId}
       authorizationParams={{
+        audience: config.audience,
         redirect_uri: window.location.origin,
       }}
     >
