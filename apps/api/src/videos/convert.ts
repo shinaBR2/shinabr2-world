@@ -14,7 +14,7 @@
  * Think of it like taking a book and dividing it into chapters
  * without changing the actual text.
  */
-import fetch from 'node-fetch';
+
 import * as os from 'os';
 import * as path from 'path';
 // @ts-ignore
