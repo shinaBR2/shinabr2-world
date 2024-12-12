@@ -39,12 +39,12 @@ interface ConversionRequest {
 }
 
 // Helper to generate unique temporary directory names
-function generateTempDirName(): string {
+const generateTempDirName = () => {
   return crypto.randomBytes(16).toString('hex');
-}
+};
 
 // Improved file download with stream handling and cleanup
-async function downloadFile(url: string, localPath: string): Promise<void> {
+const downloadFile = async (url: string, localPath: string) => {
   const response = await fetch(url);
 
   if (!response.ok) {
@@ -82,13 +82,10 @@ async function downloadFile(url: string, localPath: string): Promise<void> {
 
     response.body?.pipe(fileStream);
   });
-}
+};
 
 // Improved Cloud Storage upload with chunking
-async function uploadToStorage(
-  localPath: string,
-  storagePath: string
-): Promise<void> {
+const uploadToStorage = async (localPath: string, storagePath: string) => {
   await bucket.upload(localPath, {
     destination: storagePath,
     resumable: true, // Enable resumable uploads for larger files
@@ -96,13 +93,10 @@ async function uploadToStorage(
       cacheControl: 'public, max-age=31536000',
     },
   });
-}
+};
 
 // Improved directory upload with concurrency control
-async function uploadDirectory(
-  localDir: string,
-  storagePath: string
-): Promise<void> {
+const uploadDirectory = async (localDir: string, storagePath: string) => {
   const files = await fs.readdir(localDir);
 
   // Process files in batches to prevent memory issues
@@ -117,7 +111,7 @@ async function uploadDirectory(
       })
     );
   }
-}
+};
 
 const handleConvertVideo = async (data: ConversionRequest) => {
   const { id, videoUrl } = data;
