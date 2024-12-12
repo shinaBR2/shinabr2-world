@@ -2,6 +2,7 @@
   "functions": {
     "source": "apps/api/dist",
     "runtime": "nodejs20",
+    "region": "asia-southeast1",
     "ignore": [
       "node_modules",
       ".git",
@@ -13,6 +14,15 @@
     "rules": "firestore.rules"
   },
   "hosting": [
+    {
+      "target": "main",
+      "public": "dist",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ]
+    },
     {
       "target": "listen",
       "public": "dist",
