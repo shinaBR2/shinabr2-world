@@ -19,7 +19,7 @@
     "deploy:prod": "firebase use sworld-prod && firebase deploy --only functions",
     "lint": "tsc --noEmit && TIMING=1 eslint \"src/**/*.ts*\"",
     "start": "node dist/index.js",
-    "test": "jest"
+    "test": "jest  --coverage"
   },
   "dependencies": {
     "@simplewebauthn/server": "^11.0.0",
