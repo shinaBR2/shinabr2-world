@@ -15,160 +15,72 @@
  * without changing the actual text.
  */
 
-import * as os from 'os';
-import * as path from 'path';
-// @ts-ignore
-import * as fs from 'fs-extra';
-// @ts-ignore
-import ffmpeg from 'fluent-ffmpeg';
-
-import { getStorage } from 'firebase-admin/storage';
 import { onRequestWithCors } from '../singleton';
-import { AppError } from '../singleton/request';
-import {
-  generateTempDirName,
-  downloadFile,
-  uploadDirectory,
-} from './file-helpers';
+import { handleConvertVideo } from './ffmpeg-helpers';
 import { validateIP, validatePayload, verifySignature } from './validator';
-
-// initializeApp();
-const storage = getStorage();
-const bucket = storage.bucket();
-
-interface ConversionRequest {
-  id: string;
-  videoUrl: string;
-}
-
-const handleConvertVideo = async (data: ConversionRequest) => {
-  const { id, videoUrl } = data;
-
-  // Generate unique working directory name
-  const uniqueDir = generateTempDirName();
-  const workingDir = path.join(os.tmpdir(), uniqueDir);
-  const outputDir = path.join(workingDir, 'output');
-
-  try {
-    await fs.ensureDir(workingDir);
-    await fs.ensureDir(outputDir);
-
-    const inputPath = path.join(workingDir, 'input.mp4');
-    await downloadFile(videoUrl, inputPath);
-
-    // Check file size after download
-    const stats = await fs.stat(inputPath);
-    if (stats.size > 400 * 1024 * 1024) {
-      // 400MB
-      throw new Error('Downloaded file too large for processing');
-    }
-
-    // Generate a clean storage path
-    const outputPath = `videos/${id}`;
-    const cleanOutputPath = path
-      .normalize(outputPath)
-      .replace(/^\/+|\/+$/g, '');
-
-    // Convert to HLS
-    await new Promise<void>((resolve, reject) => {
-      ffmpeg(inputPath)
-        .outputOptions([
-          '-codec copy',
-          '-start_number 0',
-          '-hls_time 10',
-          '-hls_list_size 0',
-          '-f hls',
-        ])
-        .output(path.join(outputDir, 'playlist.m3u8'))
-        .on('end', () => resolve())
-        .on('error', (err: any) => reject(err))
-        .run();
-    });
-
-    await uploadDirectory(outputDir, cleanOutputPath);
-
-    // Clean up
-    await fs.remove(workingDir).catch(console.error);
-
-    const playlistUrl = `https://storage.googleapis.com/${bucket.name}/${cleanOutputPath}/playlist.m3u8`;
-
-    return {
-      success: true,
-      outputPath: cleanOutputPath,
-      playlistUrl,
-    };
-  } catch (error) {
-    // Ensure cleanup happens even on error
-    await fs.remove(workingDir).catch(console.error);
-
-    console.error('Video conversion failed:', error);
-    throw AppError('Video conversion failed');
-  }
-};
+import prisma from '../singleton/postgres';
 
 const extractVideoData = (payload: any) => {
   const { id, video_url: videoUrl } = payload.data.rows[0];
   return { id, videoUrl };
 };
 
+const postConvert = async (data: { id: string; videoUrl: string }) => {
+  const { id, videoUrl } = data;
+  const video = await prisma.videos.update({
+    where: { id },
+    data: {
+      source: videoUrl,
+      status: 'ready',
+    },
+  });
+
+  console.log(`updated video`, video);
+  return video;
+};
+
 export const convertVideo = onRequestWithCors(
   async (request: any, response: any) => {
-    const headers = request.headers;
-
-    // Add this at the start of your webhook handler
-    console.log('All headers:', request.headers);
-    console.log('payload', request.body);
-
-    console.log('forwared-for', headers['x-forwarded-for']);
-    console.log('x-real-ip', headers['x-real-ip']);
-    console.log('x-webhook-signature', headers['x-webhook-signature']);
-    const clientIP = headers['x-forwarded-for'] || headers['x-real-ip'];
-    console.log('ip', clientIP);
-
-    const valid = verifySignature(request);
-
-    if (!valid) {
-      console.error('Invalid webhook signature');
-
-      //@ts-ignore
+    if (!verifySignature(request)) {
       response.status(401).send('Invalid signature');
       return;
     }
 
-    const validIP = validateIP(request);
-
-    if (!validIP) {
-      console.error('IP is not allowed');
-
-      //@ts-ignore
+    if (!validateIP(request)) {
       response.status(401).send('Unallow IP');
       return;
     }
 
     const payload = request.body;
-    console.log(`payload`, payload);
 
     if (!validatePayload(payload)) {
-      console.log('invalid payload');
-      //@ts-ignore
       response.status(400).send('Invalid payload');
       return;
     }
 
+    // Async operations that might fail
     const inputData = extractVideoData(payload);
+    let videoUrl;
+    try {
+      videoUrl = await handleConvertVideo(inputData);
+    } catch (error) {
+      console.error('Video conversion failed:', error);
+      response.status(500).send('Video conversion failed');
+      return;
+    }
 
-    // const debug = true;
-    // if (debug) {
-    //   console.log('inputData', inputData);
-    //   response.send();
-    //   return;
-    // }
+    let video;
+    try {
+      video = await postConvert({
+        ...inputData,
+        videoUrl,
+      });
+    } catch (error) {
+      console.error('Database update failed:', error);
+      response.status(500).send('Failed to update video status');
+      return;
+    }
 
-    const videoUrl = await handleConvertVideo(inputData);
-
-    // TODO
-    // Store to Cloud SQL
-    //@ts-ignore
-    response.status(200).json({ videoUrl });
+    response.status(200).json({ video });
   }
 );
