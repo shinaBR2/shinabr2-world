@@ -26,6 +26,7 @@ import ffmpeg from 'fluent-ffmpeg';
 import { getStorage } from 'firebase-admin/storage';
 import { onRequestWithCors } from '../singleton';
 import { AppError } from '../singleton/request';
+import { Readable } from 'stream';
 
 // initializeApp();
 const storage = getStorage();
@@ -60,25 +61,39 @@ const downloadFile = async (url: string, localPath: string) => {
     }
   }
 
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     const fileStream = fs.createWriteStream(localPath);
 
-    // Handle stream events
-    response.body?.on('error', (error: any) => {
-      // Clean up the partial file
+    if (!response.body) {
       fs.unlink(localPath).catch(console.error);
-      reject(error);
-    });
+      return reject(new Error('No response body'));
+    }
+
+    (async () => {
+      try {
+        const reader = response.body?.getReader();
+
+        while (true) {
+          //@ts-ignore
+          const { done, value } = await reader?.read();
+          if (done) break;
+
+          // Write chunks to file stream
+          fileStream.write(value);
+        }
+
+        fileStream.end();
+        resolve();
+      } catch (error) {
+        fs.unlink(localPath).catch(console.error);
+        reject(error);
+      }
+    })();
 
     fileStream.on('error', (error: any) => {
-      // Clean up the partial file
       fs.unlink(localPath).catch(console.error);
       reject(error);
     });
-
-    fileStream.on('finish', () => resolve());
-
-    response.body?.pipe(fileStream);
   });
 };
 
@@ -204,8 +219,11 @@ const validateIP = (request: any) => {
 const validatePayload = (payload: any) => {
   const { id, video_url: videoUrl } = payload?.data?.rows?.[0] ?? {};
 
-  console.log('validatePayload', id);
-  console.log('validatePayload', videoUrl);
+  console.log('validatePayload payload', payload);
+  console.log('validatePayload rows', payload?.data?.rows);
+  console.log('validatePayload rows[0]', payload?.data?.rows[0]);
+  console.log('validatePayload id', id);
+  console.log('validatePayload videoUrl', videoUrl);
 
   return (
     typeof id !== 'undefined' &&
