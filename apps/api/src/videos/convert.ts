@@ -14,8 +14,6 @@
  * Think of it like taking a book and dividing it into chapters
  * without changing the actual text.
  */
-import * as functions from 'firebase-functions';
-import * as admin from 'firebase-admin';
 import fetch from 'node-fetch';
 import * as os from 'os';
 import * as path from 'path';
@@ -25,9 +23,9 @@ import * as crypto from 'crypto';
 // @ts-ignore
 import ffmpeg from 'fluent-ffmpeg';
 
-import { initializeApp } from 'firebase-admin/app';
 import { getStorage } from 'firebase-admin/storage';
-import { onCall, onRequestWithCors } from '../singleton';
+import { onRequestWithCors } from '../singleton';
+import { AppError } from '../singleton/request';
 
 // initializeApp();
 const storage = getStorage();
@@ -174,7 +172,7 @@ const handleConvertVideo = async (data: ConversionRequest) => {
     await fs.remove(workingDir).catch(console.error);
 
     console.error('Video conversion failed:', error);
-    throw new functions.https.HttpsError('internal', 'Video conversion failed');
+    throw AppError('Video conversion failed');
   }
 };
 
