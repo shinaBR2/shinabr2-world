@@ -2,6 +2,7 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import * as crypto from 'crypto';
+
 import { getStorage } from 'firebase-admin/storage';
 
 // Helper to generate unique temporary directory names
@@ -96,4 +97,9 @@ const uploadDirectory = async (localDir: string, storagePath: string) => {
   }
 };
 
-export { generateTempDirName, downloadFile, uploadDirectory };
+const getDownloadUrl = (outputPath: string) => {
+  const bucket = getStorage().bucket();
+  return `https://storage.googleapis.com/${bucket.name}/${outputPath}/playlist.m3u8`;
+};
+
+export { generateTempDirName, downloadFile, uploadDirectory, getDownloadUrl };

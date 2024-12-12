@@ -4,16 +4,21 @@ import {
   generateTempDirName,
   downloadFile,
   uploadDirectory,
+  getDownloadUrl,
 } from './file-helpers';
 // @ts-ignore
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import { getStorage } from 'firebase-admin/storage';
+import { Storage } from '@google-cloud/storage';
+import ffmpeg from 'fluent-ffmpeg';
 
 // Mock external dependencies
 jest.mock('fs-extra');
 jest.mock('firebase-admin/storage');
-jest.mock('node-fetch');
+jest.mock('firebase/storage', () => ({
+  getStorage: jest.fn(),
+}));
 
 describe('File Handlers', () => {
   // Reset mocks before each test
@@ -202,6 +207,73 @@ describe('File Handlers', () => {
       await expect(
         uploadDirectory(mockLocalDir, mockStoragePath)
       ).rejects.toThrow(mockError);
+    });
+  });
+
+  describe('getDownloadUrl', () => {
+    // Set up our test environment before each test
+    beforeEach(() => {
+      // Clear all mocks before each test
+      jest.clearAllMocks();
+
+      // Create a mock bucket with a predefined name
+      const mockBucket = {
+        name: 'test-bucket-name',
+      };
+
+      // Set up our storage mock to return our mock bucket
+      getStorage.mockReturnValue({
+        bucket: () => mockBucket,
+      });
+    });
+
+    it('should generate the correct download URL format', () => {
+      // Test with a simple output path
+      const outputPath = 'videos/123';
+      const expectedUrl =
+        'https://storage.googleapis.com/test-bucket-name/videos/123/playlist.m3u8';
+
+      const result = getDownloadUrl(outputPath);
+
+      expect(result).toBe(expectedUrl);
+    });
+
+    it('should verify that getStorage is called exactly once', () => {
+      const outputPath = 'videos/123';
+
+      getDownloadUrl(outputPath);
+
+      expect(getStorage).toHaveBeenCalledTimes(1);
+    });
+
+    it('should verify that bucket() is called after getStorage', () => {
+      const outputPath = 'videos/123';
+      const mockBucketFn = jest
+        .fn()
+        .mockReturnValue({ name: 'test-bucket-name' });
+
+      // Create an array to track the order of function calls
+      const calls = [];
+
+      // Set up our mocks to track call order
+      getStorage.mockImplementation(() => {
+        calls.push('getStorage');
+        return {
+          bucket: mockBucketFn.mockImplementation(() => {
+            calls.push('bucket');
+            return { name: 'test-bucket-name' };
+          }),
+        };
+      });
+
+      getDownloadUrl(outputPath);
+
+      // Verify both functions were called
+      expect(getStorage).toHaveBeenCalled();
+      expect(mockBucketFn).toHaveBeenCalled();
+
+      // Verify the order of calls
+      expect(calls).toEqual(['getStorage', 'bucket']);
     });
   });
 });
