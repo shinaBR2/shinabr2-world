@@ -10,7 +10,7 @@
     "build": "cross-env NODE_ENV=production tsc",
     "build:watch": "tsc --watch",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
-    "start-emulator": "cross-env NODE_ENV=development && firebase emulators:start --only functions,firestore",
+    "start-emulator": "cross-env NODE_ENV=development && firebase emulators:start --only functions,storage",
     "dev:setup": "pnpm run prepare-deploy && cd dist && npm install && cd ..",
     "dev:watch": "concurrently \"pnpm run build:watch\" \"pnpm run start-emulator\"",
     "dev": "pnpm run dev:setup && pnpm run dev:watch",
@@ -33,8 +33,7 @@
     "firebase-admin": "^13.0.1",
     "firebase-functions": "^6.1.2",
     "fluent-ffmpeg": "^2.1.3",
-    "fs-extra": "^11.2.0",
-    "node-fetch": "^3.3.2"
+    "fs-extra": "^11.2.0"
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
