@@ -42,11 +42,6 @@ interface ConversionRequest {
 }
 
 const handleConvertVideo = async (data: ConversionRequest) => {
-  console.log(`process env`, process.env.VITE_API_KEY);
-  const debug = true;
-  if (debug) {
-    return {};
-  }
   const { id, videoUrl } = data;
 
   // Generate unique working directory name
