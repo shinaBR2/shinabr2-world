@@ -9,6 +9,7 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist && rm -f .env*",
     "dev": "encore run",
     "encore-test": "encore test",
+    "unit-test": "encore test",
     "test": "vitest run"
   },
   "devDependencies": {

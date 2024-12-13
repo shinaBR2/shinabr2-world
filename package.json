@@ -22,7 +22,7 @@
     "dev:docs": "turbo run dev --filter=docs",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
-    "test": "turbo run test"
+    "test": "turbo run unit-test"
   },
   "devDependencies": {
     "prettier": "^2.7.1",

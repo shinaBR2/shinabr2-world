@@ -19,7 +19,7 @@
     "deploy:prod": "firebase use sworld-prod && firebase deploy --only functions",
     "lint": "tsc --noEmit && TIMING=1 eslint \"src/**/*.ts*\"",
     "start": "node dist/index.js",
-    "test": "jest  --coverage"
+    "unit-test": "jest  --coverage"
   },
   "dependencies": {
     "@prisma/client": "^6.0.1",
