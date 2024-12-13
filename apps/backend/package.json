@@ -1,11 +1,12 @@
 {
-  "name": "encore-ts-starter",
+  "name": "backend",
   "private": true,
   "version": "0.0.1",
   "description": "Encore Typescript Starter",
   "license": "MPL-2.0",
   "type": "module",
   "scripts": {
+    "dev": "encore run",
     "test": "vitest"
   },
   "devDependencies": {
@@ -14,7 +15,8 @@
     "vitest": "^1.5.0"
   },
   "dependencies": {
-    "encore.dev": "^1.45.1"
+    "encore.dev": "^1.45.1",
+    "database": "workspace:*"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "^4.13.0"

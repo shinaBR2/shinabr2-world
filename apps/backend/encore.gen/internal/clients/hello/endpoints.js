@@ -12,3 +12,11 @@ export async function get(params) {
     return apiCall("hello", "get", params);
 }
 
+export async function getUsers(params) {
+    if (typeof ENCORE_DROP_TESTS === "undefined" && process.env.NODE_ENV === "test") {
+        return TEST_ENDPOINTS.getUsers(params);
+    }
+
+    return apiCall("hello", "getUsers", params);
+}
+

@@ -14,3 +14,14 @@ export async function get(params) {
     return apiCall("hello", "get", params);
 }
 
+export async function getUsers(params) {
+    const handler = (await import("../../../../hello/users")).getUsers;
+    registerTestHandler({
+        apiRoute: { service: "hello", name: "getUsers", raw: false, handler, streamingRequest: false, streamingResponse: false },
+        middlewares: hello_service.default.cfg.middlewares || [],
+        endpointOptions: {"auth":false,"expose":true,"isRaw":false,"isStream":false},
+    });
+
+    return apiCall("hello", "getUsers", params);
+}
+
