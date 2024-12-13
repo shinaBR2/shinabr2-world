@@ -8,7 +8,8 @@
   "scripts": {
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist && rm -f .env*",
     "dev": "encore run",
-    "test": "vitest"
+    "encore-test": "encore test",
+    "test": "vitest run"
   },
   "devDependencies": {
     "@types/node": "^20.5.7",
@@ -16,8 +17,8 @@
     "vitest": "^1.5.0"
   },
   "dependencies": {
-    "encore.dev": "^1.45.1",
-    "database": "workspace:*"
+    "database": "workspace:*",
+    "encore.dev": "^1.45.1"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "^4.13.0"
