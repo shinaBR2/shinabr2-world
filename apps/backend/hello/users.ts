@@ -1,5 +1,6 @@
 import { prisma } from 'database';
 import { api } from 'encore.dev/api';
+import log from 'encore.dev/log';
 
 interface Response {
   message: string;
@@ -10,7 +11,7 @@ export const getUsers = api(
   async (): Promise<Response> => {
     const users = await prisma.users.findMany();
 
-    console.log(`users`, users);
+    log.info(`users`, users);
 
     return { message: 'ok' };
   }
