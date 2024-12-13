@@ -9,7 +9,6 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist && rm -f .env*",
     "dev": "encore run",
     "encore-test": "encore test",
-    "unit-test": ". ./install-encore.sh && encore test",
     "test": "vitest run --reporter=verbose"
   },
   "devDependencies": {

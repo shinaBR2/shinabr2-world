@@ -59,3 +59,4 @@ For now, use a new `backend` branch for backend
   ```
 
 - I removed 2 lines from `.npmrc` and `vitest` can run again
+- CI running the test now it took forever, it seems the `encore test` is the root cause. When running locally, `encore test && vitest` or `vitest && encore test` will result the same behavior, it running forever
