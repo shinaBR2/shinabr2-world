@@ -18,7 +18,7 @@
 import { onRequestWithCors } from '../singleton';
 import { handleConvertVideo } from './ffmpeg-helpers';
 import { validateIP, validatePayload, verifySignature } from './validator';
-import prisma from '../singleton/postgres';
+import { prisma } from 'database';
 
 const extractVideoData = (payload: any) => {
   const { id, video_url: videoUrl } = payload.data.rows[0];

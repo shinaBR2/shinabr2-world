@@ -9,7 +9,7 @@ import {
 } from '@jest/globals';
 import { Request as ExpressRequest } from 'express';
 import { convertVideo } from './convert';
-import prisma from '../singleton/postgres';
+import { prisma } from 'database';
 
 // Module type definitions
 interface ValidatorModule {

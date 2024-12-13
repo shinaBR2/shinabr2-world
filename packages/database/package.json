@@ -1,0 +1,29 @@
+{
+  "name": "database",
+  "version": "0.0.0",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "scripts": {
+    "postinstall": "npm run db:generate && mkdir -p node_modules && cp -R ./../../node_modules/.pnpm/@prisma+client@6.0.1_prisma@6.0.1/node_modules/@prisma/client node_modules/.prisma",
+    "build": "tsup src/index.ts --format esm,cjs --dts",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push --skip-generate",
+    "db:studio": "prisma studio"
+  },
+  "dependencies": {
+    "@prisma/client": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "tsconfig": "workspace:*",
+    "prisma": "latest",
+    "typescript": "^4.8.3",
+    "tsup": "^8.0.0"
+  }
+}
