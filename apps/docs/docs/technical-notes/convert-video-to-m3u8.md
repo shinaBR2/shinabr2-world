@@ -35,6 +35,7 @@ sidebar_position: 10
 - The code converted and upload files successfully but the files is not public accessible by default, we need to allow access to the bucket by allow `allUsers` role having the bucket viewer role
 - Not only that, we need to consider `cors` header because Google does not allow cors by default.
 - My main domain now still have problem with ssl certificate for unknown reasons.
+- Suddenly the `vitest` failed again
 
 ## TODO list for deployment
 
@@ -57,4 +58,4 @@ For now, use a new `backend` branch for backend
   --allow-unauthenticated
   ```
 
--
+- I removed 2 lines from `.npmrc` and `vitest` can run again
