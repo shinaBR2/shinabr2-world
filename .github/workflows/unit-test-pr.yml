@@ -40,3 +40,5 @@ jobs:
 
       - name: Run tests
         run: pnpm run test
+        env:
+          ENCORE_AUTH_KEY: ${{ secrets.ENCORE_AUTH_KEY }}
