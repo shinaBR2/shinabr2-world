@@ -226,9 +226,18 @@ importers:
       database:
         specifier: workspace:*
         version: link:../../packages/database
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.5
       encore.dev:
         specifier: ^1.45.1
         version: 1.45.1
+      firebase-admin:
+        specifier: ^13.0.1
+        version: 13.0.1(encoding@0.1.13)
+      fluent-ffmpeg:
+        specifier: ^2.1.3
+        version: 2.1.3
     optionalDependencies:
       '@rollup/rollup-linux-x64-gnu':
         specifier: ^4.13.0
