@@ -10,8 +10,7 @@
     }
   },
   "scripts": {
-    "postinstall": "npm run db:generate && mkdir -p node_modules && cp -R ./../../node_modules/.pnpm/@prisma+client@6.0.1_prisma@6.0.1/node_modules/@prisma/client node_modules/.prisma",
-    "build": "tsup src/index.ts --format esm,cjs --dts",
+    "build": "tsup src/index.ts --format esm,cjs && mkdir -p dist/generated/client && cp -r src/generated/client/ dist/generated/client/",
     "db:generate": "prisma generate",
     "db:push": "prisma db push --skip-generate",
     "db:studio": "prisma studio"

@@ -1,4 +1,6 @@
-import { PrismaClient } from '@prisma/client';
+// import { PrismaClient } from '@prisma/client';
+
+import { PrismaClient } from './generated/client/index.js';
 
 // Define our global augmentation cleanly at the top
 declare global {
@@ -28,3 +30,5 @@ if (process.env.NODE_ENV !== 'production') {
 
 // Also provide a named export for more flexible importing
 export { prisma };
+export * from './generated/client/index.js';
+// export * from './generated/client/';
