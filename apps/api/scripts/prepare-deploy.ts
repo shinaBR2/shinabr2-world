@@ -10,14 +10,6 @@ const API_DIR = resolve(__dirname, '..');
 const DIST_DIR = join(API_DIR, 'dist');
 const ROOT_DIR = resolve(API_DIR, '../..');
 
-// First, let's generate the Prisma client in our database package
-// console.log('Generating Prisma client in database package...');
-// execSync('pnpm --filter database db:generate', {
-//   stdio: 'inherit',
-//   cwd: ROOT_DIR,
-// });
-
-// Now proceed with the rest of your build process
 console.log('Building core package...');
 execSync('pnpm --filter core build', { stdio: 'inherit' });
 
@@ -51,44 +43,6 @@ cpSync(join(DATABASE_DIST, 'dist'), DATABASE_DEST, {
   recursive: true,
 });
 
-// Copy Prisma files and generated client
-// console.log('Copying Prisma files...');
-// cpSync(join(DATABASE_DIST, 'prisma'), join(DATABASE_DEST, 'prisma'), {
-//   recursive: true,
-// });
-
-// // Before copying the Prisma client, let's find where it's actually generated
-// console.log('Copying Prisma client...');
-// // Prisma generates its client in the workspace's node_modules/.prisma/client
-// const PRISMA_CLIENT_SRC = join(
-//   ROOT_DIR,
-//   'node_modules/.pnpm/@prisma+client@6.0.1_prisma@6.0.1/node_modules/@prisma/client'
-// );
-// const PRISMA_CLIENT_DEST = join(DATABASE_DEST, 'node_modules/.prisma/client');
-
-// // Create the destination directory structure
-// mkdirSync(join(DATABASE_DEST, 'node_modules/.prisma'), { recursive: true });
-
-// Add some debugging information
-// console.log('Prisma client source path:', PRISMA_CLIENT_SRC);
-// console.log('Prisma client destination path:', PRISMA_CLIENT_DEST);
-
-// // First check if the source exists to provide better error handling
-// if (!existsSync(PRISMA_CLIENT_SRC)) {
-//   console.error('Could not find Prisma client at:', PRISMA_CLIENT_SRC);
-//   console.error('Make sure Prisma client was generated successfully');
-//   throw new Error('Prisma client source not found');
-// }
-
-// // Copy the Prisma client
-// try {
-//   cpSync(PRISMA_CLIENT_SRC, PRISMA_CLIENT_DEST, { recursive: true });
-// } catch (error) {
-//   console.error('Error copying Prisma client:', error);
-//   throw error;
-// }
-
-// Prepare package.json files
 const pkgJson = JSON.parse(readFileSync(join(API_DIR, 'package.json'), 'utf8'));
 const modifiedPkgJson = {
   ...pkgJson,
