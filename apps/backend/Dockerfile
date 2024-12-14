@@ -42,5 +42,6 @@ RUN pnpm install --frozen-lockfile
 WORKDIR /app/apps/backend
 
 
+EXPOSE 4000
 # Build and run
-CMD ["/root/.encore/bin/encore", "run", "--listen", "0.0.0.0"]
+CMD ["/root/.encore/bin/encore", "run", "--listen", "0.0.0.0:${PORT}"]
