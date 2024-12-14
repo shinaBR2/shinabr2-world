@@ -6,7 +6,6 @@ RUN apt-get update -y && apt-get install -y curl openssl
 RUN curl -L https://encore.dev/install.sh | bash
 ENV PATH="/root/.encore/bin:${PATH}"
 
-# Focus only on the backend directory
 WORKDIR /app
 
 COPY pnpm-workspace.yaml ./
@@ -15,7 +14,7 @@ COPY package.json ./
 COPY turbo.json ./
 
 # Copy the packages directory (if your backend depends on workspace packages)
-COPY packages/database ./packages/database
+COPY packages ./packages
 
 # Copy the backend app
 COPY apps/backend/ ./apps/backend/
@@ -31,19 +30,13 @@ RUN npm install -g pnpm
 # using Node.js's default module resolution algorithm
 # (looking up the directory tree),
 # they'll find what they need.
-# RUN echo "shamefully-hoist=true" > /root/.npmrc
-RUN echo "shamefully-hoist=true\nnode-linker=hoisted" > /root/.npmrc
+RUN echo "shamefully-hoist=true" > /root/.npmrc
 
-# https://github.com/prisma/prisma/discussions/22519
-COPY ./packages/database/prisma /app/packages/database/prisma/
+
 
 # Install dependencies using pnpm
 RUN pnpm install --frozen-lockfile
 
-# Generate Prisma client using the workspace command
-
-# RUN pnpm dlx prisma generate
-# RUN pnpm --filter=database db:generate
 
 # Set working directory to backend
 WORKDIR /app/apps/backend

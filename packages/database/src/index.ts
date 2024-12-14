@@ -1,7 +1,6 @@
 import Sequelize, { DataTypes } from 'sequelize';
 
 const databaseUrl = process.env.DATABASE_URL;
-console.log(`post url`, databaseUrl);
 // @ts-ignore
 const sequelize = new Sequelize(databaseUrl, {
   dialect: 'postgres',

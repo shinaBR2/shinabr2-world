@@ -4,10 +4,7 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsc && vite build",
-    "db:generate": "pnpx prisma generate",
-    "db:push": "prisma db push --skip-generate",
-    "db:studio": "prisma studio"
+    "build": "tsc && vite build"
   },
   "dependencies": {
     "dotenv": "^16.4.5",

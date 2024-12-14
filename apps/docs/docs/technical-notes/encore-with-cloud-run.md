@@ -19,8 +19,16 @@ docker buildx create --driver docker-container --use
 # Build and push into dockerhub
 # Support multiple platform Linux and Mac M2
 docker buildx build --debug --platform linux/amd64,linux/arm64 --push -t shinabr2/sworld-backend:1.3.0 -f apps/backend/Dockerfile .
+docker buildx build --progress=plain --no-cache --debug --platform linux/amd64,linux/arm64 --push -t shinabr2/sworld-backend:1.3.0 -f apps/backend/Dockerfile .
+
+# DIDN'T WORK
+docker buildx build --progress=plain --no-cache --debug --platform linux/amd64,linux/arm64 --push --load -t shinabr2/sworld-backend:1.3.0 -f apps/backend/Dockerfile .
+
+
 
 # Test locally
+docker pull shinabr2/sworld-backend:1.3.0
+
 docker run -p 4000:4000 shinabr2/sworld-backend:1.3.0
 
 gcloud run deploy sworld-backend \
@@ -30,3 +38,5 @@ gcloud run deploy sworld-backend \
   --region asia-southeast1 \
   --allow-unauthenticated
 ```
+
+curl http://0.0.0.0:4000/videos/test-users

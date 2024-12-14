@@ -29,7 +29,6 @@ const extractVideoData = (request: Request) => {
 export const convert = api<Request, Response>(
   { expose: true, method: 'POST', path: '/videos/convert' },
   async request => {
-    console.log(`'env`, process.env.NOCODB_WEBHOOK_SIGNATURE);
     console.log(`encore parsed`, request);
 
     const { signatureHeader } = request;
@@ -51,10 +50,8 @@ export const convert = api<Request, Response>(
 export const testUsers = api(
   { expose: true, method: 'GET', path: '/videos/test-users' },
   async () => {
-    console.log(`apps backend`, process.env.DATABASE_URL);
     await initialize();
     const users = await listUsers();
-    console.log(users);
     for (let index = 0; index < users.length; index++) {
       const user = users[index];
       console.log(`user id`, user.id);
