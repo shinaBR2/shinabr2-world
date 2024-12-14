@@ -14,10 +14,10 @@ Few notes
 ```
 cd apps/backend
 
-docker build --no-cache -t shinabr2/sworld-backend:1.2.0 .
-docker push shinabr2/sworld-backend:1.2.0
+docker build --no-cache -t shinabr2/sworld-backend:1.3.0 .
+docker push shinabr2/sworld-backend:1.3.0
 gcloud run deploy sworld-backend \
-  --image docker.io/shinabr2/sworld-backend:1.2.0 \
+  --image docker.io/shinabr2/sworld-backend:1.3.0 \
   --platform managed \
   --port 4000 \
   --region asia-southeast1 \
