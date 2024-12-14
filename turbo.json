@@ -13,7 +13,7 @@
         "^build"
       ]
     },
-    "unit-test": {
+    "test": {
       "inputs": [
         "src/**/*.{js,jsx,ts,tsx}",
         "test/**/*.{js,jsx,ts,tsx}"

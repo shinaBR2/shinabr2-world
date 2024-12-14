@@ -1,5 +1,3 @@
-// @ts-ignore
-// import * as fs from 'fs-extra';
 import { createWriteStream, unlink, readdir } from 'fs';
 import { promisify } from 'util';
 import * as path from 'path';

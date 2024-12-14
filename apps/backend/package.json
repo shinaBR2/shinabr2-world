@@ -8,8 +8,7 @@
   "scripts": {
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist && rm -f .env*",
     "dev": "encore run",
-    "encore-test": "encore test",
-    "test": "vitest run --reporter=verbose"
+    "test": "vitest"
   },
   "devDependencies": {
     "@types/node": "^20.5.7",

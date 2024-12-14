@@ -15,7 +15,7 @@
     "clean": "rm -rf dist",
     "dev": "tsup src/index.ts --format esm,cjs --watch --dts --external react",
     "lint": "TIMING=1 eslint \"src/**/*.ts*\"",
-    "unit-test": "jest"
+    "test": "jest"
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
