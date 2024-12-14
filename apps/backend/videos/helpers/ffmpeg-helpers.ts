@@ -1,8 +1,6 @@
 import * as os from 'os';
 // @ts-ignore
 import ffmpeg from 'fluent-ffmpeg';
-// @ts-ignore
-// import * as fs from 'fs-extra';
 import { stat } from 'fs';
 import { mkdir } from 'fs/promises';
 import { rm } from 'fs/promises';
