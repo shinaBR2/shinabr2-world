@@ -45,11 +45,12 @@ jobs:
 
       # Step 4: Deploy Docker Image to Google Cloud Run
       - name: Deploy to Cloud Run
-        id: deploy
-        uses: google-github-actions/deploy-cloudrun@v2
-        with:
-          service: 'sworld-backend'
-          image: 'docker.io/shinabr2/sworld-backend:${{ github.ref_name }}-${{ github.sha }}'
-          region: 'asia-southeast1'
-          project_id: ${{ secrets.VITE_PROJECT_ID }}
+        run: |
+          IMAGE_TAG="shinabr2/sworld-backend:${{ github.ref_name }}-${{ github.sha }}"
+          gcloud run deploy sworld-backend \
+            --image $IMAGE_TAG \
+            --platform managed \
+            --port 4000 \
+            --region asia-southeast1 \
+            --allow-unauthenticated
 
