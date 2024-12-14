@@ -44,4 +44,4 @@ WORKDIR /app/apps/backend
 
 EXPOSE 4000
 # Build and run
-CMD ["/root/.encore/bin/encore", "run", "--listen", "0.0.0.0:${PORT}"]
+CMD ["/root/.encore/bin/encore", "run", "--listen", "0.0.0.0"]
