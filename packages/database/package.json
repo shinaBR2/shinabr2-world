@@ -10,8 +10,9 @@
     }
   },
   "scripts": {
+    "postinstall": "pnpx prisma generate",
     "build": "tsup src/index.ts --format esm,cjs && mkdir -p dist/generated/client && cp -r src/generated/client/ dist/generated/client/",
-    "db:generate": "prisma generate",
+    "db:generate": "pnpx prisma generate",
     "db:push": "prisma db push --skip-generate",
     "db:studio": "prisma studio"
   },

@@ -12,10 +12,17 @@ Few notes
 ## Commands
 
 ```
-cd apps/backend
+# RUN AT THE ROOT FOLDER
 
-docker build --no-cache -t shinabr2/sworld-backend:1.3.0 .
-docker push shinabr2/sworld-backend:1.3.0
+docker buildx create --driver docker-container --use
+
+# Build and push into dockerhub
+# Support multiple platform Linux and Mac M2
+docker buildx build --debug --platform linux/amd64,linux/arm64 --push -t shinabr2/sworld-backend:1.3.0 -f apps/backend/Dockerfile .
+
+# Test locally
+docker run -p 4000:4000 shinabr2/sworld-backend:1.3.0
+
 gcloud run deploy sworld-backend \
   --image docker.io/shinabr2/sworld-backend:1.3.0 \
   --platform managed \
