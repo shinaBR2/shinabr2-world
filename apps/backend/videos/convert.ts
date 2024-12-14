@@ -1,7 +1,10 @@
+import 'dotenv/config';
 import { api, APIError, ErrCode, Header } from 'encore.dev/api';
 import { VideoDataInput } from './helpers/interfaces';
 import { verifySignature } from './helpers/validator';
 import { convertVideo } from './helpers/request-handler';
+// @ts-ignore
+import { initialize, listUsers } from 'database';
 
 interface Response {
   testResult: string;
@@ -42,5 +45,24 @@ export const convert = api<Request, Response>(
     }
 
     return { testResult: 'ok' };
+  }
+);
+
+export const testUsers = api(
+  { expose: true, method: 'GET', path: '/videos/test-users' },
+  async () => {
+    console.log(`apps backend`, process.env.DATABASE_URL);
+    await initialize();
+    const users = await listUsers();
+    console.log(users);
+    for (let index = 0; index < users.length; index++) {
+      const user = users[index];
+      console.log(`user id`, user.id);
+      console.log(`user email`, user.email);
+      console.log(`user auth0_id`, user.auth0_id);
+      console.log(`user auth0_id`, user.auth0Id);
+    }
+
+    return { status: 'ok' };
   }
 );

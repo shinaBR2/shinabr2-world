@@ -1,15 +1,10 @@
-import { prisma } from 'database';
+// @ts-ignore
+import { saveVideoSource } from 'database';
 import { ConversionVideo, handleConvertVideo } from './ffmpeg-helpers';
 
 const postConvert = async (data: { id: string; videoUrl: string }) => {
   const { id, videoUrl } = data;
-  const video = await prisma.videos.update({
-    where: { id },
-    data: {
-      source: videoUrl,
-      status: 'ready',
-    },
-  });
+  const video = await saveVideoSource(id, videoUrl);
 
   console.log(`updated video`, video);
   return video;

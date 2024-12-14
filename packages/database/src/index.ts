@@ -1,35 +1,77 @@
-import { PrismaClient } from './generated/client/index.js';
+import Sequelize, { DataTypes } from 'sequelize';
 
-// Define our global augmentation cleanly at the top
-declare global {
-  // eslint-disable-next-line no-var
-  var prisma: PrismaClient | undefined;
-}
+const databaseUrl = process.env.DATABASE_URL;
+console.log(`post url`, databaseUrl);
+// @ts-ignore
+const sequelize = new Sequelize(databaseUrl, {
+  dialect: 'postgres',
+});
 
-const prismaClientSingleton = () => {
-  return new PrismaClient({
-    // Add logging in development to help with debugging
+const User = sequelize.define(
+  'users',
+  {
+    id: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+    },
+    email: {
+      type: DataTypes.STRING,
+    },
+    auth0Id: {
+      type: DataTypes.STRING,
+    },
+  },
+  {
+    underscored: true,
+    timestamps: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+  }
+);
 
-    log:
-      // @ts-ignore
-      process.env.NODE_ENV === 'development'
-        ? ['query', 'error', 'warn']
-        : ['error'],
-  });
+const Video = sequelize.define(
+  'videos',
+  {
+    id: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+    },
+    videoUrl: {
+      type: DataTypes.STRING,
+    },
+    source: {
+      type: DataTypes.STRING,
+    },
+    status: {
+      type: DataTypes.STRING,
+    },
+  },
+  {
+    underscored: true,
+    timestamps: true,
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+  }
+);
+
+const initialize = async () => {
+  await sequelize.authenticate();
+  await sequelize.sync();
 };
 
-// Use the standard global property name for better consistency
-const prisma = globalThis.prisma ?? prismaClientSingleton();
+const listUsers = async () => {
+  return await User.findAll();
+};
 
-// @ts-ignore
-if (process.env.NODE_ENV !== 'production') {
-  globalThis.prisma = prisma;
-}
+const saveVideoSource = async (id: string, source: string) => {
+  return await Video.update(
+    { source, status: 'ready' },
+    {
+      where: {
+        id,
+      },
+    }
+  );
+};
 
-// Also provide a named export for more flexible importing
-export { prisma };
-
-/**
- * This is IMPORTANT TO MAKE THINGS WORK
- */
-export * from './generated/client/index.js';
+export { initialize, listUsers, saveVideoSource };
