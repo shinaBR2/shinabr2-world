@@ -32,7 +32,7 @@ jobs:
           file: apps/backend/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: shinabr2/sworld-backend:${{ github.ref_name }}-${{ github.sha::7 }}
+          tags: shinabr2/sworld-backend:${{ github.ref_name }}-${{ github.sha }}
 
       # Step 4: Deploy Docker Image to Google Cloud Run
       - name: Deploy to Cloud Run
@@ -40,4 +40,4 @@ jobs:
         uses: google-github-actions/deploy-cloudrun@v2
         with:
           service: 'sworld-backend'
-          image: 'docker.io/shinabr2/sworld-backend:${{ github.ref_name }}-${{ github.sha::7 }}'
+          image: 'docker.io/shinabr2/sworld-backend:${{ github.ref_name }}-${{ github.sha }}'
