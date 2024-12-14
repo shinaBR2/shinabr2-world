@@ -37,6 +37,12 @@ jobs:
           push: true
           tags: shinabr2/sworld-backend:${{ github.ref_name }}-${{ github.sha }}
 
+      - id: authentication
+        name: Authentication
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MY_WORLD_DEV }}'
+
       # Step 4: Deploy Docker Image to Google Cloud Run
       - name: Deploy to Cloud Run
         id: deploy
