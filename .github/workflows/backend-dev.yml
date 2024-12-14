@@ -7,10 +7,13 @@ on:
     paths:
       - 'apps/backend/**'
       - 'packages/database/**'
+      - '.github/workflows/backend-dev.yml'
 
 jobs:
   docker:
     runs-on: ubuntu-latest
+    environment:
+      name: dev
 
     steps:
       # Step 1: Log in to Docker Hub
@@ -41,3 +44,6 @@ jobs:
         with:
           service: 'sworld-backend'
           image: 'docker.io/shinabr2/sworld-backend:${{ github.ref_name }}-${{ github.sha }}'
+          region: 'asia-southeast1'
+          project_id: ${{ secrets.VITE_PROJECT_ID }}
+
