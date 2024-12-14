@@ -30,12 +30,14 @@ RUN npm install -g pnpm
 # using Node.js's default module resolution algorithm
 # (looking up the directory tree),
 # they'll find what they need.
-RUN echo "shamefully-hoist=true" > /root/.npmrc
+RUN echo "shamefully-hoist=true\node-linker=hoisted" > /root/.npmrc
 
 
 
 # Install dependencies using pnpm
 RUN pnpm install --frozen-lockfile
+
+RUN pnpm build --filter=backend
 
 
 # Set working directory to backend

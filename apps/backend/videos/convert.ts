@@ -50,6 +50,7 @@ export const convert = api<Request, Response>(
 export const testUsers = api(
   { expose: true, method: 'GET', path: '/videos/test-users' },
   async () => {
+    console.log(`testUsers called`, process.env.DATABASE_URL);
     await initialize();
     const users = await listUsers();
     for (let index = 0; index < users.length; index++) {
