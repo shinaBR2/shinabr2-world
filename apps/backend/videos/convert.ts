@@ -1,5 +1,4 @@
 import { api, APIError, ErrCode, Header } from 'encore.dev/api';
-import { IncomingMessage } from 'node:http';
 import { VideoDataInput } from './helpers/interfaces';
 import { verifySignature } from './helpers/validator';
 import { convertVideo } from './helpers/request-handler';
