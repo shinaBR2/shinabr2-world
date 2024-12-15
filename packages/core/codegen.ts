@@ -1,5 +1,7 @@
 import type { CodegenConfig } from '@graphql-codegen/cli';
 
+// TODO
+// Get hasura admin secret from env
 const config: CodegenConfig = {
   schema: [
     {
@@ -15,16 +17,14 @@ const config: CodegenConfig = {
   generates: {
     './src/graphql/': {
       preset: 'client',
-      config: {
-        documentMode: 'string',
-      },
+      plugins: [],
     },
-    './schema.graphql': {
-      plugins: ['schema-ast'],
-      config: {
-        includeDirectives: true,
-      },
-    },
+    // './schema.graphql': {
+    //   plugins: ['schema-ast'],
+    //   config: {
+    //     includeDirectives: true,
+    //   },
+    // },
   },
 };
 
