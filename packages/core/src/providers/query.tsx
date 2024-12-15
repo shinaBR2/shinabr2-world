@@ -19,8 +19,6 @@ const QueryContextProvider = (props: { config: Config; children: any }) => {
     hasuraUrl,
   };
 
-  console.log(`hasura URL`, hasuraUrl);
-
   return (
     <QueryContext.Provider value={contextValue}>
       {children}
