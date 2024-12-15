@@ -19,3 +19,6 @@ apps/backend/.encore
 apps/backend/encore.gen
 
 apps/api/scripts/prepare-deploy.js
+
+
+packages/core/src/graphql
