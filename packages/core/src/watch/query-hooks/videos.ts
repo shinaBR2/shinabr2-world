@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import request from 'graphql-request';
+import { useQueryContext } from '../../providers/query';
 
 export async function execute<TResult, TVariables>(
   query: any,
@@ -41,21 +42,30 @@ const videosQuery = `
   }
 `;
 
-const useLoadVideos = () => {
-  console.log(`videosQuery`, videosQuery);
+interface LoadVideosProps {
+  getAccessToken: () => Promise<string>;
+}
+
+const useLoadVideos = (props: LoadVideosProps) => {
+  const { getAccessToken } = props;
+
+  const { hasuraUrl } = useQueryContext();
   const { data, isLoading } = useQuery({
     queryKey: ['videos'],
     queryFn: async () => {
+      const token = await getAccessToken();
       return await request({
-        url: 'https://relieved-panther-58.hasura.app/v1/graphql',
+        url: hasuraUrl,
         // @ts-ignore
         document: videosQuery,
         requestHeaders: {
-          'x-hasura-admin-secret': 'ADMIN SECRET',
+          Authorization: `Bearer ${token}`,
         },
       });
     },
   });
+
+  console.log(`query data`, data, isLoading);
 
   return {
     // @ts-ignore
