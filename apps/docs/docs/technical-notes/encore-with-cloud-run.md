@@ -40,3 +40,13 @@ gcloud run deploy sworld-backend \
 ```
 
 curl http://0.0.0.0:4000/videos/test-users
+curl https://sworld-backend-190871794139.asia-southeast1.run.app/videos/test-users
+
+
+
+
+docker pull shinabr2/sworld-backend:backend-dev-1cbc399407bac560d3f1a5cf9e4d153de9521416
+docker run -p 4000:4000 shinabr2/sworld-backend:backend-dev-1cbc399407bac560d3f1a5cf9e4d153de9521416
+
+
+docker buildx build --platform linux/amd64,linux/arm64 --push -t shinabr2/sworld-backend:1.3.0 -f apps/backend/Dockerfile .
