@@ -25,6 +25,8 @@ const useLoadVideos = (props: LoadVideosProps) => {
   const { data, isLoading } = useQuery({
     queryKey: ['videos'],
     queryFn: async () => {
+      // TODO
+      // Handle token error
       const token = await getAccessToken();
       return await request({
         url: hasuraUrl,
@@ -36,8 +38,6 @@ const useLoadVideos = (props: LoadVideosProps) => {
       });
     },
   });
-
-  console.log(`query data`, data, isLoading);
 
   return {
     // @ts-ignore
