@@ -257,57 +257,6 @@ importers:
       '@originjs/vite-plugin-commonjs':
         specifier: ^1.0.3
         version: 1.0.3
-      '@storybook/addon-actions':
-        specifier: ^6.5.13
-        version: 6.5.16(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@storybook/addon-backgrounds':
-        specifier: 6.5.9
-        version: 6.5.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@storybook/addon-docs':
-        specifier: 6.5.9
-        version: 6.5.9(@babel/core@7.26.0)(eslint@7.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)(webpack@5.96.1)
-      '@storybook/addon-essentials':
-        specifier: ^6.5.13
-        version: 6.5.16(@babel/core@7.26.0)(eslint@7.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)(webpack@5.96.1)
-      '@storybook/addon-interactions':
-        specifier: ^6.5.13
-        version: 6.5.16(@types/react@18.3.12)(eslint@7.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)
-      '@storybook/addon-links':
-        specifier: ^6.5.13
-        version: 6.5.16(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@storybook/addon-measure':
-        specifier: 6.5.9
-        version: 6.5.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@storybook/addon-outline':
-        specifier: 6.5.9
-        version: 6.5.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@storybook/addons':
-        specifier: 6.5.9
-        version: 6.5.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@storybook/builder-vite':
-        specifier: ^0.2.5
-        version: 0.2.7(@babel/core@7.26.0)(eslint@7.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)(vite@3.2.11(@types/node@18.19.64)(terser@5.37.0))
-      '@storybook/channel-postmessage':
-        specifier: 6.5.9
-        version: 6.5.9
-      '@storybook/channel-websocket':
-        specifier: 6.5.9
-        version: 6.5.9
-      '@storybook/cli':
-        specifier: ^6.5.13
-        version: 6.5.16(encoding@0.1.13)(eslint@7.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)
-      '@storybook/client-api':
-        specifier: 6.5.9
-        version: 6.5.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@storybook/preview-web':
-        specifier: 6.5.9
-        version: 6.5.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@storybook/react':
-        specifier: ^6.5.13
-        version: 6.5.16(@babel/core@7.26.0)(@types/webpack@4.41.40)(encoding@0.1.13)(eslint@7.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(require-from-string@2.0.2)(type-fest@4.27.0)(typescript@4.9.5)(webpack-dev-server@4.15.2(webpack@5.96.1))(webpack-hot-middleware@2.26.1)
-      '@storybook/testing-library':
-        specifier: ^0.0.13
-        version: 0.0.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tsconfig/docusaurus':
         specifier: ^1.0.5
         version: 1.0.7
@@ -760,6 +709,57 @@ importers:
       '@jest/globals':
         specifier: ^29.7.0
         version: 29.7.0
+      '@storybook/addon-actions':
+        specifier: ^6.5.13
+        version: 6.5.16(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@storybook/addon-backgrounds':
+        specifier: 6.5.9
+        version: 6.5.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@storybook/addon-docs':
+        specifier: 6.5.9
+        version: 6.5.9(@babel/core@7.26.0)(eslint@7.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)(webpack@5.96.1(@swc/core@1.10.1))
+      '@storybook/addon-essentials':
+        specifier: ^6.5.13
+        version: 6.5.16(@babel/core@7.26.0)(eslint@7.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)(webpack@5.96.1(@swc/core@1.10.1))
+      '@storybook/addon-interactions':
+        specifier: ^6.5.13
+        version: 6.5.16(@types/react@18.3.12)(eslint@7.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)
+      '@storybook/addon-links':
+        specifier: ^6.5.13
+        version: 6.5.16(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@storybook/addon-measure':
+        specifier: 6.5.9
+        version: 6.5.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@storybook/addon-outline':
+        specifier: 6.5.9
+        version: 6.5.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@storybook/addons':
+        specifier: 6.5.9
+        version: 6.5.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@storybook/builder-vite':
+        specifier: ^0.2.5
+        version: 0.2.7(@babel/core@7.26.0)(eslint@7.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)(vite@3.2.11(@types/node@22.10.2)(terser@5.37.0))
+      '@storybook/channel-postmessage':
+        specifier: 6.5.9
+        version: 6.5.9
+      '@storybook/channel-websocket':
+        specifier: 6.5.9
+        version: 6.5.9
+      '@storybook/cli':
+        specifier: ^6.5.13
+        version: 6.5.16(encoding@0.1.13)(eslint@7.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)
+      '@storybook/client-api':
+        specifier: 6.5.9
+        version: 6.5.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@storybook/preview-web':
+        specifier: 6.5.9
+        version: 6.5.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@storybook/react':
+        specifier: ^6.5.13
+        version: 6.5.16(@babel/core@7.26.0)(@swc/core@1.10.1)(@types/webpack@4.41.40)(encoding@0.1.13)(eslint@7.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(require-from-string@2.0.2)(type-fest@4.27.0)(typescript@4.9.5)(webpack-dev-server@4.15.2(webpack@5.96.1(@swc/core@1.10.1)))(webpack-hot-middleware@2.26.1)
+      '@storybook/testing-library':
+        specifier: ^0.0.13
+        version: 0.0.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@sworld/jest-dom-preset':
         specifier: workspace:*
         version: link:../jest-dom-preset
@@ -789,7 +789,7 @@ importers:
         version: link:../tsconfig
       tsup:
         specifier: ^6.2.3
-        version: 6.7.0(@swc/core@1.10.1)(postcss@8.4.49)(typescript@4.9.5)
+        version: 6.7.0(@swc/core@1.10.1)(postcss@7.0.39)(typescript@4.9.5)
       typescript:
         specifier: ^4.8.3
         version: 4.9.5
@@ -16006,7 +16006,7 @@ snapshots:
       '@types/yargs': 17.0.33
       chalk: 4.1.2
 
-  '@joshwooding/vite-plugin-react-docgen-typescript@0.0.5(typescript@4.9.5)(vite@3.2.11(@types/node@18.19.64)(terser@5.37.0))':
+  '@joshwooding/vite-plugin-react-docgen-typescript@0.0.5(typescript@4.9.5)(vite@3.2.11(@types/node@22.10.2)(terser@5.37.0))':
     dependencies:
       '@rollup/pluginutils': 4.2.1
       glob: 7.2.3
@@ -16014,7 +16014,7 @@ snapshots:
       magic-string: 0.26.7
       react-docgen-typescript: 2.2.2(typescript@4.9.5)
       typescript: 4.9.5
-      vite: 3.2.11(@types/node@18.19.64)(terser@5.37.0)
+      vite: 3.2.11(@types/node@22.10.2)(terser@5.37.0)
 
   '@jridgewell/gen-mapping@0.3.5':
     dependencies:
@@ -16338,7 +16338,7 @@ snapshots:
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
-  '@pmmmwh/react-refresh-webpack-plugin@0.5.15(@types/webpack@4.41.40)(react-refresh@0.11.0)(type-fest@4.27.0)(webpack-dev-server@4.15.2(webpack@5.96.1))(webpack-hot-middleware@2.26.1)(webpack@5.96.1)':
+  '@pmmmwh/react-refresh-webpack-plugin@0.5.15(@types/webpack@4.41.40)(react-refresh@0.11.0)(type-fest@4.27.0)(webpack-dev-server@4.15.2(webpack@5.96.1(@swc/core@1.10.1)))(webpack-hot-middleware@2.26.1)(webpack@5.96.1(@swc/core@1.10.1))':
     dependencies:
       ansi-html: 0.0.9
       core-js-pure: 3.39.0
@@ -16348,11 +16348,11 @@ snapshots:
       react-refresh: 0.11.0
       schema-utils: 4.2.0
       source-map: 0.7.4
-      webpack: 5.96.1
+      webpack: 5.96.1(@swc/core@1.10.1)
     optionalDependencies:
       '@types/webpack': 4.41.40
       type-fest: 4.27.0
-      webpack-dev-server: 4.15.2(webpack@5.96.1)
+      webpack-dev-server: 4.15.2(webpack@5.96.1(@swc/core@1.10.1))
       webpack-hot-middleware: 2.26.1
 
   '@polka/url@1.0.0-next.28': {}
@@ -16626,7 +16626,7 @@ snapshots:
       - webpack-cli
       - webpack-command
 
-  '@storybook/addon-docs@6.5.16(@babel/core@7.26.0)(eslint@7.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)(webpack@5.96.1)':
+  '@storybook/addon-docs@6.5.16(@babel/core@7.26.0)(eslint@7.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)(webpack@5.96.1(@swc/core@1.10.1))':
     dependencies:
       '@babel/plugin-transform-react-jsx': 7.25.9(@babel/core@7.26.0)
       '@babel/preset-env': 7.26.0(@babel/core@7.26.0)
@@ -16646,7 +16646,7 @@ snapshots:
       '@storybook/source-loader': 6.5.16(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@storybook/store': 6.5.16(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@storybook/theming': 6.5.16(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      babel-loader: 8.4.1(@babel/core@7.26.0)(webpack@5.96.1)
+      babel-loader: 8.4.1(@babel/core@7.26.0)(webpack@5.96.1(@swc/core@1.10.1))
       core-js: 3.39.0
       fast-deep-equal: 3.1.3
       global: 4.4.0
@@ -16669,7 +16669,7 @@ snapshots:
       - webpack-cli
       - webpack-command
 
-  '@storybook/addon-docs@6.5.9(@babel/core@7.26.0)(eslint@7.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)(webpack@5.96.1)':
+  '@storybook/addon-docs@6.5.9(@babel/core@7.26.0)(eslint@7.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)(webpack@5.96.1(@swc/core@1.10.1))':
     dependencies:
       '@babel/plugin-transform-react-jsx': 7.25.9(@babel/core@7.26.0)
       '@babel/preset-env': 7.26.0(@babel/core@7.26.0)
@@ -16689,7 +16689,7 @@ snapshots:
       '@storybook/source-loader': 6.5.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@storybook/store': 6.5.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@storybook/theming': 6.5.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      babel-loader: 8.4.1(@babel/core@7.26.0)(webpack@5.96.1)
+      babel-loader: 8.4.1(@babel/core@7.26.0)(webpack@5.96.1(@swc/core@1.10.1))
       core-js: 3.39.0
       fast-deep-equal: 3.1.3
       global: 4.4.0
@@ -16712,13 +16712,13 @@ snapshots:
       - webpack-cli
       - webpack-command
 
-  '@storybook/addon-essentials@6.5.16(@babel/core@7.26.0)(eslint@7.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)(webpack@5.96.1)':
+  '@storybook/addon-essentials@6.5.16(@babel/core@7.26.0)(eslint@7.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)(webpack@5.96.1(@swc/core@1.10.1))':
     dependencies:
       '@babel/core': 7.26.0
       '@storybook/addon-actions': 6.5.16(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@storybook/addon-backgrounds': 6.5.16(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@storybook/addon-controls': 6.5.16(eslint@7.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)
-      '@storybook/addon-docs': 6.5.16(@babel/core@7.26.0)(eslint@7.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)(webpack@5.96.1)
+      '@storybook/addon-docs': 6.5.16(@babel/core@7.26.0)(eslint@7.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)(webpack@5.96.1(@swc/core@1.10.1))
       '@storybook/addon-measure': 6.5.16(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@storybook/addon-outline': 6.5.16(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@storybook/addon-toolbars': 6.5.16(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -16733,7 +16733,7 @@ snapshots:
     optionalDependencies:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      webpack: 5.96.1
+      webpack: 5.96.1(@swc/core@1.10.1)
     transitivePeerDependencies:
       - '@storybook/mdx2-csf'
       - eslint
@@ -16956,15 +16956,15 @@ snapshots:
       ts-dedent: 2.2.0
       util-deprecate: 1.0.2
 
-  '@storybook/builder-vite@0.2.7(@babel/core@7.26.0)(eslint@7.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)(vite@3.2.11(@types/node@18.19.64)(terser@5.37.0))':
+  '@storybook/builder-vite@0.2.7(@babel/core@7.26.0)(eslint@7.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)(vite@3.2.11(@types/node@22.10.2)(terser@5.37.0))':
     dependencies:
-      '@joshwooding/vite-plugin-react-docgen-typescript': 0.0.5(typescript@4.9.5)(vite@3.2.11(@types/node@18.19.64)(terser@5.37.0))
+      '@joshwooding/vite-plugin-react-docgen-typescript': 0.0.5(typescript@4.9.5)(vite@3.2.11(@types/node@22.10.2)(terser@5.37.0))
       '@storybook/core-common': 6.5.16(eslint@7.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)
       '@storybook/mdx1-csf': 0.0.4(@babel/core@7.26.0)(react@18.3.1)
       '@storybook/node-logger': 6.5.16
       '@storybook/semver': 7.3.2
       '@storybook/source-loader': 6.5.16(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@vitejs/plugin-react': 2.2.0(vite@3.2.11(@types/node@18.19.64)(terser@5.37.0))
+      '@vitejs/plugin-react': 2.2.0(vite@3.2.11(@types/node@22.10.2)(terser@5.37.0))
       ast-types: 0.14.2
       es-module-lexer: 0.9.3
       glob: 7.2.3
@@ -16973,7 +16973,7 @@ snapshots:
       react-docgen: 6.0.0-alpha.3
       slash: 3.0.0
       sveltedoc-parser: 4.2.1
-      vite: 3.2.11(@types/node@18.19.64)(terser@5.37.0)
+      vite: 3.2.11(@types/node@22.10.2)(terser@5.37.0)
     transitivePeerDependencies:
       - '@babel/core'
       - eslint
@@ -17029,7 +17029,7 @@ snapshots:
       style-loader: 1.3.0(webpack@4.47.0)
       terser-webpack-plugin: 4.2.3(webpack@4.47.0)
       ts-dedent: 2.2.0
-      url-loader: 4.1.1(file-loader@6.2.0(webpack@5.96.1))(webpack@4.47.0)
+      url-loader: 4.1.1(file-loader@6.2.0(webpack@4.47.0))(webpack@4.47.0)
       util-deprecate: 1.0.2
       webpack: 4.47.0
       webpack-dev-middleware: 3.7.3(webpack@4.47.0)
@@ -17275,7 +17275,7 @@ snapshots:
     optionalDependencies:
       typescript: 4.9.5
 
-  '@storybook/core-client@6.5.16(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)(webpack@5.96.1)':
+  '@storybook/core-client@6.5.16(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)(webpack@5.96.1(@swc/core@1.10.1))':
     dependencies:
       '@storybook/addons': 6.5.16(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@storybook/channel-postmessage': 6.5.16
@@ -17299,7 +17299,7 @@ snapshots:
       ts-dedent: 2.2.0
       unfetch: 4.2.0
       util-deprecate: 1.0.2
-      webpack: 5.96.1
+      webpack: 5.96.1(@swc/core@1.10.1)
     optionalDependencies:
       typescript: 4.9.5
 
@@ -17500,13 +17500,13 @@ snapshots:
       - webpack-cli
       - webpack-command
 
-  '@storybook/core@6.5.16(encoding@0.1.13)(eslint@7.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)(webpack@5.96.1)':
+  '@storybook/core@6.5.16(encoding@0.1.13)(eslint@7.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)(webpack@5.96.1(@swc/core@1.10.1))':
     dependencies:
-      '@storybook/core-client': 6.5.16(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)(webpack@5.96.1)
+      '@storybook/core-client': 6.5.16(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)(webpack@5.96.1(@swc/core@1.10.1))
       '@storybook/core-server': 6.5.16(encoding@0.1.13)(eslint@7.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      webpack: 5.96.1
+      webpack: 5.96.1(@swc/core@1.10.1)
     optionalDependencies:
       typescript: 4.9.5
     transitivePeerDependencies:
@@ -17602,7 +17602,7 @@ snapshots:
       core-js: 3.39.0
       css-loader: 3.6.0(webpack@4.47.0)
       express: 4.21.2
-      file-loader: 6.2.0(webpack@4.47.0)
+      file-loader: 6.2.0(webpack@5.96.1(@swc/core@1.10.1))
       find-up: 5.0.0
       fs-extra: 9.1.0
       html-webpack-plugin: 4.5.2(webpack@4.47.0)
@@ -17617,7 +17617,7 @@ snapshots:
       telejson: 6.0.8
       terser-webpack-plugin: 4.2.3(webpack@4.47.0)
       ts-dedent: 2.2.0
-      url-loader: 4.1.1(file-loader@6.2.0(webpack@5.96.1))(webpack@4.47.0)
+      url-loader: 4.1.1(file-loader@6.2.0(webpack@4.47.0))(webpack@4.47.0)
       util-deprecate: 1.0.2
       webpack: 4.47.0
       webpack-dev-middleware: 3.7.3(webpack@4.47.0)
@@ -17735,7 +17735,7 @@ snapshots:
       unfetch: 4.2.0
       util-deprecate: 1.0.2
 
-  '@storybook/react-docgen-typescript-plugin@1.0.2-canary.6.9d540b91e815f8fc2f8829189deb00553559ff63.0(typescript@4.9.5)(webpack@5.96.1)':
+  '@storybook/react-docgen-typescript-plugin@1.0.2-canary.6.9d540b91e815f8fc2f8829189deb00553559ff63.0(typescript@4.9.5)(webpack@5.96.1(@swc/core@1.10.1))':
     dependencies:
       debug: 4.4.0
       endent: 2.1.0
@@ -17745,23 +17745,23 @@ snapshots:
       react-docgen-typescript: 2.2.2(typescript@4.9.5)
       tslib: 2.8.1
       typescript: 4.9.5
-      webpack: 5.96.1
+      webpack: 5.96.1(@swc/core@1.10.1)
     transitivePeerDependencies:
       - supports-color
 
-  '@storybook/react@6.5.16(@babel/core@7.26.0)(@types/webpack@4.41.40)(encoding@0.1.13)(eslint@7.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(require-from-string@2.0.2)(type-fest@4.27.0)(typescript@4.9.5)(webpack-dev-server@4.15.2(webpack@5.96.1))(webpack-hot-middleware@2.26.1)':
+  '@storybook/react@6.5.16(@babel/core@7.26.0)(@swc/core@1.10.1)(@types/webpack@4.41.40)(encoding@0.1.13)(eslint@7.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(require-from-string@2.0.2)(type-fest@4.27.0)(typescript@4.9.5)(webpack-dev-server@4.15.2(webpack@5.96.1(@swc/core@1.10.1)))(webpack-hot-middleware@2.26.1)':
     dependencies:
       '@babel/preset-flow': 7.25.9(@babel/core@7.26.0)
       '@babel/preset-react': 7.25.9(@babel/core@7.26.0)
-      '@pmmmwh/react-refresh-webpack-plugin': 0.5.15(@types/webpack@4.41.40)(react-refresh@0.11.0)(type-fest@4.27.0)(webpack-dev-server@4.15.2(webpack@5.96.1))(webpack-hot-middleware@2.26.1)(webpack@5.96.1)
+      '@pmmmwh/react-refresh-webpack-plugin': 0.5.15(@types/webpack@4.41.40)(react-refresh@0.11.0)(type-fest@4.27.0)(webpack-dev-server@4.15.2(webpack@5.96.1(@swc/core@1.10.1)))(webpack-hot-middleware@2.26.1)(webpack@5.96.1(@swc/core@1.10.1))
       '@storybook/addons': 6.5.16(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@storybook/client-logger': 6.5.16
-      '@storybook/core': 6.5.16(encoding@0.1.13)(eslint@7.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)(webpack@5.96.1)
+      '@storybook/core': 6.5.16(encoding@0.1.13)(eslint@7.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)(webpack@5.96.1(@swc/core@1.10.1))
       '@storybook/core-common': 6.5.16(eslint@7.32.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@4.9.5)
       '@storybook/csf': 0.0.2--canary.4566f4d.1
       '@storybook/docs-tools': 6.5.16(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@storybook/node-logger': 6.5.16
-      '@storybook/react-docgen-typescript-plugin': 1.0.2-canary.6.9d540b91e815f8fc2f8829189deb00553559ff63.0(typescript@4.9.5)(webpack@5.96.1)
+      '@storybook/react-docgen-typescript-plugin': 1.0.2-canary.6.9d540b91e815f8fc2f8829189deb00553559ff63.0(typescript@4.9.5)(webpack@5.96.1(@swc/core@1.10.1))
       '@storybook/semver': 7.3.2
       '@storybook/store': 6.5.16(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/estree': 0.0.51
@@ -17788,7 +17788,7 @@ snapshots:
       require-from-string: 2.0.2
       ts-dedent: 2.2.0
       util-deprecate: 1.0.2
-      webpack: 5.96.1
+      webpack: 5.96.1(@swc/core@1.10.1)
     optionalDependencies:
       '@babel/core': 7.26.0
       typescript: 4.9.5
@@ -22137,6 +22137,12 @@ snapshots:
       schema-utils: 3.3.0
       webpack: 4.47.0
 
+  file-loader@6.2.0(webpack@5.96.1(@swc/core@1.10.1)):
+    dependencies:
+      loader-utils: 2.0.4
+      schema-utils: 3.3.0
+      webpack: 5.96.1(@swc/core@1.10.1)
+
   file-loader@6.2.0(webpack@5.96.1):
     dependencies:
       loader-utils: 2.0.4
@@ -25271,6 +25277,13 @@ snapshots:
     dependencies:
       postcss: 7.0.39
 
+  postcss-load-config@3.1.4(postcss@7.0.39):
+    dependencies:
+      lilconfig: 2.1.0
+      yaml: 1.10.2
+    optionalDependencies:
+      postcss: 7.0.39
+
   postcss-load-config@3.1.4(postcss@8.4.49):
     dependencies:
       lilconfig: 2.1.0
@@ -27453,6 +27466,30 @@ snapshots:
 
   tslib@2.8.1: {}
 
+  tsup@6.7.0(@swc/core@1.10.1)(postcss@7.0.39)(typescript@4.9.5):
+    dependencies:
+      bundle-require: 4.2.1(esbuild@0.17.19)
+      cac: 6.7.14
+      chokidar: 3.6.0
+      debug: 4.3.7
+      esbuild: 0.17.19
+      execa: 5.1.1
+      globby: 11.1.0
+      joycon: 3.1.1
+      postcss-load-config: 3.1.4(postcss@7.0.39)
+      resolve-from: 5.0.0
+      rollup: 3.29.5
+      source-map: 0.8.0-beta.0
+      sucrase: 3.35.0
+      tree-kill: 1.2.2
+    optionalDependencies:
+      '@swc/core': 1.10.1
+      postcss: 7.0.39
+      typescript: 4.9.5
+    transitivePeerDependencies:
+      - supports-color
+      - ts-node
+
   tsup@6.7.0(@swc/core@1.10.1)(postcss@8.4.49)(typescript@4.9.5):
     dependencies:
       bundle-require: 4.2.1(esbuild@0.17.19)
@@ -27768,14 +27805,14 @@ snapshots:
 
   urix@0.1.0: {}
 
-  url-loader@4.1.1(file-loader@6.2.0(webpack@5.96.1))(webpack@4.47.0):
+  url-loader@4.1.1(file-loader@6.2.0(webpack@4.47.0))(webpack@4.47.0):
     dependencies:
       loader-utils: 2.0.4
       mime-types: 2.1.35
       schema-utils: 3.3.0
       webpack: 4.47.0
     optionalDependencies:
-      file-loader: 6.2.0(webpack@5.96.1)
+      file-loader: 6.2.0(webpack@5.96.1(@swc/core@1.10.1))
 
   url-loader@4.1.1(file-loader@6.2.0(webpack@5.96.1))(webpack@5.96.1):
     dependencies:
@@ -28009,6 +28046,16 @@ snapshots:
       webpack: 4.47.0
       webpack-log: 2.0.0
 
+  webpack-dev-middleware@5.3.4(webpack@5.96.1(@swc/core@1.10.1)):
+    dependencies:
+      colorette: 2.0.20
+      memfs: 3.5.3
+      mime-types: 2.1.35
+      range-parser: 1.2.1
+      schema-utils: 4.2.0
+      webpack: 5.96.1(@swc/core@1.10.1)
+    optional: true
+
   webpack-dev-middleware@5.3.4(webpack@5.96.1):
     dependencies:
       colorette: 2.0.20
@@ -28017,6 +28064,47 @@ snapshots:
       range-parser: 1.2.1
       schema-utils: 4.2.0
       webpack: 5.96.1
+
+  webpack-dev-server@4.15.2(webpack@5.96.1(@swc/core@1.10.1)):
+    dependencies:
+      '@types/bonjour': 3.5.13
+      '@types/connect-history-api-fallback': 1.5.4
+      '@types/express': 4.17.21
+      '@types/serve-index': 1.9.4
+      '@types/serve-static': 1.15.7
+      '@types/sockjs': 0.3.36
+      '@types/ws': 8.5.13
+      ansi-html-community: 0.0.8
+      bonjour-service: 1.2.1
+      chokidar: 3.6.0
+      colorette: 2.0.20
+      compression: 1.7.5
+      connect-history-api-fallback: 2.0.0
+      default-gateway: 6.0.3
+      express: 4.21.2
+      graceful-fs: 4.2.11
+      html-entities: 2.5.2
+      http-proxy-middleware: 2.0.7(@types/express@4.17.21)
+      ipaddr.js: 2.2.0
+      launch-editor: 2.9.1
+      open: 8.4.2
+      p-retry: 4.6.2
+      rimraf: 3.0.2
+      schema-utils: 4.2.0
+      selfsigned: 2.4.1
+      serve-index: 1.9.1
+      sockjs: 0.3.24
+      spdy: 4.0.2
+      webpack-dev-middleware: 5.3.4(webpack@5.96.1(@swc/core@1.10.1))
+      ws: 8.18.0
+    optionalDependencies:
+      webpack: 5.96.1(@swc/core@1.10.1)
+    transitivePeerDependencies:
+      - bufferutil
+      - debug
+      - supports-color
+      - utf-8-validate
+    optional: true
 
   webpack-dev-server@4.15.2(webpack@5.96.1):
     dependencies:
