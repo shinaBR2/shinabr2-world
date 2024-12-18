@@ -1,4 +1,4 @@
-import { Search, AccountCircle, Logout, Settings } from '@mui/icons-material';
+import { AccountCircle, Logout } from '@mui/icons-material';
 import {
   Box,
   Card,
@@ -9,20 +9,18 @@ import {
   Container,
   AppBar,
   IconButton,
-  InputBase,
-  Menu,
   Toolbar,
-  Select,
-  MenuItem,
-  Link,
   Divider,
   Drawer,
   List,
-  ListItem,
   ListItemIcon,
   ListItemText,
+  ListItemButton,
 } from '@mui/material';
 import { useState } from 'react';
+import Logo from '../universal/logo';
+import SearchBar from '../universal/search-bar';
+import SiteChoices from '../universal/site-choices';
 
 interface Video {
   id: string;
@@ -123,12 +121,7 @@ const Header = (props: { toggleSetting: any }) => {
   const { toggleSetting } = props;
 
   return (
-    <AppBar
-      position="sticky"
-      color="default"
-      elevation={0}
-      sx={{ bgcolor: 'white', borderBottom: '1px solid #e0e0e0' }}
-    >
+    <AppBar position="sticky" color="default" elevation={0}>
       <Toolbar sx={{ display: 'flex', gap: 2 }}>
         <Box
           sx={{
@@ -140,30 +133,8 @@ const Header = (props: { toggleSetting: any }) => {
           {/* <IconButton>
             <Menu open={false} />
           </IconButton> */}
-          <Link
-            href="/"
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              textDecoration: 'none',
-            }}
-          >
-            <Box
-              component="img"
-              src="https://res.cloudinary.com/shinabr2/image/upload/v1670251329/Public/Images/sworld-logo-72x72.png"
-              sx={{ height: 40, width: 40 }}
-              alt="Flow Logo"
-            />
-          </Link>
-          <Select
-            defaultValue="watch"
-            size="small"
-            sx={{ ml: 1, minWidth: 100 }}
-          >
-            <MenuItem value="watch">Watch</MenuItem>
-            <MenuItem value="learn">Learn</MenuItem>
-            <MenuItem value="shop">Shop</MenuItem>
-          </Select>
+          <Logo />
+          <SiteChoices />
         </Box>
 
         <Box
@@ -173,23 +144,7 @@ const Header = (props: { toggleSetting: any }) => {
             justifyContent: 'center',
           }}
         >
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              bgcolor: '#f0f0f0',
-              borderRadius: 2,
-              px: 2,
-              py: 0.5,
-              width: '100%',
-              maxWidth: '600px',
-            }}
-          >
-            <InputBase placeholder="Search..." sx={{ flex: 1 }} />
-            <IconButton>
-              <Search />
-            </IconButton>
-          </Box>
+          <SearchBar />
         </Box>
 
         <Box sx={{ display: 'flex', minWidth: 'fit-content' }}>
@@ -225,12 +180,12 @@ const SettingPanel = (props: { open: any; toggle: any }) => {
         </List>
         <Divider />
         <List>
-          <ListItem button>
+          <ListItemButton>
             <ListItemIcon>
               <Logout />
             </ListItemIcon>
             <ListItemText primary="Logout" />
-          </ListItem>
+          </ListItemButton>
         </List>
       </Box>
     </Drawer>
