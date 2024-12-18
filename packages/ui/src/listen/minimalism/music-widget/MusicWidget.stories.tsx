@@ -1,5 +1,5 @@
 import { ThemeProvider } from '@emotion/react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import hooks from 'core';
 import theme from '../theme';
@@ -27,15 +27,7 @@ const audioList = [
   },
 ];
 
-// export default {
-//   title: 'Music widget',
-//   component: MusicWidget,
-//   // argTypes: {
-//   //   audioList: any[],
-//   // },
-// } as ComponentMeta<typeof MusicWidget>;
-
-export default {
+const meta: Meta<typeof MusicWidget> = {
   title: 'Music widget',
   component: MusicWidget,
   decorators: [
@@ -45,9 +37,13 @@ export default {
       </ThemeProvider>
     ),
   ],
-} as ComponentMeta<typeof MusicWidget>;
+} satisfies Meta<typeof MusicWidget>;
 
-const Template: ComponentStory<typeof MusicWidget> = args => {
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+// Render function to handle the hook
+const render: Story['render'] = args => {
   const hookResult = useSAudioPlayer({
     audioList: args.audioList,
     index: 0,
@@ -60,7 +56,9 @@ const Template: ComponentStory<typeof MusicWidget> = args => {
   return <MusicWidget {...props} />;
 };
 
-export const Basic = Template.bind({});
-Basic.args = {
-  audioList,
+export const Basic: Story = {
+  args: {
+    audioList,
+  },
+  render,
 };
