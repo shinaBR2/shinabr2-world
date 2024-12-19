@@ -22,7 +22,7 @@ interface HasuraClaims {
   'x-hasura-user-id': string;
 }
 
-interface AuthContextValue {
+export interface AuthContextValue {
   isSignedIn: boolean;
   isLoading: boolean;
   user: CustomUser | null;
@@ -109,6 +109,7 @@ const AuthContextProvider: FC<{ children: React.ReactNode }> = ({
     user: auth0User,
     getAccessTokenSilently,
   } = useAuth0();
+  console.log(`auth0 loading`, isLoading);
 
   const [isAdmin, setIsAdmin] = useState(false);
   const [userId, setUserId] = useState('');
