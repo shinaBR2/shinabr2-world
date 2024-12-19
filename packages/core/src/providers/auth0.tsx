@@ -161,6 +161,7 @@ const AuthProvider: FC<Props> = ({ config, children }) => {
         audience: config.audience,
         redirect_uri: config.redirectUri,
       }}
+      cacheLocation="localstorage"
     >
       <AuthContextProvider>{children}</AuthContextProvider>
     </Auth0Provider>
