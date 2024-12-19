@@ -1,6 +1,7 @@
-import React from 'react';
+import { createRootRoute, Link, Outlet } from '@tanstack/react-router';
 import { Auth, Query } from 'core';
 import { WatchUI, UniversalUI } from 'ui';
+import React from 'react';
 
 const { Homepage } = WatchUI;
 const ThemeProvider = UniversalUI.Minimalism.UniversalMinimalismThemeProvider;
@@ -15,16 +16,14 @@ const queryConfig = {
   hasuraUrl: import.meta.env.VITE_HASURA_GRAPHQL_URL,
 };
 
-const App = () => {
-  return (
+export const Route = createRootRoute({
+  component: () => (
     <Auth.AuthProvider config={auth0Config}>
       <Query.QueryProvider config={queryConfig}>
         <ThemeProvider>
-          <Homepage />
+          <Outlet />
         </ThemeProvider>
       </Query.QueryProvider>
     </Auth.AuthProvider>
-  );
-};
-
-export default App;
+  ),
+});

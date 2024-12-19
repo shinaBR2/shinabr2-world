@@ -509,9 +509,9 @@ importers:
 
   apps/watch:
     dependencies:
-      lucide-react:
-        specifier: ^0.468.0
-        version: 0.468.0(react@18.3.1)
+      '@tanstack/react-router':
+        specifier: ^1.78.2
+        version: 1.81.14(@tanstack/router-generator@1.81.9)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -525,6 +525,9 @@ importers:
       '@eslint/js':
         specifier: ^9.15.0
         version: 9.17.0
+      '@tanstack/router-plugin':
+        specifier: ^1.78.2
+        version: 1.81.9(vite@3.2.11(@types/node@22.10.2)(terser@5.37.0))(webpack@5.96.1)
       '@types/react':
         specifier: ^18.3.12
         version: 18.3.12
@@ -8395,11 +8398,6 @@ packages:
 
   lru-memoizer@2.3.0:
     resolution: {integrity: sha512-GXn7gyHAMhO13WSKrIiNfztwxodVsP8IoZ3XfrJV4yH2x0/OeTO/FIaAHTY5YekdGgW94njfuKmyyt1E0mR6Ug==}
-
-  lucide-react@0.468.0:
-    resolution: {integrity: sha512-6koYRhnM2N0GGZIdXzSeiNwguv1gt/FAjZOiPl76roBi3xKEXa4WmfpxgQwTTL4KipXjefrnf3oV4IsYhi4JFA==}
-    peerDependencies:
-      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc
 
   lz-string@1.5.0:
     resolution: {integrity: sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==}
@@ -16502,6 +16500,32 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@tanstack/router-plugin@1.81.9(vite@3.2.11(@types/node@22.10.2)(terser@5.37.0))(webpack@5.96.1)':
+    dependencies:
+      '@babel/core': 7.26.0
+      '@babel/generator': 7.26.2
+      '@babel/parser': 7.26.2
+      '@babel/plugin-syntax-jsx': 7.25.9(@babel/core@7.26.0)
+      '@babel/plugin-syntax-typescript': 7.25.9(@babel/core@7.26.0)
+      '@babel/template': 7.25.9
+      '@babel/traverse': 7.25.9
+      '@babel/types': 7.26.0
+      '@tanstack/router-generator': 1.81.9
+      '@tanstack/virtual-file-routes': 1.81.9
+      '@types/babel__core': 7.20.5
+      '@types/babel__generator': 7.6.8
+      '@types/babel__template': 7.4.4
+      '@types/babel__traverse': 7.20.6
+      babel-dead-code-elimination: 1.0.6
+      chokidar: 3.6.0
+      unplugin: 1.16.0
+      zod: 3.23.8
+    optionalDependencies:
+      vite: 3.2.11(@types/node@22.10.2)(terser@5.37.0)
+      webpack: 5.96.1
+    transitivePeerDependencies:
+      - supports-color
+
   '@tanstack/store@0.5.5': {}
 
   '@tanstack/virtual-file-routes@1.81.9': {}
@@ -21591,10 +21615,6 @@ snapshots:
     dependencies:
       lodash.clonedeep: 4.5.0
       lru-cache: 6.0.0
-
-  lucide-react@0.468.0(react@18.3.1):
-    dependencies:
-      react: 18.3.1
 
   lz-string@1.5.0: {}
 
