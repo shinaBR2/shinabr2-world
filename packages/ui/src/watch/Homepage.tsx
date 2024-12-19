@@ -36,13 +36,22 @@ const mockVideos: Video[] = Array(12)
   .fill({
     id: '1',
     title: 'Build a Full Stack App with Next.js, Tailwind, & Prisma',
-    thumbnail: '/api/placeholder/400/225',
     views: 254032,
     uploadDate: '3 days ago',
     duration: '32:14',
     channelName: 'Code with Me',
   })
   .map((video, index) => ({ ...video, id: index.toString() }));
+
+const defaultThumbnailUrl = `data:image/svg+xml,${encodeURIComponent(`
+<svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1920" height="1080" fill="#f0f0f0"/>
+  <circle cx="960" cy="540" r="100" fill="#e0e0e0"/>
+  <path d="M920 480 L1020 540 L920 600 Z" fill="#9e9e9e"/>
+  <path d="M0 200 Q 480 400 960 200 T 1920 200" stroke="#e8e8e8" fill="none" stroke-width="40"/>
+  <path d="M0 800 Q 480 600 960 800 T 1920 800" stroke="#e8e8e8" fill="none" stroke-width="40"/>
+</svg>
+`)}`;
 
 const VideoCard = ({ video }: { video: Video }) => {
   return (
@@ -63,7 +72,7 @@ const VideoCard = ({ video }: { video: Video }) => {
       <Box sx={{ position: 'relative', borderRadius: 2, overflow: 'hidden' }}>
         <CardMedia
           component="img"
-          image={video.thumbnail}
+          image={video.thumbnail ?? defaultThumbnailUrl}
           alt={video.title}
           sx={{
             aspectRatio: '16/9',
