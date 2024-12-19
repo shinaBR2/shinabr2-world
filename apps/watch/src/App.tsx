@@ -2,13 +2,13 @@ import React from 'react';
 import { WatchUI, UniversalUI } from 'ui';
 
 const { Homepage } = WatchUI;
-const { UniversalMinimalismThemeProvider } = UniversalUI.Minimalism;
+const ThemeProvider = UniversalUI.Minimalism.UniversalMinimalismThemeProvider;
 
 const App = () => {
   return (
-    <UniversalMinimalismThemeProvider>
+    <ThemeProvider>
       <Homepage />
-    </UniversalMinimalismThemeProvider>
+    </ThemeProvider>
   );
 };
 
