@@ -15,9 +15,6 @@ const queryConfig = {
   hasuraUrl: import.meta.env.VITE_HASURA_GRAPHQL_URL,
 };
 
-console.log(`auth0Config`, auth0Config);
-console.log(`queryConfig`, queryConfig);
-
 const App = () => {
   return (
     <Auth.AuthProvider config={auth0Config}>
