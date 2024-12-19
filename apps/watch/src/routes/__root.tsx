@@ -1,9 +1,8 @@
-import { createRootRoute, Link, Outlet } from '@tanstack/react-router';
+import { createRootRoute, Outlet } from '@tanstack/react-router';
 import { Auth, Query } from 'core';
-import { WatchUI, UniversalUI } from 'ui';
+import { UniversalUI } from 'ui';
 import React from 'react';
 
-const { Homepage } = WatchUI;
 const ThemeProvider = UniversalUI.Minimalism.UniversalMinimalismThemeProvider;
 
 const auth0Config = {
