@@ -6,6 +6,11 @@ interface LoginDialogProps {
   onAction: () => void;
 }
 
+const texts = {
+  welcome: 'Welcome Back',
+  cta: 'Continue with Google',
+};
+
 export const LoginDialog = (props: LoginDialogProps) => {
   const { onAction } = props;
 
@@ -20,14 +25,14 @@ export const LoginDialog = (props: LoginDialogProps) => {
             gap: 3,
           }}
         >
-          <Typography variant="h5">Welcome Back</Typography>
+          <Typography variant="h5">{texts.welcome}</Typography>
           <Button
             variant="outlined"
             startIcon={<GoogleIcon />}
             sx={{ width: '100%', py: 1 }}
             onClick={onAction}
           >
-            Continue with Google
+            {texts.cta}
           </Button>
         </Box>
       </DialogContent>
