@@ -1,11 +1,28 @@
 import { Select, MenuItem } from '@mui/material';
 
+const sites = [
+  {
+    name: 'Watch',
+    value: 'watch',
+  },
+  {
+    name: 'Listen',
+    value: 'listen',
+  },
+  {
+    name: 'Play',
+    value: 'play',
+  },
+];
+
 const SiteChoices = () => {
   return (
     <Select defaultValue="watch" size="small" sx={{ ml: 1, minWidth: 100 }}>
-      <MenuItem value="watch">Watch</MenuItem>
-      <MenuItem value="listen">Listen</MenuItem>
-      <MenuItem value="play">Play</MenuItem>
+      {sites.map(site => (
+        <MenuItem key={site.value} value={site.value}>
+          {site.name}
+        </MenuItem>
+      ))}
     </Select>
   );
 };

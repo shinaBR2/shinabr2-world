@@ -12,6 +12,10 @@ interface SettingsPanelProps {
   toggle: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+const texts = {
+  logout: 'Logout',
+};
+
 const SettingsPanel = (props: SettingsPanelProps) => {
   const { open, toggle } = props;
 
@@ -39,7 +43,7 @@ const SettingsPanel = (props: SettingsPanelProps) => {
             <ListItemIcon>
               <Logout />
             </ListItemIcon>
-            <ListItemText primary="Logout" />
+            <ListItemText primary={texts.logout} />
           </ListItemButton>
         </List>
       </Box>

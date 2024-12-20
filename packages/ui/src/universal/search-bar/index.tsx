@@ -1,6 +1,10 @@
 import { Search } from '@mui/icons-material';
 import { Box, InputBase, IconButton } from '@mui/material';
 
+const texts = {
+  placeholder: 'Search...',
+};
+
 const SearchBar = () => {
   return (
     <Box
@@ -15,7 +19,7 @@ const SearchBar = () => {
         maxWidth: '600px',
       }}
     >
-      <InputBase placeholder="Search..." sx={{ flex: 1 }} />
+      <InputBase placeholder={texts.placeholder} sx={{ flex: 1 }} />
       <IconButton>
         <Search />
       </IconButton>
