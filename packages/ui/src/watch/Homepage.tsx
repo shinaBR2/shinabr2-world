@@ -29,7 +29,7 @@ interface Video {
   title: string;
   thumbnail: string;
   views: number;
-  uploadDate: string;
+  createdAt: string;
   duration: string;
   channelName: string;
 }
@@ -56,6 +56,9 @@ const VideoSkeleton = () => (
 );
 
 const VideoCard = ({ video }: { video: Video }) => {
+  const { createdAt } = video;
+  const createdTime = new Date(createdAt).toISOString().split('T')[0];
+
   return (
     <Card
       sx={{
@@ -120,7 +123,7 @@ const VideoCard = ({ video }: { video: Video }) => {
           {video.title}
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
-          {video.channelName} • {video.uploadDate}
+          {video.channelName} • {createdTime}
         </Typography>
       </CardContent>
     </Card>
