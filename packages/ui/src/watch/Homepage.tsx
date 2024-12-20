@@ -16,11 +16,13 @@ import {
   ListItemIcon,
   ListItemText,
   ListItemButton,
+  Skeleton,
 } from '@mui/material';
 import { useState } from 'react';
 import Logo from '../universal/logo';
 import SearchBar from '../universal/search-bar';
 import SiteChoices from '../universal/site-choices';
+import { watchQueryHooks } from 'core';
 
 interface Video {
   id: string;
@@ -52,6 +54,17 @@ const defaultThumbnailUrl = `data:image/svg+xml,${encodeURIComponent(`
   <path d="M0 800 Q 480 600 960 800 T 1920 800" stroke="#e8e8e8" fill="none" stroke-width="40"/>
 </svg>
 `)}`;
+
+const VideoSkeleton = () => (
+  <Card sx={{ height: '100%' }}>
+    <Skeleton variant="rectangular" sx={{ aspectRatio: '16/9' }} />
+    <CardContent>
+      <Skeleton width="80%" height={24} sx={{ mb: 1 }} />
+      <Skeleton width="60%" height={20} />
+      <Skeleton width="40%" height={20} />
+    </CardContent>
+  </Card>
+);
 
 const VideoCard = ({ video }: { video: Video }) => {
   return (
@@ -198,8 +211,17 @@ const SettingPanel = (props: { open: any; toggle: any }) => {
   );
 };
 
-const Homepage = () => {
-  const [settingOpen, toggleSetting] = useState(false);
+interface HomepageProps {
+  settingOpen: boolean;
+  toggleSetting: React.Dispatch<React.SetStateAction<boolean>>;
+  videoResult: ReturnType<typeof watchQueryHooks.useLoadVideos>;
+}
+
+const Homepage = (props: HomepageProps) => {
+  const { settingOpen, toggleSetting, videoResult } = props;
+  const { isLoading, videos } = videoResult;
+
+  console.log(`videoResult`, videoResult);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
@@ -208,11 +230,20 @@ const Homepage = () => {
 
       <Container maxWidth={false} sx={{ py: 3, px: { xs: 2, sm: 3 } }}>
         <Grid container spacing={3}>
-          {mockVideos.map(video => (
-            <Grid item xs={12} sm={6} md={4} lg={3} xl={2.4} key={video.id}>
-              <VideoCard video={video} />
-            </Grid>
-          ))}
+          {isLoading &&
+            Array(12)
+              .fill(0)
+              .map((_, i) => (
+                <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
+                  <VideoSkeleton />
+                </Grid>
+              ))}
+          {!isLoading &&
+            videos.map((video: Video) => (
+              <Grid item xs={12} sm={6} md={4} lg={3} xl={2.4} key={video.id}>
+                <VideoCard video={video} />
+              </Grid>
+            ))}
         </Grid>
       </Container>
     </Box>
