@@ -4,7 +4,6 @@ import { WatchUI, UniversalUI } from 'ui';
 import { Auth } from 'core';
 import { Home } from '../components/home';
 
-const { Homepage } = WatchUI;
 const { Dialogs } = UniversalUI;
 const { LoginDialog } = Dialogs;
 

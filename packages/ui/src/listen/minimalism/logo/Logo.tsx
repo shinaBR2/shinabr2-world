@@ -1,5 +1,6 @@
 import { StyledLogo } from './Styled';
 
+// TOTO remove this, use universal
 const Logo = () => {
   return (
     <StyledLogo component="a" href="/">

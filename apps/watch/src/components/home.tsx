@@ -1,7 +1,7 @@
 import { Auth, watchQueryHooks } from 'core';
 import React, { useState } from 'react';
 import { WatchUI } from 'ui';
-const { Homepage } = WatchUI;
+const { HomeContainer, Header, SettingsPanel, VideosContainer } = WatchUI;
 
 const Home = () => {
   const authContext = Auth.useAuthContext();
@@ -11,13 +11,13 @@ const Home = () => {
   });
   const [settingOpen, toggleSetting] = useState<boolean>(false);
 
-  const homeProps = {
-    settingOpen,
-    toggleSetting,
-    videoResult,
-  };
-
-  return <Homepage {...homeProps} />;
+  return (
+    <HomeContainer>
+      <Header toggleSetting={toggleSetting} />
+      <SettingsPanel open={settingOpen} toggle={toggleSetting} />
+      <VideosContainer {...videoResult} />
+    </HomeContainer>
+  );
 };
 
 export { Home };
