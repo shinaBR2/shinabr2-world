@@ -34,17 +34,6 @@ interface Video {
   channelName: string;
 }
 
-const mockVideos: Video[] = Array(12)
-  .fill({
-    id: '1',
-    title: 'Build a Full Stack App with Next.js, Tailwind, & Prisma',
-    views: 254032,
-    uploadDate: '3 days ago',
-    duration: '32:14',
-    channelName: 'Code with Me',
-  })
-  .map((video, index) => ({ ...video, id: index.toString() }));
-
 const defaultThumbnailUrl = `data:image/svg+xml,${encodeURIComponent(`
 <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
   <rect width="1920" height="1080" fill="#f0f0f0"/>
@@ -93,22 +82,24 @@ const VideoCard = ({ video }: { video: Video }) => {
             bgcolor: '#e0e0e0',
           }}
         />
-        <Typography
-          variant="caption"
-          sx={{
-            position: 'absolute',
-            bottom: 8,
-            right: 8,
-            bgcolor: 'rgba(0, 0, 0, 0.8)',
-            color: 'white',
-            px: 1,
-            py: 0.5,
-            borderRadius: 1,
-            fontWeight: 500,
-          }}
-        >
-          {video.duration}
-        </Typography>
+        {video.duration && (
+          <Typography
+            variant="caption"
+            sx={{
+              position: 'absolute',
+              bottom: 8,
+              right: 8,
+              bgcolor: 'rgba(0, 0, 0, 0.8)',
+              color: 'white',
+              px: 1,
+              py: 0.5,
+              borderRadius: 1,
+              fontWeight: 500,
+            }}
+          >
+            {video.duration}
+          </Typography>
+        )}
       </Box>
       <CardContent sx={{ p: 1.5, pt: 2, '&:last-child': { pb: 1 } }}>
         <Typography

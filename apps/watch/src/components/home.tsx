@@ -11,7 +11,6 @@ const Home = () => {
   });
   const [settingOpen, toggleSetting] = useState<boolean>(false);
 
-  console.log('home data', videoResult);
   const homeProps = {
     settingOpen,
     toggleSetting,
