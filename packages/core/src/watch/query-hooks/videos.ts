@@ -3,13 +3,14 @@ import request from 'graphql-request';
 import { useQueryContext } from '../../providers/query';
 
 const videosQuery = `
-  query AllVideos {
+  query AllVideos @cached {
     videos {
       id
       title
       description
       source
       slug
+      createdAt
     }
   }
 `;
