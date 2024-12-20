@@ -24,6 +24,9 @@ import SearchBar from '../universal/search-bar';
 import SiteChoices from '../universal/site-choices';
 import { watchQueryHooks } from 'core';
 
+interface Creator {
+  username: string;
+}
 interface Video {
   id: string;
   title: string;
@@ -32,6 +35,7 @@ interface Video {
   createdAt: string;
   duration: string;
   channelName: string;
+  user: Creator;
 }
 
 const defaultThumbnailUrl = `data:image/svg+xml,${encodeURIComponent(`
@@ -56,8 +60,9 @@ const VideoSkeleton = () => (
 );
 
 const VideoCard = ({ video }: { video: Video }) => {
-  const { createdAt } = video;
+  const { title, thumbnail, duration, createdAt, user } = video;
   const createdTime = new Date(createdAt).toISOString().split('T')[0];
+  const { username: creator } = user;
 
   return (
     <Card
@@ -77,15 +82,15 @@ const VideoCard = ({ video }: { video: Video }) => {
       <Box sx={{ position: 'relative', borderRadius: 2, overflow: 'hidden' }}>
         <CardMedia
           component="img"
-          image={video.thumbnail ?? defaultThumbnailUrl}
-          alt={video.title}
+          image={thumbnail ?? defaultThumbnailUrl}
+          alt={title}
           sx={{
             aspectRatio: '16/9',
             objectFit: 'cover',
             bgcolor: '#e0e0e0',
           }}
         />
-        {video.duration && (
+        {duration && (
           <Typography
             variant="caption"
             sx={{
@@ -100,7 +105,7 @@ const VideoCard = ({ video }: { video: Video }) => {
               fontWeight: 500,
             }}
           >
-            {video.duration}
+            {duration}
           </Typography>
         )}
       </Box>
@@ -120,10 +125,10 @@ const VideoCard = ({ video }: { video: Video }) => {
             lineHeight: 1.3,
           }}
         >
-          {video.title}
+          {title}
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
-          {video.channelName} • {createdTime}
+          {creator} • {createdTime}
         </Typography>
       </CardContent>
     </Card>

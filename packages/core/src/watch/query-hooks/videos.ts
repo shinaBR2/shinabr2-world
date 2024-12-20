@@ -11,6 +11,9 @@ const videosQuery = `
       source
       slug
       createdAt
+      user {
+        username
+      }
     }
   }
 `;
@@ -29,6 +32,7 @@ const useLoadVideos = (props: LoadVideosProps) => {
       // TODO
       // Handle token error
       const token = await getAccessToken();
+      console.log(`token`, token);
       return await request({
         url: hasuraUrl,
         // @ts-ignore
