@@ -7,7 +7,6 @@ const meta: Meta<typeof VideoSkeleton> = {
   decorators: [
     Story => (
       <div style={{ width: '400px' }}>
-        {/* 👇 Decorators in Storybook also accept a function. Replace <Story/> with Story() to enable it  */}
         <Story />
       </div>
     ),

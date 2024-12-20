@@ -1,6 +1,5 @@
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-
-const theme = createTheme();
+import { ThemeProvider } from '@mui/material/styles';
+import theme from '../src/baseTheme'
 
 const preview = {
   parameters: {

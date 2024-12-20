@@ -1,6 +1,6 @@
 import React from 'react';
 import { createLazyFileRoute } from '@tanstack/react-router';
-import { WatchUI, UniversalUI } from 'ui';
+import { UniversalUI } from 'ui';
 import { Auth } from 'core';
 import { Home } from '../components/home';
 
@@ -9,10 +9,7 @@ const { LoginDialog } = Dialogs;
 
 const Index = () => {
   const authContext = Auth.useAuthContext();
-  const { isSignedIn, isLoading, signIn } = authContext;
-
-  console.log(`isLoading`, isLoading);
-  console.log(`isSignedIn`, isSignedIn);
+  const { isSignedIn, signIn } = authContext;
 
   if (!isSignedIn) {
     return <LoginDialog onAction={signIn} />;
