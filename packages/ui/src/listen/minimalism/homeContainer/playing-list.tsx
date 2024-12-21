@@ -60,11 +60,11 @@ const Item = (props: ItemProps) => {
           </Stack>
         }
       />
-      <ListItemSecondaryAction>
+      {/* <ListItemSecondaryAction>
         <Typography variant="caption" color="text.secondary">
           {'04:30'}
         </Typography>
-      </ListItemSecondaryAction>
+      </ListItemSecondaryAction> */}
     </ListItemButton>
   );
 };
