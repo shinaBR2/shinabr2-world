@@ -60,9 +60,9 @@ const toAudioItem = (item: any) => {
 
 const AudiosContainer = (props: AudiosContainerProps) => {
   const { list: originalList } = props;
+  const list = originalList.map(i => toAudioItem(i));
 
   const [index, setIndex] = useState(0);
-  const [list, setList] = useState(originalList.map(i => toAudioItem(i)));
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('sm')
   );
@@ -74,10 +74,6 @@ const AudiosContainer = (props: AudiosContainerProps) => {
   const { isPlay, currentIndex } = playerState;
   const { onPlay } = getControlsProps();
 
-  useEffect(() => {
-    setList(list.map(item => toAudioItem(item)));
-  }, [originalList]);
-
   const onItemSelect = (id: string) => {
     const index = list.findIndex(a => a.id === id);
     setIndex(index);
@@ -86,8 +82,6 @@ const AudiosContainer = (props: AudiosContainerProps) => {
       onPlay();
     }
   };
-
-  console.log(`hookResult`, hookResult);
 
   const hasNoItem = !list.length;
   const currentAudio = list[currentIndex || 0];
