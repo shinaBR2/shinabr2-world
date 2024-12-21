@@ -20,7 +20,8 @@ const NoItem = () => {
 };
 
 interface AudiosContainerProps {
-  list: SAudioPlayerAudioItem[];
+  list: unknown[];
+  activeFeelingId: string;
   onItemSelect: (id: string) => void;
 }
 
@@ -29,12 +30,15 @@ const toAudioItem = (item: any) => {
     ...item,
     src: item.source,
     image: item.thumbnailUrl,
+    tagIds: item.audio_tags.map((t: { tag_id: string }) => t.tag_id),
   };
 };
 
 const AudiosContainer = (props: AudiosContainerProps) => {
-  const { list: originalList } = props;
-  const list = originalList.map(i => toAudioItem(i));
+  const { list: originalList, activeFeelingId } = props;
+  const list = originalList
+    .map(i => toAudioItem(i))
+    .filter(i => !activeFeelingId || i.tagIds.indexOf(activeFeelingId) > -1);
 
   const [index, setIndex] = useState(0);
   const isMobile = useMediaQuery((theme: Theme) =>

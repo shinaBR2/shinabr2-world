@@ -8,7 +8,7 @@ interface Feeling {
 
 interface FeelingListProps {
   activeId: string;
-  onSelect: (id: string) => void;
+  onSelect: React.Dispatch<React.SetStateAction<string>>;
   feelings: Feeling[];
 }
 

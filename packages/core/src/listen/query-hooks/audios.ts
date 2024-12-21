@@ -10,6 +10,9 @@ const audiosAndFeelingsQuery = `
       public
       artistName
       createdAt
+      audio_tags {
+        tag_id
+      }
     }
     tags(where: {site: {_eq: "listen"}}) {
       id
