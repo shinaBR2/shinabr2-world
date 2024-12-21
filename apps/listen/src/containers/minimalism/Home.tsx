@@ -27,9 +27,6 @@ const AuthenticatedContent = () => {
         queryRs={queryRs}
         list={queryRs.data?.audios ?? []}
         activeFeelingId={activeFeelingId}
-        onItemSelect={function (): void {
-          throw new Error('Function not implemented.');
-        }}
       />
     </>
   );

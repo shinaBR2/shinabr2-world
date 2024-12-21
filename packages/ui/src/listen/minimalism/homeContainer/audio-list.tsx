@@ -27,7 +27,6 @@ interface AudioListProps {
   queryRs: ReturnType<typeof listenQueryHooks.useLoadAudios>;
   list: unknown[];
   activeFeelingId: string;
-  onItemSelect: (id: string) => void;
 }
 
 const toAudioItem = (item: any) => {
