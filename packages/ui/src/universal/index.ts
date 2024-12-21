@@ -5,5 +5,6 @@ import LoadingBackdrop from './LoadingBackdrop';
 import Logo from './logo';
 export * as Minimalism from './minimalism';
 export * as Dialogs from './dialogs';
+import { FullWidthContainer } from './containers/full-width';
 
-export { LoadingBackdrop, Logo };
+export { LoadingBackdrop, Logo, FullWidthContainer };

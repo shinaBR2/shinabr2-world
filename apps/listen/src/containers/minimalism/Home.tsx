@@ -3,8 +3,7 @@ import { ListenUI, UniversalUI } from 'ui';
 import { Auth, listenQueryHooks } from 'core';
 
 const { LoadingBackdrop } = UniversalUI;
-const { MainContainer, HomeContainer, Header, FeelingList, AudioList } =
-  ListenUI.Minimalism;
+const { MainContainer, Header, FeelingList, AudioList } = ListenUI.Minimalism;
 
 const Home = () => {
   const [activeFeelingId, setActiveFeelingId] = useState<string>('');
@@ -19,7 +18,7 @@ const Home = () => {
   }
 
   return (
-    <HomeContainer>
+    <UniversalUI.FullWidthContainer>
       <Header />
       <MainContainer>
         {!isSignedIn && <button onClick={signIn}>Login</button>}
@@ -38,7 +37,7 @@ const Home = () => {
           />
         </main>
       </MainContainer>
-    </HomeContainer>
+    </UniversalUI.FullWidthContainer>
   );
 };
 
