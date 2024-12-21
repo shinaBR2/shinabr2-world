@@ -1,4 +1,5 @@
 import { Auth, Query } from 'core';
+import { UniversalUI } from 'ui';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
 import App from './App';
@@ -21,10 +22,12 @@ const queryConfig = {
 
 root.render(
   <React.StrictMode>
-    <Auth.AuthProvider config={auth0Config}>
-      <Query.QueryProvider config={queryConfig}>
-        <App />
-      </Query.QueryProvider>
-    </Auth.AuthProvider>
+    <UniversalUI.ErrorBoundary>
+      <Auth.AuthProvider config={auth0Config}>
+        <Query.QueryProvider config={queryConfig}>
+          <App />
+        </Query.QueryProvider>
+      </Auth.AuthProvider>
+    </UniversalUI.ErrorBoundary>
   </React.StrictMode>
 );
