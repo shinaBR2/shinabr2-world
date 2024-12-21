@@ -11,7 +11,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import hooks, { listenQueryHooks, SAudioPlayerAudioItem } from 'core';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import MusicWidget from '../music-widget/MusicWidget';
 import { PlayingList } from './playing-list';
 import { MusicWidgetSkeleton } from '../music-widget/music-widget-skeleton';
@@ -53,6 +53,7 @@ const Content = (props: AudioListProps) => {
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('sm')
   );
+
   const hookResult = useSAudioPlayer({
     audioList: list,
     index,
@@ -69,6 +70,12 @@ const Content = (props: AudioListProps) => {
       onPlay();
     }
   };
+
+  useEffect(() => {
+    if (activeFeelingId) {
+      setIndex(0);
+    }
+  }, [activeFeelingId]);
 
   const hasNoItem = !list.length;
   const currentAudio = list[currentIndex || 0];
