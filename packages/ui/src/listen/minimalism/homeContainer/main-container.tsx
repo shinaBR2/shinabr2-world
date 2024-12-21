@@ -6,7 +6,11 @@ interface MainContainerProps {
 }
 
 const MainContainer = (props: MainContainerProps) => {
-  return <Container component="main">{props.children}</Container>;
+  return (
+    <Container maxWidth="xl" component="main">
+      {props.children}
+    </Container>
+  );
 };
 
 export { MainContainer };

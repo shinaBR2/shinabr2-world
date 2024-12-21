@@ -5,15 +5,41 @@ import { Auth, listenQueryHooks } from 'core';
 const { LoadingBackdrop } = UniversalUI;
 const { MainContainer, Header, FeelingList, AudioList } = ListenUI.Minimalism;
 
-const Home = () => {
-  const [activeFeelingId, setActiveFeelingId] = useState<string>('');
-  const { getAccessToken, signIn, isSignedIn } = Auth.useAuthContext();
+const AnonymousContent = () => {
+  return <UniversalUI.Dialogs.LoginDialog />;
+};
 
+const AuthenticatedContent = () => {
+  const [activeFeelingId, setActiveFeelingId] = useState<string>('');
+  const { getAccessToken } = Auth.useAuthContext();
   const queryRs = listenQueryHooks.useLoadAudios({
     getAccessToken,
   });
 
-  if (queryRs.isLoading) {
+  return (
+    <>
+      <FeelingList
+        activeId={activeFeelingId}
+        onSelect={setActiveFeelingId}
+        queryRs={queryRs}
+      />
+      <AudioList
+        queryRs={queryRs}
+        list={queryRs.data?.audios ?? []}
+        activeFeelingId={activeFeelingId}
+        onItemSelect={function (): void {
+          throw new Error('Function not implemented.');
+        }}
+      />
+    </>
+  );
+};
+
+const Home = () => {
+  const { isSignedIn, isLoading: authLoading } = Auth.useAuthContext();
+  console.log(`authLoading`, authLoading);
+
+  if (authLoading) {
     return <LoadingBackdrop message="Valuable things deserve waiting" />;
   }
 
@@ -21,21 +47,7 @@ const Home = () => {
     <UniversalUI.FullWidthContainer>
       <Header />
       <MainContainer>
-        {!isSignedIn && <button onClick={signIn}>Login</button>}
-        <FeelingList
-          activeId={activeFeelingId}
-          onSelect={setActiveFeelingId}
-          feelings={queryRs.data?.tags ?? []}
-        />
-        <main>
-          <AudioList
-            list={queryRs.data?.audios ?? []}
-            activeFeelingId={activeFeelingId}
-            onItemSelect={function (id: string): void {
-              throw new Error('Function not implemented.');
-            }}
-          />
-        </main>
+        {isSignedIn ? <AuthenticatedContent /> : <AnonymousContent />}
       </MainContainer>
     </UniversalUI.FullWidthContainer>
   );

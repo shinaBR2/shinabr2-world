@@ -1,17 +1,21 @@
-import { Container, Theme } from '@mui/material';
+import { Theme } from '@mui/material';
 import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
+import Skeleton from '@mui/material/Skeleton';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import hooks, { SAudioPlayerAudioItem } from 'core';
+import hooks, { listenQueryHooks, SAudioPlayerAudioItem } from 'core';
 import { useMemo, useState } from 'react';
 import MusicWidget from '../music-widget/MusicWidget';
 import { PlayingList } from './playing-list';
+import { MusicWidgetSkeleton } from '../music-widget/music-widget-skeleton';
+import { PlayingListSkeleton } from './playing-list-skeleton';
 
 const { useSAudioPlayer } = hooks;
 
@@ -20,6 +24,7 @@ const NoItem = () => {
 };
 
 interface AudioListProps {
+  queryRs: ReturnType<typeof listenQueryHooks.useLoadAudios>;
   list: unknown[];
   activeFeelingId: string;
   onItemSelect: (id: string) => void;
@@ -34,9 +39,8 @@ const toAudioItem = (item: any) => {
   };
 };
 
-const AudioList = (props: AudioListProps) => {
+const Content = (props: AudioListProps) => {
   const { list: originalList, activeFeelingId } = props;
-
   // TODO
   // memorize on parent
   const list = useMemo(() => {
@@ -96,6 +100,32 @@ const AudioList = (props: AudioListProps) => {
       </Grid>
     </Grid>
   );
+};
+
+const AudioList = (props: AudioListProps) => {
+  const { queryRs } = props;
+  const { isLoading } = queryRs;
+  const isMobile = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down('sm')
+  );
+
+  if (isLoading) {
+    return (
+      <Grid container spacing={2}>
+        {!isMobile && (
+          <Grid item md={8} sm={6} xs={0}>
+            <PlayingListSkeleton />
+          </Grid>
+        )}
+
+        <Grid item md={4} sm={6} xs={12} container justifyContent="center">
+          <MusicWidgetSkeleton />
+        </Grid>
+      </Grid>
+    );
+  }
+
+  return <Content {...props} />;
 };
 
 export { AudioList };

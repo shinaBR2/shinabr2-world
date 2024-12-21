@@ -1,5 +1,9 @@
+import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
+import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
+import { listenQueryHooks } from 'core';
+import { FeelingListSkeleton } from './feeling-list-skeleton';
 
 interface Feeling {
   id: string;
@@ -9,11 +13,19 @@ interface Feeling {
 interface FeelingListProps {
   activeId: string;
   onSelect: React.Dispatch<React.SetStateAction<string>>;
-  feelings: Feeling[];
+  queryRs: ReturnType<typeof listenQueryHooks.useLoadAudios>;
 }
 
 const FeelingList = (props: FeelingListProps) => {
-  const { activeId, onSelect, feelings } = props;
+  const { activeId, onSelect, queryRs } = props;
+  const { isLoading, data } = queryRs;
+
+  if (isLoading) {
+    return <FeelingListSkeleton />;
+  }
+
+  // @ts-ignore
+  const { tags: feelings } = data;
 
   return (
     <Stack direction="row" spacing={1} my={2}>
@@ -22,7 +34,7 @@ const FeelingList = (props: FeelingListProps) => {
         color={!activeId ? 'primary' : 'default'}
         onClick={() => onSelect('')}
       />
-      {feelings.map(f => {
+      {feelings.map((f: any) => {
         const isActive = !!activeId && f.id === activeId;
         const color = isActive ? 'primary' : 'default';
 

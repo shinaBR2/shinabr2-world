@@ -1,8 +1,9 @@
+import { graphql } from '../../graphql';
 import { useRequest } from '../../universal/hooks/use-request';
 
 const audiosAndFeelingsQuery = `
-  query GetAudiosAndFeelings($where: audios_bool_exp = {}) @cached {
-    audios(where: $where) {
+  query GetAudiosAndFeelings @cached {
+    audios {
       id
       name
       source
@@ -14,7 +15,7 @@ const audiosAndFeelingsQuery = `
         tag_id
       }
     }
-    tags(where: {site: {_eq: "listen"}}) {
+    tags(where: { site: { _eq: "listen" } }) {
       id
       name
     }
