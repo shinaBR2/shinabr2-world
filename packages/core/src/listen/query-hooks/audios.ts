@@ -8,6 +8,7 @@ const audiosQuery = `
       source
       thumbnailUrl
       public
+      artistName
       createdAt
     }
   }
