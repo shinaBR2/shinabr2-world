@@ -5,6 +5,7 @@ export interface SAudioPlayerAudioItem {
   id: string;
   src: string;
   name: string;
+  image: string;
   artistName: string;
 }
 
