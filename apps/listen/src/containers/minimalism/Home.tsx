@@ -1,41 +1,45 @@
 import React from 'react';
 import { ListenUI, UniversalUI } from 'ui';
-import { Auth, ListenCore, watchQueryHooks } from 'core';
-import db from '../../providers/firestore';
+import { Auth, listenQueryHooks } from 'core';
 
 const { LoadingBackdrop, Logo } = UniversalUI;
-const { AppBar, HomeContainer } = ListenUI.Minimalism;
-const { useListenHomeAudioList, useListenHomeFeelingList } = ListenCore;
+const { HomeContainer, Header, FeelingList, AudiosContainer } =
+  ListenUI.Minimalism;
 
 const Home = () => {
-  const { user, signIn, isLoading, getAccessToken } = Auth.useAuthContext();
-  const data = watchQueryHooks.useLoadVideos({
+  const { getAccessToken, signIn, isSignedIn } = Auth.useAuthContext();
+
+  const queryRs = listenQueryHooks.useLoadAudios({
     getAccessToken,
   });
-  const { values: audioList, loading: loadingAudios } =
-    useListenHomeAudioList(db);
-  const { values: feelingList, loading: loadingFeelings } =
-    useListenHomeFeelingList(db);
-  const isLoadig = loadingAudios || loadingFeelings;
-  const hasAudio = !!audioList && !!audioList?.length;
-  const hasFeeling = !!feelingList && !!feelingList?.length;
-  const hasFullData = hasAudio && hasFeeling;
+  // const { audios, isLoading } = queryRs;
+  console.log(`isSignedIn`, isSignedIn);
+  console.log(`Home listen`, queryRs);
 
-  if (isLoadig) {
+  if (queryRs.isLoading) {
     return <LoadingBackdrop message="Valuable things deserve waiting" />;
   }
 
   return (
-    <>
-      <AppBar>
-        <Logo />
-      </AppBar>
+    <HomeContainer>
+      <Header />
+      {!isSignedIn && <button onClick={signIn}>Login</button>}
+      <FeelingList
+        activeId={''}
+        onSelect={function (id: string): void {
+          throw new Error('Function not implemented.');
+        }}
+        feelings={queryRs.data.tags}
+      />
       <main>
-        {hasFullData && (
-          <HomeContainer feelingList={feelingList} audioList={audioList} />
-        )}
+        <AudiosContainer
+          list={queryRs.data.audios}
+          onItemSelect={function (id: string): void {
+            throw new Error('Function not implemented.');
+          }}
+        />
       </main>
-    </>
+    </HomeContainer>
   );
 };
 
