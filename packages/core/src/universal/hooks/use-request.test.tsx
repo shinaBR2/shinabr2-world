@@ -5,17 +5,14 @@ import { useRequest } from './use-request';
 import request from 'graphql-request';
 import { useQueryContext } from '../../providers/query';
 
-// Setup mocks
 vi.mock('graphql-request', () => ({
   default: vi.fn(),
 }));
-
 vi.mock('../../providers/query', () => ({
   useQueryContext: vi.fn(),
 }));
 
 describe('useRequest', () => {
-  // Set up QueryClient for tests
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -24,31 +21,23 @@ describe('useRequest', () => {
     },
   });
 
-  // Test data
   const mockHasuraUrl = 'https://test-hasura.com/graphql';
   const mockToken = 'test-token';
   const mockDocument = 'query { test }';
   const mockVariables = { id: '123' };
   const mockResponse = { data: { test: 'success' } };
-
-  // Mock functions
   const mockGetAccessToken = vi.fn().mockResolvedValue(mockToken);
-
-  // Wrapper component for QueryClientProvider
   const wrapper = ({ children }: { children: React.ReactNode }) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 
   beforeEach(() => {
-    // Clear mocks and query cache
     vi.clearAllMocks();
     queryClient.clear();
 
-    // Setup default mocks
     vi.mocked(useQueryContext).mockReturnValue({
       hasuraUrl: mockHasuraUrl,
     });
-
     vi.mocked(request).mockResolvedValue(mockResponse);
   });
 

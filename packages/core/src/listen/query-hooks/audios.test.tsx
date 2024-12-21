@@ -13,7 +13,6 @@ const queryContextValue = {
 
 const mockUseQuery = vi.fn();
 
-// Mock modules using Vitest
 vi.mock('graphql-request', () => ({
   default: vi.fn(),
 }));
@@ -28,7 +27,6 @@ vi.mock('../../providers/query', () => ({
 }));
 
 describe('useLoadAudios', () => {
-  // Mock data
   const mockData = {
     audios: [
       {

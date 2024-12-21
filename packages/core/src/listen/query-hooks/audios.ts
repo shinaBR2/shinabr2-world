@@ -1,4 +1,3 @@
-import { graphql } from '../../graphql';
 import { useRequest } from '../../universal/hooks/use-request';
 
 const audiosAndFeelingsQuery = `

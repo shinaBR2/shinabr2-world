@@ -14,15 +14,12 @@ const queryContextValue = {
 
 const mockUseQuery = vi.fn();
 
-// Mock modules using Vitest
 vi.mock('graphql-request', () => ({
   default: vi.fn(),
 }));
-
 vi.mock('@tanstack/react-query', () => ({
   useQuery: (...args: any) => mockUseQuery(...args),
 }));
-
 vi.mock('../../providers/query', () => ({
   QueryProvider: ({ children }: { children: React.ReactNode }) => children,
   useQueryContext: () => queryContextValue,
@@ -38,7 +35,6 @@ describe('useLoadVideos', () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
-    // Set default mock implementations
     mockUseQuery.mockReturnValue({
       data: undefined,
       isLoading: true,
@@ -58,10 +54,8 @@ describe('useLoadVideos', () => {
       { wrapper: Wrapper }
     );
 
-    // Initial loading state
     expect(result.current.isLoading).toBe(true);
 
-    // Update mock to return data
     mockUseQuery.mockReturnValue({
       data: { videos: mockVideos },
       isLoading: false,
@@ -83,7 +77,6 @@ describe('useLoadVideos', () => {
       { wrapper: Wrapper }
     );
 
-    // Update mock to return error
     mockUseQuery.mockReturnValue({
       data: undefined,
       isLoading: false,

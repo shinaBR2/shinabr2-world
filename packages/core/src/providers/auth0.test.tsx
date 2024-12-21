@@ -3,7 +3,6 @@ import { renderHook } from '@testing-library/react';
 import { User } from '@auth0/auth0-react';
 import { AuthProvider, useAuthContext } from './auth0';
 
-// Define Auth0 context types
 interface Auth0ContextInterface {
   isAuthenticated: boolean;
   isLoading: boolean;
@@ -13,16 +12,13 @@ interface Auth0ContextInterface {
   logout: (options: { logoutParams: { returnTo: string } }) => Promise<void>;
 }
 
-// Create mock function with Vitest
 const mockUseAuth0 = vi.fn<() => Auth0ContextInterface>();
 
-// Mock the Auth0 module
 vi.mock('@auth0/auth0-react', () => ({
   Auth0Provider: ({ children }: { children: React.ReactNode }) => children,
   useAuth0: () => mockUseAuth0(),
 }));
 
-// Helper to create JWT token
 const createMockToken = (claims: Record<string, unknown>): string => {
   const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
   const payload = btoa(
@@ -33,7 +29,6 @@ const createMockToken = (claims: Record<string, unknown>): string => {
   return `${header}.${payload}.mock_signature`;
 };
 
-// Test configuration
 const mockConfig = {
   domain: 'test.auth0.com',
   clientId: 'test-client-id',
@@ -41,7 +36,6 @@ const mockConfig = {
   redirectUri: 'http://localhost:3000',
 };
 
-// Mock user
 const mockUser: User = {
   sub: 'auth0|123',
   email: 'test@example.com',
@@ -83,7 +77,6 @@ describe('AuthProvider', () => {
 
     const { result } = renderHook(() => useAuthContext(), { wrapper: Wrapper });
 
-    // Vitest doesn't need act() for most cases due to improved handling of effects
     await vi.waitFor(() => {
       expect(result.current).toEqual(
         expect.objectContaining({
