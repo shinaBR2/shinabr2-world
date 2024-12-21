@@ -9,37 +9,11 @@ import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import hooks, { SAudioPlayerAudioItem } from 'core';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import MusicWidget from '../music-widget/MusicWidget';
+import { PlayingList } from './playing-list';
 
 const { useSAudioPlayer } = hooks;
-
-interface PlayingListItemProps {
-  audioList: SAudioPlayerAudioItem[];
-  currentId: string;
-  onItemSelect: (id: string) => void;
-}
-
-const PlayingList = (props: PlayingListItemProps) => {
-  const { audioList, currentId, onItemSelect } = props;
-  const onClick = (id: string) => () => onItemSelect(id);
-
-  return (
-    <List>
-      {audioList.map(a => {
-        const { id, name, artistName } = a;
-
-        return (
-          <ListItem key={id}>
-            <ListItemButton selected={id === currentId} onClick={onClick(id)}>
-              <ListItemText primary={name} secondary={artistName} />
-            </ListItemButton>
-          </ListItem>
-        );
-      })}
-    </List>
-  );
-};
 
 const NoItem = () => {
   return <Typography variant="body2">No audios found</Typography>;
