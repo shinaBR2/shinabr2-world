@@ -71,6 +71,14 @@ const Item = (props: ItemProps) => {
 const PlayingList = (props: PlayingListItemProps) => {
   const { audioList, currentId, onItemSelect } = props;
 
+  if (!audioList?.length) {
+    return (
+      <Typography variant="body2" sx={{ p: 2, textAlign: 'center' }}>
+        No audio tracks available
+      </Typography>
+    );
+  }
+
   return (
     <List>
       {audioList.map(a => {
