@@ -1,6 +1,13 @@
 import MinimalismThemeProvider from './ThemeProvider';
-import HomeContainer from './homeContainer';
 import MusicWidget from './music-widget';
 import { Header } from './header/header';
+import { FeelingList } from './homeContainer/feelings';
+import { AudiosContainer } from './homeContainer/audios-container';
 
-export { MinimalismThemeProvider, HomeContainer, MusicWidget, Header };
+export {
+  MinimalismThemeProvider,
+  MusicWidget,
+  Header,
+  FeelingList,
+  AudiosContainer,
+};

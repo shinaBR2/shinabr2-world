@@ -2,19 +2,16 @@ import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 import React from 'react';
 import { StyledHeader } from './Styled';
-
-interface Props {
-  children: React.ReactNode;
-}
+import { Logo } from '../../../universal';
 
 // Source: https://mui.com/material-ui/react-app-bar/#app-bar-with-responsive-menu
-const Header = (props: Props) => {
-  const { children } = props;
-
+const Header = () => {
   return (
     <StyledHeader position="sticky">
       <Container maxWidth="xl">
-        <Toolbar disableGutters>{children}</Toolbar>
+        <Toolbar disableGutters>
+          <Logo />
+        </Toolbar>
       </Container>
     </StyledHeader>
   );
