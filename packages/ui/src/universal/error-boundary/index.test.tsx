@@ -42,7 +42,6 @@ describe('ErrorBoundary', () => {
   describe('ErrorBoundary component', () => {
     const TestError = () => {
       throw new Error('Test error');
-      return null;
     };
 
     it('renders children when there is no error', () => {
@@ -53,6 +52,7 @@ describe('ErrorBoundary', () => {
       );
 
       expect(screen.getByText('Test content')).toBeTruthy();
+      expect(screen.queryByText('Something went wrong')).toBeNull();
     });
 
     it('renders the fallback when there is an error', () => {
