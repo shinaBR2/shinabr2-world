@@ -1,14 +1,7 @@
-import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
-import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import { listenQueryHooks } from 'core';
 import { FeelingListSkeleton } from './feeling-list-skeleton';
-
-interface Feeling {
-  id: string;
-  name: string;
-}
 
 interface FeelingListProps {
   activeId: string;

@@ -37,7 +37,6 @@ const AuthenticatedContent = () => {
 
 const Home = () => {
   const { isSignedIn, isLoading: authLoading } = Auth.useAuthContext();
-  console.log(`authLoading`, authLoading);
 
   if (authLoading) {
     return <LoadingBackdrop message="Valuable things deserve waiting" />;
