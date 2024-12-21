@@ -6,9 +6,9 @@ const audiosQuery = `
       id
       name
       source
-      thumbnail_url
+      thumbnailUrl
       public
-      created_at
+      createdAt
     }
   }
 `;
