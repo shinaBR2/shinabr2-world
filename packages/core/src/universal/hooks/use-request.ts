@@ -6,7 +6,7 @@ interface UseRequestProps {
   queryKey: unknown[];
   getAccessToken: () => Promise<string>;
   document: string;
-  variables: any;
+  variables?: any;
 }
 
 const useRequest = (props: UseRequestProps) => {

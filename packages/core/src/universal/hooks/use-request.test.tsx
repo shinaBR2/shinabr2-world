@@ -52,7 +52,7 @@ describe('useRequest', () => {
     vi.mocked(request).mockResolvedValue(mockResponse);
   });
 
-  it('should fetch data successfully', async () => {
+  it('should fetch data successfully with variables', async () => {
     const { result } = renderHook(
       () =>
         useRequest({
@@ -80,6 +80,59 @@ describe('useRequest', () => {
     });
   });
 
+  it('should fetch data without variables', async () => {
+    const { result } = renderHook(
+      () =>
+        useRequest({
+          queryKey: ['settings'],
+          getAccessToken: mockGetAccessToken,
+          document: 'query GetSettings { settings { theme } }',
+        }),
+      { wrapper }
+    );
+
+    expect(result.current.isLoading).toBe(true);
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    expect(result.current.data).toEqual(mockResponse);
+    expect(mockGetAccessToken).toHaveBeenCalledOnce();
+    expect(request).toHaveBeenCalledWith({
+      url: mockHasuraUrl,
+      document: expect.any(String),
+      requestHeaders: {
+        Authorization: `Bearer ${mockToken}`,
+      },
+    });
+  });
+
+  it('should handle undefined variables', async () => {
+    const { result } = renderHook(
+      () =>
+        useRequest({
+          queryKey: ['users'],
+          getAccessToken: mockGetAccessToken,
+          document: 'query GetUsers { users { id name } }',
+          variables: undefined,
+        }),
+      { wrapper }
+    );
+
+    expect(result.current.isLoading).toBe(true);
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    expect(result.current.data).toEqual(mockResponse);
+    expect(mockGetAccessToken).toHaveBeenCalledOnce();
+    expect(request).toHaveBeenCalledWith({
+      url: mockHasuraUrl,
+      document: expect.any(String),
+      requestHeaders: {
+        Authorization: `Bearer ${mockToken}`,
+      },
+    });
+  });
+
   it('should handle token fetch error', async () => {
     const tokenError = new Error('Failed to get token');
     mockGetAccessToken.mockRejectedValueOnce(tokenError);
@@ -90,7 +143,6 @@ describe('useRequest', () => {
           queryKey: ['test-error'],
           getAccessToken: mockGetAccessToken,
           document: mockDocument,
-          variables: mockVariables,
         }),
       { wrapper }
     );
@@ -111,7 +163,6 @@ describe('useRequest', () => {
           queryKey: ['test-request-error'],
           getAccessToken: mockGetAccessToken,
           document: mockDocument,
-          variables: mockVariables,
         }),
       { wrapper }
     );
@@ -130,7 +181,6 @@ describe('useRequest', () => {
           queryKey: ['test-cache'],
           getAccessToken: mockGetAccessToken,
           document: mockDocument,
-          variables: mockVariables,
         }),
       { wrapper }
     );
@@ -141,5 +191,21 @@ describe('useRequest', () => {
 
     expect(request).toHaveBeenCalledOnce();
     expect(result.current.data).toEqual(mockResponse);
+  });
+
+  it('should handle loading state', async () => {
+    const { result } = renderHook(
+      () =>
+        useRequest({
+          queryKey: ['test-loading'],
+          getAccessToken: mockGetAccessToken,
+          document: mockDocument,
+        }),
+      { wrapper }
+    );
+
+    expect(result.current.isLoading).toBe(true);
+    expect(result.current.data).toBeUndefined();
+    expect(result.current.error).toBeNull();
   });
 });
