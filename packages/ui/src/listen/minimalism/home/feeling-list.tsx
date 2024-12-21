@@ -25,6 +25,8 @@ const FeelingList = (props: FeelingListProps) => {
       <Chip
         label="Default"
         color={!activeId ? 'primary' : 'default'}
+        aria-pressed={!activeId}
+        role="button"
         onClick={() => onSelect('')}
       />
       {feelings.map((f: any) => {
