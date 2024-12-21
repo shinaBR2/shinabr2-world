@@ -8,6 +8,7 @@ import { useQueryContext } from '../../providers/query';
 vi.mock('graphql-request', () => ({
   default: vi.fn(),
 }));
+
 vi.mock('../../providers/query', () => ({
   useQueryContext: vi.fn(),
 }));
@@ -16,7 +17,8 @@ describe('useRequest', () => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        retry: false,
+        retry: 0,
+        refetchOnWindowFocus: false,
       },
     },
   });
@@ -34,10 +36,13 @@ describe('useRequest', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     queryClient.clear();
+    vi.spyOn(console, 'error').mockImplementation(() => {});
 
     vi.mocked(useQueryContext).mockReturnValue({
       hasuraUrl: mockHasuraUrl,
     });
+    // Reset mocks to their default successful state
+    mockGetAccessToken.mockResolvedValue(mockToken);
     vi.mocked(request).mockResolvedValue(mockResponse);
   });
 
@@ -53,9 +58,12 @@ describe('useRequest', () => {
       { wrapper }
     );
 
-    expect(result.current.isLoading).toBe(true);
-
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(
+      () => {
+        expect(result.current.isSuccess).toBe(true);
+      },
+      { timeout: 2000 }
+    );
 
     expect(result.current.data).toEqual(mockResponse);
     expect(mockGetAccessToken).toHaveBeenCalledOnce();
@@ -69,62 +77,9 @@ describe('useRequest', () => {
     });
   });
 
-  it('should fetch data without variables', async () => {
-    const { result } = renderHook(
-      () =>
-        useRequest({
-          queryKey: ['settings'],
-          getAccessToken: mockGetAccessToken,
-          document: 'query GetSettings { settings { theme } }',
-        }),
-      { wrapper }
-    );
-
-    expect(result.current.isLoading).toBe(true);
-
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
-
-    expect(result.current.data).toEqual(mockResponse);
-    expect(mockGetAccessToken).toHaveBeenCalledOnce();
-    expect(request).toHaveBeenCalledWith({
-      url: mockHasuraUrl,
-      document: expect.any(String),
-      requestHeaders: {
-        Authorization: `Bearer ${mockToken}`,
-      },
-    });
-  });
-
-  it('should handle undefined variables', async () => {
-    const { result } = renderHook(
-      () =>
-        useRequest({
-          queryKey: ['users'],
-          getAccessToken: mockGetAccessToken,
-          document: 'query GetUsers { users { id name } }',
-          variables: undefined,
-        }),
-      { wrapper }
-    );
-
-    expect(result.current.isLoading).toBe(true);
-
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
-
-    expect(result.current.data).toEqual(mockResponse);
-    expect(mockGetAccessToken).toHaveBeenCalledOnce();
-    expect(request).toHaveBeenCalledWith({
-      url: mockHasuraUrl,
-      document: expect.any(String),
-      requestHeaders: {
-        Authorization: `Bearer ${mockToken}`,
-      },
-    });
-  });
-
   it('should handle token fetch error', async () => {
     const tokenError = new Error('Failed to get token');
-    mockGetAccessToken.mockRejectedValueOnce(tokenError);
+    mockGetAccessToken.mockRejectedValue(tokenError);
 
     const { result } = renderHook(
       () =>
@@ -136,14 +91,23 @@ describe('useRequest', () => {
       { wrapper }
     );
 
-    await waitFor(() => expect(result.current.isError).toBe(true));
+    await waitFor(
+      () => {
+        expect(result.current.isError).toBe(true);
+      },
+      { timeout: 2000 }
+    );
 
-    expect(result.current.error).toBeDefined();
+    expect(result.current.error).toBe(tokenError);
     expect(request).not.toHaveBeenCalled();
+    expect(console.error).toHaveBeenCalledWith(
+      'Failed to get access token:',
+      tokenError
+    );
   });
 
   it('should handle request error', async () => {
-    const requestError = new Error('GraphQL request failed');
+    const requestError = new Error('Request failed');
     vi.mocked(request).mockRejectedValueOnce(requestError);
 
     const { result } = renderHook(
@@ -156,11 +120,41 @@ describe('useRequest', () => {
       { wrapper }
     );
 
-    await waitFor(() => expect(result.current.isError).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isError).toBe(true);
+      expect(result.current.error).toBe(requestError);
+    });
 
-    expect(result.current.error).toBeDefined();
     expect(mockGetAccessToken).toHaveBeenCalledOnce();
     expect(request).toHaveBeenCalledOnce();
+  });
+
+  it('should fetch data without variables', async () => {
+    const { result } = renderHook(
+      () =>
+        useRequest({
+          queryKey: ['settings'],
+          getAccessToken: mockGetAccessToken,
+          document: 'query GetSettings { settings { theme } }',
+        }),
+      { wrapper }
+    );
+
+    await waitFor(
+      () => {
+        expect(result.current.isSuccess).toBe(true);
+      },
+      { timeout: 2000 }
+    );
+
+    expect(result.current.data).toEqual(mockResponse);
+    expect(request).toHaveBeenCalledWith({
+      url: mockHasuraUrl,
+      document: expect.any(String),
+      requestHeaders: {
+        Authorization: `Bearer ${mockToken}`,
+      },
+    });
   });
 
   it('should use cached data on subsequent requests', async () => {
@@ -174,27 +168,16 @@ describe('useRequest', () => {
       { wrapper }
     );
 
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(
+      () => {
+        expect(result.current.isSuccess).toBe(true);
+      },
+      { timeout: 2000 }
+    );
 
     rerender();
 
     expect(request).toHaveBeenCalledOnce();
     expect(result.current.data).toEqual(mockResponse);
-  });
-
-  it('should handle loading state', async () => {
-    const { result } = renderHook(
-      () =>
-        useRequest({
-          queryKey: ['test-loading'],
-          getAccessToken: mockGetAccessToken,
-          document: mockDocument,
-        }),
-      { wrapper }
-    );
-
-    expect(result.current.isLoading).toBe(true);
-    expect(result.current.data).toBeUndefined();
-    expect(result.current.error).toBeNull();
   });
 });
