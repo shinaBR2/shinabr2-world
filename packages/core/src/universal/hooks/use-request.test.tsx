@@ -1,0 +1,145 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { renderHook, waitFor } from '@testing-library/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useRequest } from './use-request';
+import request from 'graphql-request';
+import { useQueryContext } from '../../providers/query';
+
+// Setup mocks
+vi.mock('graphql-request', () => ({
+  default: vi.fn(),
+}));
+
+vi.mock('../../providers/query', () => ({
+  useQueryContext: vi.fn(),
+}));
+
+describe('useRequest', () => {
+  // Set up QueryClient for tests
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
+    },
+  });
+
+  // Test data
+  const mockHasuraUrl = 'https://test-hasura.com/graphql';
+  const mockToken = 'test-token';
+  const mockDocument = 'query { test }';
+  const mockVariables = { id: '123' };
+  const mockResponse = { data: { test: 'success' } };
+
+  // Mock functions
+  const mockGetAccessToken = vi.fn().mockResolvedValue(mockToken);
+
+  // Wrapper component for QueryClientProvider
+  const wrapper = ({ children }: { children: React.ReactNode }) => (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  );
+
+  beforeEach(() => {
+    // Clear mocks and query cache
+    vi.clearAllMocks();
+    queryClient.clear();
+
+    // Setup default mocks
+    vi.mocked(useQueryContext).mockReturnValue({
+      hasuraUrl: mockHasuraUrl,
+    });
+
+    vi.mocked(request).mockResolvedValue(mockResponse);
+  });
+
+  it('should fetch data successfully', async () => {
+    const { result } = renderHook(
+      () =>
+        useRequest({
+          queryKey: ['test'],
+          getAccessToken: mockGetAccessToken,
+          document: mockDocument,
+          variables: mockVariables,
+        }),
+      { wrapper }
+    );
+
+    expect(result.current.isLoading).toBe(true);
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    expect(result.current.data).toEqual(mockResponse);
+    expect(mockGetAccessToken).toHaveBeenCalledOnce();
+    expect(request).toHaveBeenCalledWith({
+      url: mockHasuraUrl,
+      document: mockDocument,
+      requestHeaders: {
+        Authorization: `Bearer ${mockToken}`,
+      },
+      variables: mockVariables,
+    });
+  });
+
+  it('should handle token fetch error', async () => {
+    const tokenError = new Error('Failed to get token');
+    mockGetAccessToken.mockRejectedValueOnce(tokenError);
+
+    const { result } = renderHook(
+      () =>
+        useRequest({
+          queryKey: ['test-error'],
+          getAccessToken: mockGetAccessToken,
+          document: mockDocument,
+          variables: mockVariables,
+        }),
+      { wrapper }
+    );
+
+    await waitFor(() => expect(result.current.isError).toBe(true));
+
+    expect(result.current.error).toBeDefined();
+    expect(request).not.toHaveBeenCalled();
+  });
+
+  it('should handle request error', async () => {
+    const requestError = new Error('GraphQL request failed');
+    vi.mocked(request).mockRejectedValueOnce(requestError);
+
+    const { result } = renderHook(
+      () =>
+        useRequest({
+          queryKey: ['test-request-error'],
+          getAccessToken: mockGetAccessToken,
+          document: mockDocument,
+          variables: mockVariables,
+        }),
+      { wrapper }
+    );
+
+    await waitFor(() => expect(result.current.isError).toBe(true));
+
+    expect(result.current.error).toBeDefined();
+    expect(mockGetAccessToken).toHaveBeenCalledOnce();
+    expect(request).toHaveBeenCalledOnce();
+  });
+
+  it('should use cached data on subsequent requests', async () => {
+    const { result, rerender } = renderHook(
+      () =>
+        useRequest({
+          queryKey: ['test-cache'],
+          getAccessToken: mockGetAccessToken,
+          document: mockDocument,
+          variables: mockVariables,
+        }),
+      { wrapper }
+    );
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    rerender();
+
+    expect(request).toHaveBeenCalledOnce();
+    expect(result.current.data).toEqual(mockResponse);
+  });
+});
