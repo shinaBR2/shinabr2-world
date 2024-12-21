@@ -77,7 +77,8 @@ const Content = (props: AudioListProps) => {
   }, [activeFeelingId]);
 
   const hasNoItem = !list.length;
-  const currentAudio = list[currentIndex || 0];
+  const currentAudio =
+    list[typeof currentIndex === 'number' ? currentIndex : 0];
   const showPlayingList = !isMobile && !hasNoItem && !!currentAudio;
 
   if (hasNoItem) {
