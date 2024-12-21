@@ -58,7 +58,12 @@ const Content = (props: AudioListProps) => {
 
   const onItemSelect = (id: string) => {
     const index = list.findIndex(a => a.id === id);
-    setIndex(index);
+
+    if (index < 0) {
+      setIndex(0);
+    } else {
+      setIndex(index);
+    }
 
     if (!isPlay) {
       onPlay();

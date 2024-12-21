@@ -5,12 +5,13 @@ import { ErrorBoundary, ErrorFallback } from '.';
 describe('ErrorBoundary', () => {
   beforeEach(() => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
-    // Mock window.location.reload
     const reloadMock = vi.fn();
     const originalLocation = window.location;
-    // @ts-ignore mock implementation
-    delete window.location;
-    window.location = { ...originalLocation, reload: reloadMock };
+
+    Object.defineProperty(window, 'location', {
+      configurable: true,
+      value: { ...originalLocation, reload: reloadMock },
+    });
   });
 
   afterEach(() => {

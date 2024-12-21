@@ -101,7 +101,7 @@ describe('useRequest', () => {
     expect(result.current.error).toBe(tokenError);
     expect(request).not.toHaveBeenCalled();
     expect(console.error).toHaveBeenCalledWith(
-      'Failed to get access token:',
+      'Authentication failed:',
       tokenError
     );
   });

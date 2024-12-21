@@ -19,8 +19,12 @@ const useRequest = <TData = unknown>(props: UseRequestProps) => {
       let token: string;
       try {
         token = await getAccessToken();
+
+        if (!token) {
+          throw new Error('Invalid access token');
+        }
       } catch (error) {
-        console.error('Failed to get access token:', error);
+        console.error('Authentication failed:', error);
         throw error;
       }
 
