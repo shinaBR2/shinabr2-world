@@ -119,11 +119,6 @@ const HomeContainer = (props: HomeContainerProps) => {
         <title>{htmlTitle}</title>
       </Helmet>
 
-      <Box my={4}>
-        <Typography variant="h3" component="h1" fontWeight={700}>
-          Just listen
-        </Typography>
-      </Box>
       <Stack direction="row" spacing={1} my={2}>
         <Chip
           label="Default"
