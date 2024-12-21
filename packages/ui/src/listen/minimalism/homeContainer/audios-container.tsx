@@ -9,7 +9,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import hooks, { SAudioPlayerAudioItem } from 'core';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import MusicWidget from '../music-widget/MusicWidget';
 
 const { useSAudioPlayer } = hooks;
@@ -50,9 +50,18 @@ interface AudiosContainerProps {
   onItemSelect: (id: string) => void;
 }
 
+const toAudioItem = (item: any) => {
+  return {
+    ...item,
+    image: item.thumbnailUrl,
+  };
+};
+
 const AudiosContainer = (props: AudiosContainerProps) => {
-  const { list } = props;
+  const { list: originalList } = props;
+
   const [index, setIndex] = useState(0);
+  const [list, setList] = useState(originalList);
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('sm')
   );
@@ -63,6 +72,10 @@ const AudiosContainer = (props: AudiosContainerProps) => {
   const { getControlsProps, playerState } = hookResult;
   const { isPlay, currentIndex } = playerState;
   const { onPlay } = getControlsProps();
+
+  useEffect(() => {
+    setList(list.map(item => toAudioItem(item)));
+  }, [originalList]);
 
   const onItemSelect = (id: string) => {
     const index = list.findIndex(a => a.id === id);
