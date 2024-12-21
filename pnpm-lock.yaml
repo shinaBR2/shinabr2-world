@@ -567,21 +567,12 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.60.5
         version: 5.60.5(react@18.3.1)
-      a-promise-wrapper:
-        specifier: ^1.1.3
-        version: 1.1.3
-      firebase:
-        specifier: 9.15.0
-        version: 9.15.0(encoding@0.1.13)
       graphql-request:
         specifier: ^7.1.2
         version: 7.1.2(graphql@16.9.0)
       react-dom:
         specifier: ^18.2.0
         version: 18.3.1(react@18.3.1)
-      react-firebase-hooks:
-        specifier: ^5.1.0
-        version: 5.1.1(firebase@9.15.0(encoding@0.1.13))(react@18.3.1)
     devDependencies:
       '@0no-co/graphqlsp':
         specifier: ^1.12.16
