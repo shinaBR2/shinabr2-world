@@ -23,7 +23,6 @@ const audiosAndFeelingsQuery = `
 
 interface LoadAudiosProps {
   getAccessToken: () => Promise<string>;
-  tagName?: string;
 }
 
 const useLoadAudios = (props: LoadAudiosProps) => {

@@ -23,11 +23,13 @@ interface AudioListProps {
 }
 
 const toAudioItem = (item: any) => {
+  const tags = Array.isArray(item.audio_tags) ? item.audio_tags : [];
+
   return {
     ...item,
     src: item.source,
     image: item.thumbnailUrl,
-    tagIds: item.audio_tags.map((t: { tag_id: string }) => t.tag_id),
+    tagIds: tags.map((t: { tag_id: string }) => t.tag_id),
   };
 };
 

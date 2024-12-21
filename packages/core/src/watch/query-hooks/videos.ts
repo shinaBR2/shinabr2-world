@@ -27,6 +27,11 @@ const useLoadVideos = (props: LoadVideosProps) => {
     queryKey: ['videos'],
     getAccessToken,
     document: videosQuery,
+    retry: 3,
+    retryDelay: 1000,
+    onError: error => {
+      console.error('Failed to load videos:', error);
+    },
   });
 
   return {

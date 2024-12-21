@@ -4,7 +4,11 @@ import Skeleton from '@mui/material/Skeleton';
 
 const MusicWidgetSkeleton = () => {
   return (
-    <Card sx={{ width: '345px' }}>
+    <Card
+      sx={{ width: '345px' }}
+      role="progressbar"
+      aria-label="Loading music player"
+    >
       <Box p={2}>
         <Skeleton
           variant="rectangular"

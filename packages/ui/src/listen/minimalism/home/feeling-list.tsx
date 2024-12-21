@@ -36,6 +36,8 @@ const FeelingList = (props: FeelingListProps) => {
             key={f.id}
             label={f.name}
             color={color}
+            aria-pressed={isActive}
+            role="button"
             onClick={() => onSelect(f.id)}
           />
         );
