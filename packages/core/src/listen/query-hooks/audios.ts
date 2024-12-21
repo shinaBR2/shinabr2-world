@@ -1,6 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
-import request from 'graphql-request';
-import { useQueryContext } from '../../providers/query';
+import { useRequest } from '../../universal/hooks/use-request';
 
 const audiosQuery = `
   query GetAudios($where: audios_bool_exp = {}) @cached {
@@ -11,17 +9,6 @@ const audiosQuery = `
       thumbnail_url
       public
       created_at
-      audio_tags_aggregate {
-        aggregate {
-          count
-        }
-      }
-      audio_tags {
-        tag {
-          id
-          name
-        }
-      }
     }
   }
 `;
@@ -48,24 +35,12 @@ const getAudiosWhere = (tagName?: string) => {
 const useLoadAudios = (props: LoadAudiosProps) => {
   const { getAccessToken, tagName } = props;
 
-  const { hasuraUrl } = useQueryContext();
-  const { data, isLoading } = useQuery({
+  const { data, isLoading } = useRequest({
     queryKey: ['audios', tagName],
-    queryFn: async () => {
-      // TODO
-      // Handle token error
-      const token = await getAccessToken();
-      return await request({
-        url: hasuraUrl,
-        // @ts-ignore
-        document: audiosQuery,
-        requestHeaders: {
-          Authorization: `Bearer ${token}`,
-        },
-        variables: {
-          where: getAudiosWhere(tagName),
-        },
-      });
+    getAccessToken,
+    document: audiosQuery,
+    variables: {
+      where: getAudiosWhere(tagName),
     },
   });
 

@@ -1,10 +1,9 @@
-import { describe, expect, test, jest, beforeEach } from '@jest/globals';
-import { renderHook, act } from '@testing-library/react';
-import React from 'react';
+import { describe, expect, test, beforeEach, vi } from 'vitest';
+import { renderHook } from '@testing-library/react';
 import { User } from '@auth0/auth0-react';
 import { AuthProvider, useAuthContext } from './auth0';
 
-// First, let's define our Auth0 context types more precisely
+// Define Auth0 context types
 interface Auth0ContextInterface {
   isAuthenticated: boolean;
   isLoading: boolean;
@@ -14,18 +13,12 @@ interface Auth0ContextInterface {
   logout: (options: { logoutParams: { returnTo: string } }) => Promise<void>;
 }
 
-// Create a properly typed mock function
-const mockUseAuth0 = jest.fn<() => Auth0ContextInterface>();
+// Create mock function with Vitest
+const mockUseAuth0 = vi.fn<() => Auth0ContextInterface>();
 
-// Now we mock the module with proper types
-jest.mock('@auth0/auth0-react', () => ({
-  Auth0Provider: function MockAuth0Provider({
-    children,
-  }: {
-    children: React.ReactNode;
-  }) {
-    return <>{children}</>;
-  },
+// Mock the Auth0 module
+vi.mock('@auth0/auth0-react', () => ({
+  Auth0Provider: ({ children }: { children: React.ReactNode }) => children,
   useAuth0: () => mockUseAuth0(),
 }));
 
@@ -40,7 +33,7 @@ const createMockToken = (claims: Record<string, unknown>): string => {
   return `${header}.${payload}.mock_signature`;
 };
 
-// Configuration for our tests
+// Test configuration
 const mockConfig = {
   domain: 'test.auth0.com',
   clientId: 'test-client-id',
@@ -48,7 +41,7 @@ const mockConfig = {
   redirectUri: 'http://localhost:3000',
 };
 
-// Mock user with proper User type
+// Mock user
 const mockUser: User = {
   sub: 'auth0|123',
   email: 'test@example.com',
@@ -61,20 +54,18 @@ const mockUser: User = {
 
 describe('AuthProvider', () => {
   beforeEach(() => {
-    mockUseAuth0.mockClear();
+    vi.clearAllMocks();
   });
 
   test('provides default context when not authenticated', async () => {
-    // Create properly typed mock functions for each Auth0 method
-    const getAccessTokenSilently = jest
+    // Create mock functions using Vitest
+    const getAccessTokenSilently = vi
       .fn()
-      .mockImplementation(() => Promise.resolve('')) as () => Promise<string>;
-    const loginWithRedirect = jest
+      .mockResolvedValue('') as () => Promise<string>;
+    const loginWithRedirect = vi
       .fn()
-      .mockImplementation(() => Promise.resolve()) as () => Promise<void>;
-    const logout = jest
-      .fn()
-      .mockImplementation(() => Promise.resolve()) as () => Promise<void>;
+      .mockResolvedValue(undefined) as () => Promise<void>;
+    const logout = vi.fn().mockResolvedValue(undefined) as () => Promise<void>;
 
     mockUseAuth0.mockImplementation(() => ({
       isAuthenticated: false,
@@ -85,25 +76,24 @@ describe('AuthProvider', () => {
       logout,
     }));
 
-    // Create a wrapper component
+    // Wrapper component
     function Wrapper({ children }: { children: React.ReactNode }) {
       return <AuthProvider config={mockConfig}>{children}</AuthProvider>;
     }
 
     const { result } = renderHook(() => useAuthContext(), { wrapper: Wrapper });
 
-    await act(async () => {
-      await Promise.resolve();
+    // Vitest doesn't need act() for most cases due to improved handling of effects
+    await vi.waitFor(() => {
+      expect(result.current).toEqual(
+        expect.objectContaining({
+          isSignedIn: false,
+          isLoading: false,
+          user: null,
+          isAdmin: false,
+        })
+      );
     });
-
-    expect(result.current).toEqual(
-      expect.objectContaining({
-        isSignedIn: false,
-        isLoading: false,
-        user: null,
-        isAdmin: false,
-      })
-    );
   });
 
   test('handles successful authentication', async () => {
@@ -114,17 +104,13 @@ describe('AuthProvider', () => {
     };
 
     const mockToken = createMockToken(mockClaims);
-    const getAccessTokenSilently = jest
+    const getAccessTokenSilently = vi
       .fn()
-      .mockImplementation(() =>
-        Promise.resolve(mockToken)
-      ) as () => Promise<string>;
-    const loginWithRedirect = jest
+      .mockResolvedValue(mockToken) as () => Promise<string>;
+    const loginWithRedirect = vi
       .fn()
-      .mockImplementation(() => Promise.resolve()) as () => Promise<void>;
-    const logout = jest
-      .fn()
-      .mockImplementation(() => Promise.resolve()) as () => Promise<void>;
+      .mockResolvedValue(undefined) as () => Promise<void>;
+    const logout = vi.fn().mockResolvedValue(undefined) as () => Promise<void>;
 
     mockUseAuth0.mockImplementation(() => ({
       isAuthenticated: true,
@@ -141,22 +127,68 @@ describe('AuthProvider', () => {
 
     const { result } = renderHook(() => useAuthContext(), { wrapper: Wrapper });
 
-    await act(async () => {
-      await Promise.resolve();
+    await vi.waitFor(() => {
+      expect(result.current).toEqual(
+        expect.objectContaining({
+          isSignedIn: true,
+          isLoading: false,
+          user: expect.objectContaining({
+            id: 'db-user-123',
+            email: mockUser.email,
+            name: mockUser.name,
+            picture: mockUser.picture,
+          }),
+          isAdmin: false,
+        })
+      );
     });
+  });
 
-    expect(result.current).toEqual(
-      expect.objectContaining({
-        isSignedIn: true,
-        isLoading: false,
-        user: expect.objectContaining({
-          id: 'db-user-123',
-          email: mockUser.email,
-          name: mockUser.name,
-          picture: mockUser.picture,
-        }),
-        isAdmin: false,
-      })
-    );
+  test('identifies admin users correctly', async () => {
+    const mockClaims = {
+      'x-hasura-default-role': 'admin',
+      'x-hasura-allowed-roles': ['admin', 'user'],
+      'x-hasura-user-id': 'db-user-123',
+    };
+
+    const mockToken = createMockToken(mockClaims);
+    const getAccessTokenSilently = vi
+      .fn()
+      .mockResolvedValue(mockToken) as () => Promise<string>;
+    const loginWithRedirect = vi
+      .fn()
+      .mockResolvedValue(undefined) as () => Promise<void>;
+    const logout = vi.fn().mockResolvedValue(undefined) as () => Promise<void>;
+
+    mockUseAuth0.mockImplementation(() => ({
+      isAuthenticated: true,
+      isLoading: false,
+      user: mockUser,
+      getAccessTokenSilently,
+      loginWithRedirect,
+      logout,
+    }));
+
+    function Wrapper({ children }: { children: React.ReactNode }) {
+      return <AuthProvider config={mockConfig}>{children}</AuthProvider>;
+    }
+
+    const { result } = renderHook(() => useAuthContext(), { wrapper: Wrapper });
+
+    await vi.waitFor(() => {
+      expect(result.current).toEqual(
+        expect.objectContaining({
+          isSignedIn: true,
+          isLoading: false,
+          user: expect.objectContaining({
+            id: 'db-user-123',
+            email: mockUser.email,
+            name: mockUser.name,
+            picture: mockUser.picture,
+          }),
+          isAdmin: true,
+        })
+      );
+    });
   });
 });
