@@ -1,16 +1,9 @@
 import { Theme } from '@mui/material';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import Skeleton from '@mui/material/Skeleton';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import hooks, { listenQueryHooks, SAudioPlayerAudioItem } from 'core';
+import hooks, { listenQueryHooks } from 'core';
 import { useEffect, useMemo, useState } from 'react';
 import MusicWidget from '../music-widget/MusicWidget';
 import { PlayingList } from './playing-list';
