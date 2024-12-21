@@ -1,7 +1,7 @@
 import { useRequest } from '../../universal/hooks/use-request';
 
-const audiosQuery = `
-  query GetAudios($where: audios_bool_exp = {}) @cached {
+const audiosAndFeelingsQuery = `
+  query GetAudiosAndFeelings($where: audios_bool_exp = {}) @cached {
     audios(where: $where) {
       id
       name
@@ -11,6 +11,10 @@ const audiosQuery = `
       artistName
       createdAt
     }
+    tags(where: {site: {_eq: "listen"}}) {
+      id
+      name
+    }
   }
 `;
 
@@ -19,37 +23,16 @@ interface LoadAudiosProps {
   tagName?: string;
 }
 
-const getAudiosWhere = (tagName?: string) => {
-  if (!tagName) {
-    return {};
-  }
-
-  return {
-    audio_tags: {
-      tag: {
-        name: { _eq: tagName },
-      },
-    },
-  };
-};
-
 const useLoadAudios = (props: LoadAudiosProps) => {
-  const { getAccessToken, tagName } = props;
+  const { getAccessToken } = props;
 
-  const { data, isLoading } = useRequest({
-    queryKey: ['audios', tagName],
+  const rs = useRequest({
+    queryKey: ['audios-and-feelings'],
     getAccessToken,
-    document: audiosQuery,
-    variables: {
-      where: getAudiosWhere(tagName),
-    },
+    document: audiosAndFeelingsQuery,
   });
 
-  return {
-    // @ts-ignore
-    audios: data?.audios,
-    isLoading,
-  };
+  return rs;
 };
 
 export { useLoadAudios };
