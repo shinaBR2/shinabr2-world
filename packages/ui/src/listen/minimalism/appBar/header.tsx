@@ -1,22 +1,22 @@
 import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
-import { StyledAppBar } from './Styled';
 import React from 'react';
+import { StyledHeader } from './Styled';
 
 interface Props {
   children: React.ReactNode;
 }
 
 // Source: https://mui.com/material-ui/react-app-bar/#app-bar-with-responsive-menu
-const ResponsiveAppBar = (props: Props) => {
+const Header = (props: Props) => {
   const { children } = props;
 
   return (
-    <StyledAppBar position="sticky">
+    <StyledHeader position="sticky">
       <Container maxWidth="xl">
         <Toolbar disableGutters>{children}</Toolbar>
       </Container>
-    </StyledAppBar>
+    </StyledHeader>
   );
 };
-export default ResponsiveAppBar;
+export { Header };
