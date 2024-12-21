@@ -1,4 +1,4 @@
-import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
 import { ReactNode } from 'react';
 
 interface HomeContainerProps {
@@ -6,7 +6,11 @@ interface HomeContainerProps {
 }
 
 const HomeContainer = (props: HomeContainerProps) => {
-  return <Container maxWidth="xl">{props.children}</Container>;
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      {props.children}
+    </Box>
+  );
 };
 
 export { HomeContainer };

@@ -3,7 +3,7 @@ import { ListenUI, UniversalUI } from 'ui';
 import { Auth, listenQueryHooks } from 'core';
 
 const { LoadingBackdrop } = UniversalUI;
-const { HomeContainer, Header, FeelingList, AudiosContainer } =
+const { MainContainer, HomeContainer, Header, FeelingList, AudioList } =
   ListenUI.Minimalism;
 
 const Home = () => {
@@ -13,10 +13,6 @@ const Home = () => {
   const queryRs = listenQueryHooks.useLoadAudios({
     getAccessToken,
   });
-  // const { audios, isLoading } = queryRs;
-  console.log(`isSignedIn`, isSignedIn);
-  console.log(`Home listen`, queryRs);
-  console.log(`active feeling`, activeFeelingId);
 
   if (queryRs.isLoading) {
     return <LoadingBackdrop message="Valuable things deserve waiting" />;
@@ -25,21 +21,23 @@ const Home = () => {
   return (
     <HomeContainer>
       <Header />
-      {!isSignedIn && <button onClick={signIn}>Login</button>}
-      <FeelingList
-        activeId={activeFeelingId}
-        onSelect={setActiveFeelingId}
-        feelings={queryRs.data?.tags ?? []}
-      />
-      <main>
-        <AudiosContainer
-          list={queryRs.data?.audios ?? []}
-          activeFeelingId={activeFeelingId}
-          onItemSelect={function (id: string): void {
-            throw new Error('Function not implemented.');
-          }}
+      <MainContainer>
+        {!isSignedIn && <button onClick={signIn}>Login</button>}
+        <FeelingList
+          activeId={activeFeelingId}
+          onSelect={setActiveFeelingId}
+          feelings={queryRs.data?.tags ?? []}
         />
-      </main>
+        <main>
+          <AudioList
+            list={queryRs.data?.audios ?? []}
+            activeFeelingId={activeFeelingId}
+            onItemSelect={function (id: string): void {
+              throw new Error('Function not implemented.');
+            }}
+          />
+        </main>
+      </MainContainer>
     </HomeContainer>
   );
 };

@@ -8,7 +8,7 @@ import { Logo } from '../../../universal';
 const Header = () => {
   return (
     <StyledHeader position="sticky">
-      <Container maxWidth="xl">
+      <Container maxWidth={false}>
         <Toolbar disableGutters>
           <Logo />
         </Toolbar>
