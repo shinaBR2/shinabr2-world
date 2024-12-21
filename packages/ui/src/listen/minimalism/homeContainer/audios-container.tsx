@@ -53,6 +53,7 @@ interface AudiosContainerProps {
 const toAudioItem = (item: any) => {
   return {
     ...item,
+    src: item.source,
     image: item.thumbnailUrl,
   };
 };
@@ -61,7 +62,7 @@ const AudiosContainer = (props: AudiosContainerProps) => {
   const { list: originalList } = props;
 
   const [index, setIndex] = useState(0);
-  const [list, setList] = useState(originalList);
+  const [list, setList] = useState(originalList.map(i => toAudioItem(i)));
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('sm')
   );
@@ -85,6 +86,8 @@ const AudiosContainer = (props: AudiosContainerProps) => {
       onPlay();
     }
   };
+
+  console.log(`hookResult`, hookResult);
 
   const hasNoItem = !list.length;
   const currentAudio = list[currentIndex || 0];
