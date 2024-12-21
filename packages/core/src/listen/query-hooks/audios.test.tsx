@@ -106,20 +106,33 @@ describe('useLoadAudios', () => {
   });
 
   it('should handle error state', () => {
-    const error = new Error('Failed to fetch');
+    const networkError = new Error('Network error');
+    const validationError = new Error('Validation error');
+
     mockUseQuery.mockReturnValue({
       data: undefined,
       isLoading: false,
-      error,
+      error: networkError,
     });
 
-    const { result } = renderHook(
+    const { result, rerender } = renderHook(
       () => useLoadAudios({ getAccessToken: mockGetAccessToken }),
       { wrapper }
     );
 
     expect(result.current.data).toBeUndefined();
-    expect(result.current.error).toBe(error);
+    expect(result.current.error).toBe(networkError);
+
+    mockUseQuery.mockReturnValue({
+      data: undefined,
+      isLoading: false,
+      error: validationError,
+    });
+
+    rerender();
+
+    expect(result.current.data).toBeUndefined();
+    expect(result.current.error).toBe(validationError);
   });
 
   it('should handle empty data', () => {
