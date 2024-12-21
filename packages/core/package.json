@@ -14,6 +14,7 @@
     "codegen": "graphql-codegen --config codegen.ts",
     "watch-codegen": "graphql-codegen --config codegen.ts --watch",
     "build": "tsup src/index.ts --format esm,cjs --dts --external react",
+    "build-watch": "tsup src/index.ts --watch --format esm,cjs --dts --external react",
     "clean": "rm -rf dist",
     "dev": "tsup src/index.ts --format esm,cjs --watch --dts --external react",
     "lint": "TIMING=1 eslint \"src/**/*.ts*\"",
