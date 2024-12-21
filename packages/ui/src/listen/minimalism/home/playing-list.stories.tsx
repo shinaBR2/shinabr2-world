@@ -59,18 +59,6 @@ export const Loaded: Story = {
 
 export const Empty: Story = {
   render: () => {
-    const [currentId, setCurrentId] = useState('uuid-1');
-
-    const handleItemSelect = (id: string) => {
-      setCurrentId(id);
-    };
-
-    return (
-      <PlayingList
-        audioList={[]}
-        currentId={currentId}
-        onItemSelect={handleItemSelect}
-      />
-    );
+    return <PlayingList audioList={[]} currentId="" onItemSelect={() => {}} />;
   },
 };
