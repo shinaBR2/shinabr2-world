@@ -1,3 +1,4 @@
+import { Avatar, AvatarProps } from '@mui/material';
 import CardMedia from '@mui/material/CardMedia';
 import React from 'react';
 
@@ -47,6 +48,9 @@ const generateCloudinarySrcSet = (
 };
 
 const isCloudinaryUrl = (url: string): boolean => {
+  if (!url) {
+    return false;
+  }
   return url.includes('cloudinary.com') && url.includes('/upload/');
 };
 
@@ -57,6 +61,7 @@ const ResponsiveImage = ({
   sizes = '(max-width: 768px) 400px, (max-width: 1200px) 800px, 1024px',
   widths = [400, 800, 1200],
   imgProps = {},
+  ...rest
 }: ResponsiveImageProps) => {
   const isCloudinary = isCloudinaryUrl(src);
 
@@ -69,6 +74,7 @@ const ResponsiveImage = ({
       sizes={isCloudinary ? sizes : undefined}
       srcSet={isCloudinary ? generateCloudinarySrcSet(src, widths) : undefined}
       {...imgProps}
+      {...rest}
     />
   );
 };
@@ -110,9 +116,39 @@ const ResponsiveCardMedia = ({
   );
 };
 
+interface ResponsiveAvatarProps extends AvatarProps {
+  sx?: Record<string, any>;
+  widths?: number[];
+}
+
+const ResponsiveAvatar = ({
+  src,
+  alt,
+  className,
+  sizes,
+  widths = [40, 80, 120],
+  ...props
+}: ResponsiveAvatarProps) => {
+  const srcSet = isCloudinaryUrl(src!)
+    ? generateCloudinarySrcSet(src!, widths)
+    : undefined;
+
+  return (
+    <Avatar
+      src={src}
+      alt={alt}
+      className={className}
+      sizes={isCloudinaryUrl(src!) ? sizes : undefined}
+      srcSet={srcSet}
+      {...props}
+    />
+  );
+};
+
 export {
   generateCloudinarySrcSet,
   isCloudinaryUrl,
   ResponsiveImage,
   ResponsiveCardMedia,
+  ResponsiveAvatar,
 };

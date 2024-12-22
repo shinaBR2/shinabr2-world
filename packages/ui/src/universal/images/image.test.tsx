@@ -1,12 +1,19 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import {
   ResponsiveImage,
   generateCloudinarySrcSet,
   isCloudinaryUrl,
+  ResponsiveAvatar,
+  ResponsiveCardMedia,
 } from './image';
 
 describe('isCloudinaryUrl', () => {
+  it('should return false for invalid URLs', () => {
+    const url = '';
+
+    expect(isCloudinaryUrl(url)).toBe(false);
+  });
   it('should return true for valid Cloudinary URLs', () => {
     const validUrl =
       'https://res.cloudinary.com/shinabr2/image/upload/v1670242747/Public/Images/TG5-1024x576.webp';
@@ -108,5 +115,171 @@ describe('ResponsiveImage Component', () => {
     expect(srcSet).toContain('w_300');
     expect(srcSet).toContain('w_600');
     expect(srcSet).not.toContain('w_400');
+  });
+});
+
+describe('ResponsiveCardMedia Component', () => {
+  const cloudinaryUrl =
+    'https://res.cloudinary.com/shinabr2/image/upload/v1/test-image.jpg';
+  const nonCloudinaryUrl = 'https://example.com/image.jpg';
+
+  it('should render with srcSet for Cloudinary URLs', () => {
+    render(<ResponsiveCardMedia src={cloudinaryUrl} alt="Cloudinary Image" />);
+
+    const cardMedia = screen.getByAltText('Cloudinary Image');
+
+    // Verify srcSet is generated for Cloudinary URLs
+    expect(cardMedia.getAttribute('srcSet')).toBeTruthy();
+  });
+
+  it('should render without srcSet for non-Cloudinary URLs', () => {
+    render(
+      <ResponsiveCardMedia src={nonCloudinaryUrl} alt="Non-Cloudinary Image" />
+    );
+
+    const cardMedia = screen.getByAltText('Non-Cloudinary Image');
+
+    // Verify no srcSet for non-Cloudinary URLs
+    expect(cardMedia).not.toHaveAttribute('srcSet');
+  });
+
+  it('should use custom sizes and widths when provided', () => {
+    const customSizes = '(max-width: 768px) 80px';
+    const customWidths = [80, 160];
+
+    render(
+      <ResponsiveCardMedia
+        src={cloudinaryUrl}
+        alt="Custom Card Media"
+        sizes={customSizes}
+        widths={customWidths}
+      />
+    );
+
+    const cardMedia = screen.getByAltText('Custom Card Media');
+
+    // Verify sizes and srcSet
+    expect(cardMedia).toHaveAttribute('sizes', customSizes);
+
+    const srcSet = cardMedia.getAttribute('srcSet') || '';
+    expect(srcSet).toContain('w_80');
+    expect(srcSet).toContain('w_160');
+  });
+
+  it('should pass through additional props', () => {
+    const dataTestId = 'card-media-test';
+    render(
+      <ResponsiveCardMedia
+        src={nonCloudinaryUrl}
+        alt="Props Card Media"
+        data-testid={dataTestId}
+        className="custom-class"
+      />
+    );
+
+    const cardMedia = screen.getByTestId(dataTestId);
+
+    // Verify additional props are passed
+    expect(cardMedia).toHaveClass('custom-class');
+  });
+
+  it('should handle undefined or empty src gracefully', () => {
+    render(<ResponsiveCardMedia src="" alt="Empty Card Media" />);
+
+    const cardMedia = screen.getByAltText('Empty Card Media');
+
+    // Basic rendering check
+    expect(cardMedia).toBeInTheDocument();
+
+    // Verify no srcSet or sizes attributes
+    expect(cardMedia).not.toHaveAttribute('srcSet');
+    expect(cardMedia).not.toHaveAttribute('sizes');
+  });
+});
+
+describe('ResponsiveAvatar Component', () => {
+  const cloudinaryUrl =
+    'https://res.cloudinary.com/shinabr2/image/upload/v1/test-image.jpg';
+  const nonCloudinaryUrl = 'https://example.com/image.jpg';
+
+  it('should render with srcSet for Cloudinary URLs', () => {
+    render(<ResponsiveAvatar src={cloudinaryUrl} alt="Cloudinary Avatar" />);
+
+    const avatar = screen.getByAltText('Cloudinary Avatar');
+
+    // Verify srcSet is generated for Cloudinary URLs
+    expect(avatar.getAttribute('srcSet')).toBeTruthy();
+    expect(avatar.getAttribute('srcSet')).toContain('w_40');
+    expect(avatar.getAttribute('srcSet')).toContain('w_80');
+    expect(avatar.getAttribute('srcSet')).toContain('w_120');
+  });
+
+  it('should render without srcSet for non-Cloudinary URLs', () => {
+    render(
+      <ResponsiveAvatar src={nonCloudinaryUrl} alt="Non-Cloudinary Avatar" />
+    );
+
+    const avatar = screen.getByAltText('Non-Cloudinary Avatar');
+
+    // Verify no srcSet for non-Cloudinary URLs
+    expect(avatar).not.toHaveAttribute('srcSet');
+  });
+
+  it('should use custom sizes and widths when provided', () => {
+    const customSizes = '(max-width: 768px) 80px';
+    const customWidths = [80, 160];
+
+    render(
+      <ResponsiveAvatar
+        src={cloudinaryUrl}
+        alt="Custom Avatar"
+        sizes={customSizes}
+        widths={customWidths}
+      />
+    );
+
+    const avatar = screen.getByAltText('Custom Avatar');
+
+    // Verify sizes and srcSet
+    expect(avatar).toHaveAttribute('sizes', customSizes);
+
+    const srcSet = avatar.getAttribute('srcSet') || '';
+    expect(srcSet).toContain('w_80');
+    expect(srcSet).toContain('w_160');
+    expect(srcSet).not.toContain('w_40');
+  });
+
+  it('should pass through additional props', () => {
+    render(
+      <ResponsiveAvatar
+        src={nonCloudinaryUrl}
+        alt="Props Avatar"
+        className="custom-class"
+        variant="rounded"
+        data-testid="avatar-test"
+      />
+    );
+
+    const avatar = screen.getByTestId('avatar-test');
+
+    // Verify additional props are passed
+    expect(avatar).toHaveClass('custom-class');
+    expect(avatar).toHaveClass('MuiAvatar-rounded');
+  });
+
+  it('should handle undefined or empty src gracefully', () => {
+    const { container } = render(<ResponsiveAvatar alt="Empty Avatar" />);
+
+    /**
+     * By default mui will render an avatar
+     */
+    const avatar = container.querySelector('.MuiAvatar-root');
+
+    // Basic rendering check
+    expect(avatar).toBeInTheDocument();
+
+    // Verify no srcSet or sizes attributes
+    expect(avatar).not.toHaveAttribute('srcSet');
+    expect(avatar).not.toHaveAttribute('sizes');
   });
 });
