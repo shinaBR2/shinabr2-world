@@ -2,10 +2,8 @@
   "exclude": ["node_modules"],
   "extends": "tsconfig/vite.json",
   "compilerOptions": {
-    "target": "ES6",
     "rootDir": "src",
-    "outDir": "dist",
-    "esModuleInterop": true
+    "outDir": "dist"
   },
   "include": ["src"]
 }
