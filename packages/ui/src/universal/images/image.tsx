@@ -129,8 +129,9 @@ const ResponsiveAvatar = ({
   widths = [40, 80, 120],
   ...props
 }: ResponsiveAvatarProps) => {
-  const srcSet = isCloudinaryUrl(src!)
-    ? generateCloudinarySrcSet(src!, widths)
+  const safeSrc = src ?? '';
+  const srcSet = isCloudinaryUrl(safeSrc)
+    ? generateCloudinarySrcSet(safeSrc, widths)
     : undefined;
 
   return (

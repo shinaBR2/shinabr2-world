@@ -60,6 +60,15 @@ describe('generateCloudinarySrcSet', () => {
 
     expect(generateCloudinarySrcSet(url, widths)).toBe(expected);
   });
+
+  it('should handle invalid width values gracefully', () => {
+    const url = 'https://res.cloudinary.com/shinabr2/image/upload/v1/test.jpg';
+    expect(() => generateCloudinarySrcSet(url, [])).not.toThrow();
+    expect(() => generateCloudinarySrcSet(url, [-100, 0])).not.toThrow();
+    expect(() =>
+      generateCloudinarySrcSet(url, [Number.MAX_SAFE_INTEGER])
+    ).not.toThrow();
+  });
 });
 
 describe('ResponsiveImage Component', () => {

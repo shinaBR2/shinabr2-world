@@ -106,6 +106,11 @@ describe('PlayingList Component', () => {
     avatars.forEach((avatar, index) => {
       expect(avatar).toHaveAttribute('src', mockAudioItems[index].image);
       expect(avatar).toHaveAttribute('alt', mockAudioItems[index].name);
+
+      if (mockAudioItems[index].image.includes('cloudinary')) {
+        expect(avatar).toHaveAttribute('srcset');
+        expect(avatar).toHaveAttribute('sizes');
+      }
     });
   });
 });
