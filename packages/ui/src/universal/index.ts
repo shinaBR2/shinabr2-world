@@ -7,18 +7,13 @@ export * as Minimalism from './minimalism';
 export * as Dialogs from './dialogs';
 import { FullWidthContainer } from './containers/full-width';
 import { ErrorBoundary } from './error-boundary';
-import {
-  ResponsiveImage,
-  ResponsiveCardMedia,
-  ResponsiveAvatar,
-} from './images/image';
+import { ResponsiveCardMedia, ResponsiveAvatar } from './images/image';
 
 export {
   ErrorBoundary,
   LoadingBackdrop,
   Logo,
   FullWidthContainer,
-  ResponsiveImage,
   ResponsiveCardMedia,
   ResponsiveAvatar,
 };
