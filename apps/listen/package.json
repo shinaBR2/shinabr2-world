@@ -6,10 +6,8 @@
     "build": "vite build",
     "serve": "vite preview",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist && rm -f .env*",
-    "deploy": "vercel deploy dist --team=turborepo --confirm",
     "pre-dev": "cp ../../.env.development.local .env",
-    "dev": "pnpm run pre-dev && vite",
-    "lint": "tsc --noEmit && TIMING=1 eslint \"src/**/*.ts*\""
+    "dev": "pnpm run pre-dev && vite"
   },
   "dependencies": {
     "core": "workspace:*",
