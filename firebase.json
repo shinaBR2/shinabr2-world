@@ -51,6 +51,15 @@
       ]
     },
     {
+      "target": "watch",
+      "public": "dist",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ]
+    },
+    {
       "target": "docs",
       "public": "build",
       "ignore": [
