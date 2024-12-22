@@ -8,7 +8,7 @@ interface LoginDialogProps {
 
 const texts = {
   welcome: 'Welcome Back',
-  cta: 'Continue with Google',
+  cta: 'FLOW',
 };
 
 export const LoginDialog = (props: LoginDialogProps) => {
